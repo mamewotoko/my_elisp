@@ -5,11 +5,11 @@ My emacs lisp to customize keymap, create template file etc...
 
 How to use
 ----------
-1. 
+1.  
     mv .emacs.d $HOME
-2. 
+2.  
     mkdir -p $HOME/lib/emacs
-3.
+3.  
     cp -r elisp template $HOME/lib/emacs
 4. start emacs, customize ...
 
