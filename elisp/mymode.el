@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Thu Jan 24 07:17:51 2013
+;;; mymode.el --- Last modified: Wed Jun 19 20:58:25 2013
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -52,7 +52,7 @@
 
 (defun my-html-copy-format-command-and-other ()
   (interactive)
-  (if (region-active-p)
+  (if (tooltip-region-active-p)
       (let ((here (point))
 	    (start (region-beginning))
 	    (end (region-end)))

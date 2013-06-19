@@ -47,7 +47,7 @@
   (let ((here (point))
 	(back nil)
 	(addition (my-search-alist2 tag my-html-tag-alist 'equal)))
-    (if (region-active-p)
+    (if (tooltip-region-active-p)
 	;;リージョンをはさむ
 	(progn 
 	  (setq back t)
@@ -94,7 +94,7 @@
 ;;
 (defun my-html-copy-format-yank ()
   (interactive)
-  (if (region-active-p)
+  (if (tooltip-region-active-p)
       (let* ((start (region-beginning))
 	    (end (region-end))
 	    (element (buffer-substring start end)))
@@ -104,7 +104,7 @@
   
 (defun my-html-copy-format-register-command ()
   (interactive)
-  (if (region-active-p)
+  (if (tooltip-region-active-p)
       (my-html-copy-format-register-function (region-beginning) (region-end))))
 
 (defun my-html-copy-format-register-function (start end)

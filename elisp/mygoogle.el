@@ -33,7 +33,7 @@
 ;; 
 ;(defun my-word-at-position ()
 ;  (interactive)
-;  (if (region-active-p)
+;  (if (tooltip-region-active-p)
 ;      (buffer-substring (region-beginning)
 ;			(region-end))
 ;    (thing-at-point 'word)))

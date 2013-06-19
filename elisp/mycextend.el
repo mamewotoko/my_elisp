@@ -115,7 +115,7 @@
 	 (insert-length (+ (length start-string)
 			   (length c++-insert-incremental-for-end-string)))
 	 start end)
-    (if (region-active-p)
+    (if (tooltip-region-active-p)
 	(progn
 	  (setq start (region-beginning))
 	  (setq end (region-end))
@@ -150,7 +150,7 @@
 
 (defun my-c-insert-conditional-compile ()
   (interactive)
-  (if (region-active-p)
+  (if (tooltip-region-active-p)
       (let ((start (region-beginning))
 	    (end (region-end)))
 	(my-regional-insert "#ifdef \n" "#endif\n")
@@ -169,7 +169,7 @@
 (defun my-c-insert-if ()
   (interactive)
   (let (start end)
-    (if (region-active-p)
+    (if (tooltip-region-active-p)
 	(progn
 	  (setq start (region-beginning))
 	  (setq end (+ (region-end) 7))

@@ -1,4 +1,4 @@
-;;; mylibrary.el --- personal use    Last modified: Sat Mar 24 12:48:36 JST 2001
+;;; mylibrary.el --- personal use    Last modified: Wed Jun 19 20:58:25 2013
 ;; Copyright (C) 2001 by Free Software Foundation, Inc.
 
 ;; Author: MASUYAMA Takashi <tak@is.s.u-tokyo.ac.jp>
@@ -45,7 +45,7 @@
 ;; 優先順位
 ;;  リージョン -> point
 (defun word-at-position ()
-  (if (region-active-p)
+  (if (tooltip-region-active-p)
       (buffer-substring (region-beginning)
 			(region-end))
     (thing-at-point 'word)))
@@ -218,7 +218,7 @@
 (defun find-include-etc-at-position ()
   (interactive)
   (let ((filename 
-	 (if (region-active-p)
+	 (if (tooltip-region-active-p)
 	     (buffer-substring (region-beginning) (region-end))
 	   (let ((thing (thing-at-point 'filename)))
 	     (if (equal thing "")
@@ -231,7 +231,7 @@
 
 (defun my-measure-length-of-region ()
   (interactive)
-  (if (region-active-p)
+  (if (tooltip-region-active-p)
       (message "length: %d" (abs (- (region-end) (region-beginning))))))
 
 (defun my-copy-line ()
@@ -258,7 +258,7 @@
 位置は戻らない。"
   (if (not start)
       (progn
-	(if (region-active-p)
+	(if (tooltip-region-active-p)
 	    (progn 
 	      (setq start (region-beginning))
 	      (setq end (region-end))))))

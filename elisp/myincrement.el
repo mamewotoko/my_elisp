@@ -1,4 +1,4 @@
-;;; myincrement.el ---    Last modified: Sun Jul 07 23:01:05 2002
+;;; myincrement.el ---    Last modified: Wed Jun 19 20:58:25 2013
 
 ;; Copyright (C) 2001 by Free Software Foundation, Inc.
 
@@ -151,7 +151,7 @@
 
 (defun my-increment-lambda-copy-region-register ()
   (interactive)
-  (if (region-active-p)
+  (if (tooltip-region-active-p)
       (my-increment-lambda-copy-region-register-function (region-beginning)
 							 (region-end))))
 

@@ -1,5 +1,5 @@
 ;;; mykeymap.el
-;;                         Last modified: Sat Oct 13 11:03:41 2012
+;;                         Last modified: Wed Jun 19 20:58:25 2013
 
 ;; FTP Directory: sources/emacs #
 ;; Author: Takashi Masuyama <tak@is.s.u-tokyo.ac.jp>
@@ -51,7 +51,7 @@
   (interactive)
   (let ((here (point)))
     (if (and (not start))
-	(if (region-active-p)
+	(if (tooltip-region-active-p)
 	    (progn
 	      (setq start (region-beginning))
 	      (setq end (region-end)))))
