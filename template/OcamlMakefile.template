@@ -1,0 +1,20 @@
+OCAMLMAKFILE=/home/tak/lib/ocaml/OcamlMakefile
+
+##------------------------------------------------------------
+INCDIRS=
+## threads を指定するときは unix を指定しなくてよい
+LIBS=
+SRCS=
+RESULT=
+# THREADS=1
+OPTION=LIBS='$(MBIFF_LIB)' SOURCES='$(SRCS)' RESULT=$@ INCDIRS='$(MBIFF_INCDIRS)'
+$(RESULT): $(MBIFF_SRC)
+	make -f $(OCAMLMAKEFILE) nc $(OPTION)
+##------------------------------------------------------------
+
+real-clean:
+	make -f $(OCAMLMAKEFILE) clean $(OPTION)
+	rm -f  $(TARGET) *.o *~ *.cmo *.cmi *.cmx *.cma
+#	(cd subdir; make clean)
+
+include $(OCAMLMAKEFILE)

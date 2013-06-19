@@ -1,0 +1,3 @@
+./result.txt	./ezmail2.pl	./ocamlc	./get_akiho.pl	
+./tmp/myasmmode.el	./myasmmode.el	
+./dust/mycolor.el	./tmp/mycolor.el	

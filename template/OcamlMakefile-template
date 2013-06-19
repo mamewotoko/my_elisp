@@ -1,0 +1,16 @@
+OCAMLC = ocamlfind ocamlc -g
+OCAMLOPT = ocamlfind ocamlopt
+OCAMLMAKEFILE=/home/tak/lib/ocaml/OcamlMakefile
+LIBS = 
+UNSORTED_SOURCES =
+SOURCES = `tsort_cmo -g -e -setE .cmo .depend $(UNSORTED_SOURCES)`
+RESULT =
+LIBS = unix
+
+.depend: $(SOURCES)
+	ocamldep $(SOURCES) > $@	
+all: bc
+
+
+## LAST LINE
+include $(OCAMLMAKEFILE)

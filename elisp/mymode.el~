@@ -1,0 +1,351 @@
+;;; mymode.el --- Last modified: Sun Jul 29 08:25:08 2012
+;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
+;; FTP Directory: sources/emacs #
+
+;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
+;;   myerrorjump.el にジャンプルーチンを入れた。
+
+;;; Code:
+;(setq load-path (append (list "/usr/local/bin/gcl-2.3/elisp"
+;			      (expand-file-name "~/lib/emacs/lisp/haskell"))
+;			load-path))
+
+;; namazu indexes
+(defconst emacs-namazu-dir "/home/tak/.Elisp_namazu")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Info
+;; 
+(defun my-Info-search-next ()
+  (interactive)
+  (Info-search Info-last-search))
+(require 'info)
+(define-key Info-mode-map "\C-n" 'my-Info-search-next)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; HTML mode
+;;
+;;
+(load "myhtmlmode.el")
+(defvar my-html-image-scale 0.4)
+(add-hook 'html-mode-hook
+	  '(lambda ()
+	     (define-key html-mode-map "\C-b"
+	       'my-html-insert-space)
+	     (define-key html-mode-map "\C-p"
+	       'my-html-insert-paragraph)
+	     (define-key html-mode-map "\C-n"
+	       'my-html-insert-br)
+	     (define-key html-mode-map "\C-j"
+	       'my-html-tag-insert)
+	     (define-key html-mode-map [(control space)]
+	       'my-html-insert-space)
+	     (define-key html-mode-map "\C-cm"
+	       'my-html-insert-item-menu)
+	     (define-key html-mode-map "\C-cj"
+	       'my-html-jump)
+	     (define-key html-mode-map "\C-c\C-j"
+	       'my-html-jump)
+	     (define-key html-mode-map "\C-c\C-l"
+	       'my-activate-line)
+	     (define-key html-mode-map "\C-c\C-m"
+	       'my-html-insert-item-menu)
+	     (define-key html-mode-map "\C-c\C-y"
+	       'my-html-copy-format-yank)
+	     (define-key html-mode-map "\C-c\C-]"
+	       '(lambda () (interactive) (eqn2eps-insert-filename my-html-image-scale)))
+))
+
+(defun my-html-copy-format-command-and-other ()
+  (interactive)
+  (if (region-active-p)
+      (let ((here (point))
+	    (start (region-beginning))
+	    (end (region-end)))
+	(my-copy-primary-selection-and-add-to-my-incremental start end)
+	(my-html-copy-format-register-function start end)
+	(goto-char here))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Mew mode
+;;
+;;
+(add-hook 'mew-message-mode-hook
+	  '(lambda ()
+	     (define-key mew-message-mode-map [(shift button2)]
+	       'browse-url-at-mouse)))
+(add-hook 'mew-summary-mode-hook
+	  '(lambda ()
+	     (make-local-variable 'namazu-default-dir)
+	     (setq namazu-default-dir (expand-file-name "~/.Mail_namazu"))))
+
+;(add-hook 'mew-draft-mode-hook
+;	  '(lambda ()
+;	     (auto-fill-mode 1)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; C/C++ mode
+;;
+;;
+;(load "mycextend.el")
+
+;(load "mycextend.el")
+;(add-hook 'c-mode-hook
+;	  '(lambda ()
+;	     (define-key c-mode-map "\C-x\C-h" 'my-c-open-header-and-source)
+;	     (setq namazu-default-dir "/home/tak/.indexes/gtk2.0")
+;	     (setq c-basic-offset 4)
+;	     (setq tab-width 4)
+;	     (setq font-lock-keywords c-font-lock-keywords-2)
+;	     (define-key c-mode-map "\C-c\C-c" 'comment-region)
+;	     ))
+
+;; ctypes.el
+;(add-hook 'c++-mode-hook
+;	  '(lambda ()
+;	     (setq font-lock-keywords c++-font-lock-keywords-2)
+;	     (define-key c++-mode-map "\C-c\C-c" 'comment-region)
+;	     (define-key c++-mode-map "\C-j" 'c++-insert-incremental-for)
+;	     (define-key c++-mode-map "\C-cj" 'c-insert-conditional-compile)
+;	     (define-key c++-mode-map [f6] 'mycompile-compile)
+;	     (define-key c++-mode-map "\C-cm" 'my-c++-extend-menu)
+;	     (define-key c++-mode-map "\C-c\C-d" 'delete-rectangle)
+;	     (define-key c++-mode-map "\C-c\C-t\C-y" 'my-increment-repeat)
+;	     (define-key c++-mode-map "\C-b\C-b" 'my-c++-open-header-and-source)
+;	     (define-key c++-mode-map "\C-c\C-b" 'my-c-prototype-to-implementation-repeat)
+;	     ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; PROLOG mode
+;;
+;;
+;(add-hook 'prolog-mode-hook 
+;	  '(lambda ()
+;	     (setq tab-width 2)
+;	     (define-key prolog-mode-map "\C-c\C-c" 'comment-region)
+;	     ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Shell Script mode
+;;
+;;
+(add-hook 'shell-script-mode-hook
+	  '(lambda ()
+	     (define-key sh-mode-map "\C-c\C-c" 'comment-region)
+))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Emacs Lisp mode
+;;
+;;
+(add-hook 'emacs-lisp-mode-hook
+	  '(lambda ()
+	     (define-key emacs-lisp-mode-map "\C-c\C-c" 'comment-region)
+	     (define-key emacs-lisp-mode-map "\C-j" 'eval-print-last-sexp)
+	     (make-local-variable 'namazu-default-dir)
+	     (setq namazu-default-dir emacs-namazu-dir)
+))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Makefile mode
+;;
+;;
+(add-hook 'makefile-mode-hook
+	  '(lambda ()
+	     (define-key makefile-mode-map "\C-c\C-c" 'comment-region)
+	     (define-key makefile-mode-map "\M-n" 'find-include-etc-at-position)))
+
+(defun my-opa-jump-to-error-point (error-message)
+  (and (string-match "^File \"\\([^\"]+\\)\", line \\([0-9]+\\), characters \\([0-9]+\\)" error-message)
+       (let ((filename (match-string 1 error-message))
+	     (line-number (match-string 2 error-message))
+	     (char-number (match-string 3 error-message)))
+	 (my-error-jump-to-point filename line-number char-number))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Shell mode
+;;
+(load "mycextend.el")
+(defun my-goto-error ()
+  (interactive)
+  (beginning-of-line)
+  (let ((start-point (point)))
+    (end-of-line)
+    (let* ((end-point (point))
+	  (error-message (buffer-substring start-point end-point)))
+      (or 
+;       (my-promela-jump-to-error-point error-message)
+;	  (my-caml-jump-to-error-at-point-entry-point error-message)
+       (my-opa-jump-to-error-point error-message)
+       (my-c-jump-to-error-point-sub error-message t)
+       (my-perl-jump-to-error-point error-message)
+       (and (boundp 'shell-dirstack) (my-java-jump-at-exception error-message shell-dirstack))
+					; (my-xvcg-jump-to-error error-message)
+					; (my-platex-jump-to-error error-message)
+       (my-gdb-jump-to-point-sub error-message)
+	  (progn (message "no error found") (goto-char start-point) nil)))))
+
+(add-hook 'shell-mode-hook
+	  '(lambda ()
+	     (define-key shell-mode-map
+	       "\C-p"
+	       'comint-previous-input)
+	     (define-key shell-mode-map
+	       "\C-n"
+	       'comint-next-input)
+	     (define-key shell-mode-map [f12] 'dirs)
+	     (define-key shell-mode-map
+	       "\C-c\C-j" 'my-goto-error)
+	     (set-buffer-file-coding-system 'euc-jp)
+	     (custom-set-face-italic shell-output-face nil)
+	     ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; caml mode
+;;
+;;
+;(require 'caml)
+;(require 'caml-font)
+;(load "mycamlapi.el")
+
+;(autoload 'caml-mode "caml" "Major mode for editing Caml code." t)
+;(autoload 'run-caml "inf-caml" "Run an inferior Caml process." t)
+;(defvar my-ocaml-manual-url "file:///home/tak/Doc/htmlman/index.html")
+;(require 'search_ocaml_type)
+
+;(add-hook 'caml-mode-hook
+;	  '(lambda ()
+;	     (make-local-variable 'namazu-default-dir)
+;;	     (setq namazu-default-dir 
+;;		   (concat (expand-file-name "~/.ocaml_namazu") " " (expand-file-name "~/.labltk_namazu")))
+;	     (define-key caml-mode-map "\C-c\C-c" 'comment-region)
+;	     (define-key caml-mode-map [(shift f5)] 'my-browse-caml-api-at-position)
+;	     (define-key caml-mode-map [button2] 'mouse-yank)
+;	     (define-key caml-mode-map [f5] 
+;	       '(lambda () (interactive) 
+;		  (let ((word (read-input "variable: ")))
+;		    (if (equal word "")
+;			(browse-url my-ocaml-manual-url)
+;		      (my-browse-caml-api-from-word word)))))
+;	     (define-key caml-mode-map [(control f5)] 
+;	       '(lambda () (interactive)
+;		  (message "t)ype or v)alue or a)ll?: ")
+;		  (let* ((searchtype (read-char)))
+;		    (cond ((eq searchtype ?t)
+;			   (my-search-ocaml-type))
+;			  ((eq searchtype ?v)
+;			   (my-search-ocaml-value))
+;			  (t (my-search-ocaml-all))))))
+;	     ))
+
+;(add-hook 'inferior-caml-mode-hook
+;	  '(lambda ()
+;;	     (define-key inferior-caml-mode-map
+;;	       "\C-c\C-c" 'comment-region)
+;	     (define-key inferior-caml-mode-map
+;	       [(shift f5)] 'my-browse-caml-api-at-region)
+;	     ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; comint mode
+;;
+;;
+(require 'comint)
+(add-hook 'comint-mode-hook
+	  '(lambda ()
+	     (define-key comint-mode-map
+	       "\C-p"
+	       'comint-previous-input)
+	     (define-key comint-mode-map
+	       "\C-n"
+	       'comint-next-input)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; perl mode
+;;
+;;
+;(require 'comint)
+(load "myperlextend.el")
+
+(add-hook 'cperl-mode-hook
+	  '(lambda ()
+	     (define-key cperl-mode-map
+	       "\C-h"
+	       'backward-delete-char)
+	     ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; JDE mode
+;;
+;;
+;(load "myjavamode.el")
+;(load "myjavaapisearch.el")
+
+(add-hook 'java-mode-hook
+	  '(lambda ()
+	     (setq tab-width 4)))
+;	     (define-key java-mode-map
+;	       "\M-j" 'next-line)
+;	     (define-key java-mode-map
+;	       "\M-e" 'find-tag-other-window)
+;	     (define-key java-mode-map
+;	       "\C-j"
+;	       'c++-insert-incremental-for)
+;	     (define-key java-mode-map
+;	       "\C-cm"
+;	       'my-java-extend-menu)
+;	     (define-key java-mode-map
+;	       [(shift f5)]
+;	       'my-java-search-keyword-at-point)
+;	     (define-key java-mode-map
+;	       [(control f5)]
+;	       'my-java-search-keyword-from-source)
+;	     (define-key java-mode-map
+;	       [f5] 'my-java-keyword-search)
+;	     (progn
+;	       (make-local-variable 'namazu-default-dir)
+;	       (setq namazu-default-dir (expand-file-name "~/.indexes/java/")))))
+
+;(add-hook 'help-mode-hook
+;	  '(lambda ()
+;	     (define-key help-mode-map
+;	       [return]
+;	       'apropos-follow
+;	     )))
+
+;(add-hook 'flyspell-mode-hook
+;	  '(lambda ()
+;	     (define-key flyspell-mode-map
+;	       "\C-n"
+;	       'flyspell-goto-next-error)))
+
+(add-hook 'calendar-mode-hook
+	  '(lambda ()
+	     (define-key calendar-mode-map
+	       "\C-f" (other-window -1))
+	     (define-key calendar-mode-map
+	       "\C-v" (other-window 1))))
+
+;(add-hook 'view-mode-hook
+;	  '(lambda ()
+;	     (my-vi-bind view-mode-map)))
+
+(setq auto-mode-alist
+      (append (list
+;	       (cons "\\.tex$" 'yatex-mode)
+;		    (cons "\\.h$" 'c-mode)
+;		    (cons "\\.jj$" 'java-mode)
+;		    (cons "\\.jgo$" 'java-mode)
+		    (cons "\\.cgi$" 'cperl-mode)
+;		    (cons "\\.ml[iylp]?$" 'caml-mode)
+		    (cons "\\.sql$" 'sql-mode)
+;		    (cons "\\.scope$" 'java-mode)
+		    (cons "\\.java$" 'java-mode)
+;		    (cons "\\.prom$" 'promela-mode)
+;		    (cons "\\.hs$" 'haskell-mode)
+;		    (cons "\\.sml$" 'sml-mode))
+		    )
+            auto-mode-alist))
+
+(provide 'mymode)
+;;; mymode.el ends here
