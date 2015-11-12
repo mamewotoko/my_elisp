@@ -1,5 +1,5 @@
 ;;; mykeymap.el
-;;                         Last modified: Wed Jun 19 20:58:25 2013
+;;                         Last modified: Thu Nov 12 19:21:18 2015
 
 ;; FTP Directory: sources/emacs #
 ;; Author: Takashi Masuyama <tak@is.s.u-tokyo.ac.jp>
@@ -8,45 +8,47 @@
 (load "mylibrary.el")
 (load "myincrement.el")
 ;;;;;;;;;;;;;;;;;;;;;;;
-;;;¥­¡¼¥Ğ¥¤¥ó¥É¤ÎÊÑ¹¹
+;;;ã‚­ãƒ¼ãƒã‚¤ãƒ³ãƒ‰ã®å¤‰æ›´
+
 
 (global-set-key "\C-ci" 'my-insert-item-menu)
 (global-set-key "\C-cy" 'my-increment-by-current-format-function)
-(global-set-key "\C-c\C-y" 'my-increment-by-current-format-function)
-(global-set-key "\C-c\C-d" 'my-increment-tell-current-format)
+;(global-set-key "\C-c\C-y" 'my-increment-by-current-format-function)
+;(global-set-key "\C-c\C-d" 'my-increment-tell-current-format)
 (global-set-key "\C-cl" 'my-measure-length-of-region)
 
-;;;¥¸¥ã¥ó¥×
+;;;ã‚¸ãƒ£ãƒ³ãƒ—
 (global-set-key "\C-l" 'goto-line)
 (global-set-key "\C-c\C-j" 'my-goto-error)
 
-;;;ÃÖ´¹
+;;;ç½®æ›
 (global-set-key "\C-cr" 'query-replace)
 (global-set-key "\C-ct" 'insert-date-yy/mm/dd-format)
 (global-set-key "\C-cf" 'insert-file-name)
 (global-set-key "\C-cp" 'insert-file-name-prefix)
 
-;;;Å½ÉÕ¤±
+;;;è²¼ä»˜ã‘
 ;(global-set-key "\C-n" 'next-line)
+(define-key global-map [?Â¥] [?\\])  ;; Â¥ã®ä»£ã‚ã‚Šã«ãƒãƒƒã‚¯ã‚¹ãƒ©ãƒƒã‚·ãƒ¥ã‚’å…¥åŠ›ã™ã‚‹
 
-;;;Àµµ¬É½¸½¤Ç¸¡º÷
+;;;æ­£è¦è¡¨ç¾ã§æ¤œç´¢
 (global-set-key "\C-c\C-r" 'search-backward-regexp)
 (global-set-key "\C-c\C-s" 'search-forward-regexp)
 (global-set-key "\C-c\C-c" 'comment-region)
 
-;;;¥Ö¥Ã¥¯¥Ş¡¼¥¯¤ò¤Ä¤±¤ë
+;;;ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ã‚’ã¤ã‘ã‚‹
 ;;(global-set-key "\C-b" 'bookmark-set)
-;;;¥Ö¥Ã¥¯¥Ş¡¼¥¯¥¸¥ã¥ó¥×
+;;;ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ã‚¸ãƒ£ãƒ³ãƒ—
 ;;(global-set-key "\C-j" 'bookmark-jump)
-;;;¥Ö¥Ã¥¯¥Ş¡¼¥¯¤òÊİÂ¸
+;;;ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ã‚’ä¿å­˜
 ;;(setq bookmark-save-flag 1)
-;;;ÊÌ¤Î¥¦¥£¥ó¥É¥¦¤Ë°ÜÆ°
+;;;åˆ¥ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ç§»å‹•
 ;(global-set-key "\C-f"
 ;  '(lambda ()
 ;     (interactive)
 ;     (other-window -1)))
 (global-set-key "\C-v" 'other-window)
-;;;¥³¥Ô¡¼
+;;;ã‚³ãƒ”ãƒ¼
 (defun my-copy-primary-selection-and-add-to-my-incremental (&optional start end)
   (interactive)
   (let ((here (point)))
@@ -68,11 +70,12 @@
 (global-set-key "\M-m" "\C-m")
 
 (global-set-key "\C-o" 'dabbrev-expand)
-;¥Ğ¥Ã¥Õ¥¡¤òkill
+;ãƒãƒƒãƒ•ã‚¡ã‚’kill
 (if (not (featurep 'kill-this-buffer))
     (defun kill-this-buffer ()
       (interactive)
       (kill-buffer (current-buffer))))
+;(global-set-key "\C-c\C-k" 'copy-line)
 
 (global-set-key "\C-xk" 'kill-this-buffer)
 ;(global-set-key "\C-xf" 'find-file)
@@ -85,8 +88,8 @@
 (global-set-key "\C-x\C-e" 'edict-search-english)
 (global-set-key "\C-x\C-j" 'edict-search-kanji)
 
-;; key¤ÎÀßÄê
-(global-set-key "\C-h" 'backward-delete-char) ;; Ctrl+h  BS¥­¡¼
+;; keyã®è¨­å®š
+(global-set-key "\C-h" 'backward-delete-char) ;; Ctrl+h  BSã‚­ãƒ¼
 
 ;;;ftp
 ;(defun ftp-to-sonet ()
@@ -95,17 +98,18 @@
 ;(load "mygrep.el")
 (global-set-key "\M-f" 'my-recursive-grep)
 (global-set-key "\M-g" 'grep)
-(global-set-key "\M-t" 'my-grep-this-file)
+;;(global-set-key "\M-t" 'my-grep-this-file)
 (global-set-key "\M-c" 'my-cgrep)
 
 ;;lisp
 ;(global-set-key "\M-l" 'lisp-interaction-mode)
 
-(global-set-key [f1] 'help-command)           ;; F1   ¥Ø¥ë¥×
-(global-set-key [(control f2)] 
-  '(lambda () (interactive)
-     (switch-to-buffer-other-window (current-buffer))))
-(global-set-key [f2] 'list-buffers)
+(global-set-key [f1] 'help-command)           ;; F1   ãƒ˜ãƒ«ãƒ—
+;; (global-set-key [(control f2)] 
+;;   '(lambda () (interactive)
+;;      (switch-to-buffer-other-window (current-buffer))))
+;;(global-set-key [f2] 'list-buffers)
+(global-set-key [f2] 'manual-entry)
 (global-set-key [(meta f2)] 'rename-buffer)
 ;(global-set-key [(control f4)] 'my-html-browse-nearest-target)
 (global-set-key [(meta f4)] 
@@ -114,12 +118,9 @@
 	 (my-browse-ftp-directory)
 	 (message "no location!!"))))
 
-(global-set-key [f5] 'manual-entry)
-(global-set-key [(shift f5)] 'manual-entry-at-position)
+;; (global-set-key [f5] 'manual-entry)
+;; (global-set-key [(shift f5)] 'manual-entry-at-position)
 
-(global-set-key [f6] 'mycompile-compile)  ;¤È¤Ë¤«¤¯¥³¥ó¥Ñ¥¤¥ë¤¹¤ë
-(global-set-key [(shift f6)] 'mycompile-execute)
-(global-set-key [(control f6)] 'my-pushd-current-directory)
 ;(global-set-key [f7] 'mew)
 ;(global-set-key [(shift f7)] 'compose-mail-at-position)
 ;(global-set-key [(control f7)] '(lambda ()
@@ -131,32 +132,21 @@
 ;(load "mygoogle.el")
 ;(global-set-key [(meta f7)] 'my-google-search-in-minibuffer)
 
+(global-set-key [f5] (lambda () (interactive) (progn (shell "*f5-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
+(global-set-key [f6] (lambda () (interactive) (progn (shell "*f6-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
+(global-set-key [f7] (lambda () (interactive) (progn (shell "*f7-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
 (global-set-key [f8] (lambda () (interactive) (progn (shell) (set-buffer-process-coding-system 'utf-8 'utf-8))))
 
-(defun multiple-shell () (interactive)
-  (let ((shell-buffer (get-buffer "*shell*")))
-    (if shell-buffer
-	(progn
-	  (switch-to-buffer shell-buffer)
-	  (rename-uniquely)))
-    (shell)))
+(global-set-key [(control f5)] '(lambda () (interactive) (my-pushd-current-directory "*f5-shell*")))
+(global-set-key [(control f6)] '(lambda () (interactive) (my-pushd-current-directory "*f6-shell*")))
+(global-set-key [(control f7)] '(lambda () (interactive) (my-pushd-current-directory "*f7-shell*")))
 
-(global-set-key [(control f8)] 'multiple-shell)
+(global-set-key [(control f8)] 'my-pushd-current-directory)
 
-;(global-set-key [(meta f8)] '(lambda () (mpg123 "/home/tak/mp3/playlist")))
-
-;(global-set-key [(meta f8)] 
-;  '(lambda () (interactive) 
-;     (require 'mpg123)
-;     (if  (get-buffer mpg123*buffer);;(buffer-live-p mpg123*buffer)
-;	 (switch-to-buffer mpg123*buffer)
-;	 (mpg123 (expand-file-name "~/mp3/playlist")))))
-
+(global-set-key "\C-xm" 'ignore)
 (global-set-key [f9] 'apropos)
 (global-set-key [(control f9)] 'customize-apropos)
 (global-set-key [(shift f9)] 'apropos-at-position)
-;;¼«Ê¬¤Î¥Ú¡¼¥¸¤ò¸«¤ë
-(global-set-key [(meta f9)] 'my-browse-my-page-interface)
 (global-set-key [f10] 'namazu)
 (global-set-key [(shift f10)] 
   (lambda () (interactive) 
@@ -203,6 +193,7 @@
 (global-set-key [(control ?\; )]
   '(lambda () (interactive)
      (dabbrev-expand -1)))
+
 ;(global-set-key [(control ?c) right]
 ;  'my-copy-line)
 
@@ -232,8 +223,8 @@
       (split-window-vertically))
   (switch-to-buffer (list-buffers-noselect)))
 
-(global-set-key "\C-x\C-b" 'my-list-buffers)
-(global-set-key "\C-xb" 'my-list-buffers)
+(global-set-key "\C-x\C-b" 'list-buffers)
+(global-set-key "\C-xb" 'list-buffers)
 (global-set-key "\M-v" 'other-frame)
 (global-set-key "\M-." 'find-tag-other-window)
 ;(global-set-key "\M-\\" 'migemo-toggle-isearch-enable)

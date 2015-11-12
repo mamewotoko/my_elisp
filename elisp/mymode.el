@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Wed Jun 19 20:58:25 2013
+;;; mymode.el --- Last modified: Mon Jan 12 15:24:29 2015
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -190,8 +190,7 @@
 	     (define-key shell-mode-map [f12] 'dirs)
 	     (define-key shell-mode-map
 	       "\C-c\C-j" 'my-goto-error)
-	     (set-buffer-file-coding-system 'euc-jp)
-	     (custom-set-face-italic shell-output-face nil)
+	     (shell-dirtrack-mode t)
 	     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

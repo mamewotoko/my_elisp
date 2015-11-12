@@ -1,4 +1,4 @@
-;;; mycompile.el ---    Last modified: Fri Jan 30 23:41:43 2004
+;;; mycompile.el ---    Last modified: Thu Nov 12 19:23:39 2015
 
 ;; Copyright (C) 2001 by Free Software Foundation, Inc.
 ;; FTP Directory: sources/emacs #
@@ -46,8 +46,10 @@
 (defvar my-this-file-mark "{}")
 
 ;;shellに制御があること。カーソルが適当な位置にあることを仮定する。
-(defun my-input-command-to-shell (command)
-  (shell)
+(defun my-input-command-to-shell (command &optional buffer)
+  (if buffer
+      (switch-to-buffer buffer)
+    (shell))
   (end-of-buffer)
   (insert-string command)
   (comint-send-input)
@@ -107,13 +109,13 @@
     (goto-char init-position)
     result))
 
-(defun my-pushd-current-directory ()
+(defun my-pushd-current-directory (&optional buffer)
   (interactive)
   (let ((target-dir (expand-file-name ".")))
     (if (> (count-windows) 1)
-	(other-window-except-minibuffer-window) ;;minibufferに入ると....
+	(other-window-except-minibuffer-window) 
       (split-window-vertically))
-    (my-input-command-to-shell (concat "pushd " target-dir))))
+    (my-input-command-to-shell (concat "pushd " target-dir) buffer)))
 
 (provide 'mycompile)
 ;;; mycompile.el ends here
