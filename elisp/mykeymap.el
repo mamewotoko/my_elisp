@@ -1,15 +1,14 @@
 ;;; mykeymap.el
-;;                         Last modified: Thu Nov 12 19:21:18 2015
+;;                         Last modified: Sat Nov 21 09:50:51 2015
 
 ;; FTP Directory: sources/emacs #
-;; Author: Takashi Masuyama <tak@is.s.u-tokyo.ac.jp>
+;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords: 
 
 (load "mylibrary.el")
 (load "myincrement.el")
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;;;キーバインドの変更
-
 
 (global-set-key "\C-ci" 'my-insert-item-menu)
 (global-set-key "\C-cy" 'my-increment-by-current-format-function)
@@ -42,11 +41,6 @@
 ;;(global-set-key "\C-j" 'bookmark-jump)
 ;;;ブックマークを保存
 ;;(setq bookmark-save-flag 1)
-;;;別のウィンドウに移動
-;(global-set-key "\C-f"
-;  '(lambda ()
-;     (interactive)
-;     (other-window -1)))
 (global-set-key "\C-v" 'other-window)
 ;;;コピー
 (defun my-copy-primary-selection-and-add-to-my-incremental (&optional start end)
@@ -78,12 +72,11 @@
 ;(global-set-key "\C-c\C-k" 'copy-line)
 
 (global-set-key "\C-xk" 'kill-this-buffer)
-;(global-set-key "\C-xf" 'find-file)
+(global-set-key "\M-w" 'kill-word)
 (global-set-key "\C-xC-o" 'find-file-other-window)
 (global-set-key [hiragana-katakana] 'toggle-input-method)
 (global-set-key [(control tab)] 'delete-rectangle)
 (global-set-key "\C-x\C-o" 'find-file-other-window)
-(global-set-key [(control button3)] 'popup-buffer-menu)
 
 (global-set-key "\C-x\C-e" 'edict-search-english)
 (global-set-key "\C-x\C-j" 'edict-search-kanji)
@@ -91,24 +84,14 @@
 ;; keyの設定
 (global-set-key "\C-h" 'backward-delete-char) ;; Ctrl+h  BSキー
 
-;;;ftp
-;(defun ftp-to-sonet ()
-;  (interactive)
-;  (ftp "ftp10.u-page.so-net.ne.jp"))
-;(load "mygrep.el")
 (global-set-key "\M-f" 'my-recursive-grep)
 (global-set-key "\M-g" 'grep)
-;;(global-set-key "\M-t" 'my-grep-this-file)
 (global-set-key "\M-c" 'my-cgrep)
 
 ;;lisp
 ;(global-set-key "\M-l" 'lisp-interaction-mode)
 
 (global-set-key [f1] 'help-command)           ;; F1   ヘルプ
-;; (global-set-key [(control f2)] 
-;;   '(lambda () (interactive)
-;;      (switch-to-buffer-other-window (current-buffer))))
-;;(global-set-key [f2] 'list-buffers)
 (global-set-key [f2] 'manual-entry)
 (global-set-key [(meta f2)] 'rename-buffer)
 ;(global-set-key [(control f4)] 'my-html-browse-nearest-target)
@@ -121,7 +104,6 @@
 ;; (global-set-key [f5] 'manual-entry)
 ;; (global-set-key [(shift f5)] 'manual-entry-at-position)
 
-;(global-set-key [f7] 'mew)
 ;(global-set-key [(shift f7)] 'compose-mail-at-position)
 ;(global-set-key [(control f7)] '(lambda ()
 ;				  (interactive)
@@ -174,7 +156,6 @@
      (lisp-interaction-mode)
 ))
 
-;;(global-set-key [f12] 'toggle-menubar-visible-p)
 (global-set-key [f12] 'bookmark-jump)
 (global-set-key [(shift f12)] 'bookmark-set)
 (global-set-key [(control f12)] 'bookmark-save)
@@ -227,7 +208,6 @@
 (global-set-key "\C-xb" 'list-buffers)
 (global-set-key "\M-v" 'other-frame)
 (global-set-key "\M-." 'find-tag-other-window)
-;(global-set-key "\M-\\" 'migemo-toggle-isearch-enable)
 
 (provide 'mykeymap)
 

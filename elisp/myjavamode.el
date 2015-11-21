@@ -1,4 +1,4 @@
-;;; myjavamode.el --- Last modified: Sun Nov 20 14:29:51 2011
+;;; myjavamode.el --- Last modified: Thu Nov 19 19:36:05 2015
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs #
 ;; Location: http://www002.upp.so-net.ne.jp/mamewo/sources/emacs/myjavamode.el #
@@ -147,8 +147,11 @@
 
 (defvar my-java-search-path '("."))
 
-(defun my-java-jump-at-exception (error-line &optional path)
-  (and (string-match "^\tat [^\(]+(\\([^:]+\\):\\([0-9]+\\))" error-message)
+;  (and (string-match "(^\tat|\\[javac\\]\\) [^\(]+(\\([^:]+\\):\\([0-9]+\\))" error-line)
+
+(defun my-java-jump-at-exception (error-message &optional path)
+  ;;(and (string-match "javac. [^\(]+(\\([^:]+\\):\\([0-9]+\\))" error-message)
+  (and (string-match "\\[javac\\] \\([^ :][^:]+\\):\\([0-9]+\\):"error-message)  ;; lint warning
        (let* ((filename (match-string 1 error-message))
 	      (searchpath (or path my-java-search-path))
 	      (linenumber (match-string 2 error-message))
