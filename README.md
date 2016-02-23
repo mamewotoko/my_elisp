@@ -18,7 +18,7 @@ How to use
 2.
 
     mkdir -p $HOME/lib/emacs
-3.  
+3.
 
     cp -r elisp template $HOME/lib/emacs
 4. start emacs, customize,... enjoy
