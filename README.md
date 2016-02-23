@@ -14,17 +14,17 @@ How to use
 ----------
 
 1.
-
+    ```
     mv .emacs.d $HOME 
-
+    ```
 2.  
-
+    ```
     mkdir -p $HOME/lib/emacs  
-
+    ```
 3.  
-
+    ```
     cp -r elisp template $HOME/lib/emacs  
-
+    ```
 4. start emacs, customize ...
 
 Features
