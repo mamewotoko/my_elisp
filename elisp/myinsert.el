@@ -1,4 +1,4 @@
-;;; myinsert.el --- Last modified: Sun Dec 30 15:58:58 2012
+;;; myinsert.el --- Last modified: Thu May 05 10:56:16 2016
 ;; Location: http://www002.upp.so-net.ne.jp/mamewo/sources/emacs/myinsert.el #
 ;; FTP Directory: sources/emacs #
 ;; Author: MASUYAMA Takashi <mamewotoko@gmail.com>
@@ -221,9 +221,9 @@
 	 ("Makefile\\..+$" . caml-submakefile-template-funcion)
 	 ("\\.cgi$" . cgi-template-function)
 	 ("\\.pl$" . perl-template-function)
-	 ("\\.mli?$" . caml-header-function)
-	 ("\\.mll$". camllexer-header-function)
-	 ("\\.mly$" . camlparser-header-function)
+	 ;("\\.mli?$" . caml-header-function)
+	 ;("\\.mll$". camllexer-header-function)
+	 ;("\\.mly$" . camlparser-header-function)
 	 ("\\.prom$" . my-promela-header-insert)
 	 ("\\.hs$". haskell-template-function)
 	 )

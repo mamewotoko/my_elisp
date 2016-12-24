@@ -1,4 +1,0 @@
-	[filename]
-	Copyright(c) 1996-2003 ACCESS CO., LTD.
-	All rights are reserved by ACCESS CO., LTD., whether the whole or
-	part of the source code including any modifications.

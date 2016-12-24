@@ -31,7 +31,7 @@
 (load "myerrorjump.el")
 
 (defconst my-caml-error-regexp
-  "File \"\\(.+\\)\", line \\([0-9]+\\), characters \\([0-9]+\\)-\\([0-9]+\\):")
+  "File \"\\([^\"]\\)\", line \\([0-9]+\\), characters \\([0-9]+\\)-\\([0-9]+\\):")
 
 (defconst my-ocamlyacc-error-regexp
   "line \\([0-9]+\\) of \"\\([^\"]+\\)\"")

@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Mon Jan 12 15:24:29 2015
+;;; mymode.el --- Last modified: Sat May 28 08:44:36 2016
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -160,6 +160,7 @@
 ;; Shell mode
 ;;
 (load "mycextend.el")
+(load "mycamlextend.el")
 (defun my-goto-error ()
   (interactive)
   (beginning-of-line)
@@ -169,7 +170,7 @@
 	  (error-message (buffer-substring start-point end-point)))
       (or 
 ;       (my-promela-jump-to-error-point error-message)
-;	  (my-caml-jump-to-error-at-point-entry-point error-message)
+       (my-caml-jump-to-error-at-point-entry-point error-message)
 ;       (my-opa-jump-to-error-point error-message)
        (my-c-jump-to-error-point-sub error-message t)
        (my-perl-jump-to-error-point error-message)
@@ -323,15 +324,18 @@
 ;	  '(lambda ()
 ;	     (my-vi-bind view-mode-map)))
 
+
 (setq auto-mode-alist
       (append (list
 ;	       (cons "\\.tex$" 'yatex-mode)
 ;		    (cons "\\.h$" 'c-mode)
 ;		    (cons "\\.jj$" 'java-mode)
 ;		    (cons "\\.jgo$" 'java-mode)
-		    (cons "\\.cgi$" 'cperl-mode)
-;		    (cons "\\.ml[iylp]?$" 'caml-mode)
+	       (cons "\\.cgi$" 'cperl-mode)
+;	       (cons "\\.R$" 'ess-mode)
+		    (cons "\\.ml[iylp]?$" 'tuareg-mode)
 		    (cons "\\.sql$" 'sql-mode)
+		    (cons "\\.opa$" 'opa-classic-mode)
 ;		    (cons "\\.scope$" 'java-mode)
 		    (cons "\\.java$" 'java-mode)
 ;		    (cons "\\.prom$" 'promela-mode)

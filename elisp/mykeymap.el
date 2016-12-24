@@ -1,7 +1,6 @@
 ;;; mykeymap.el
-;;                         Last modified: Sat Nov 21 09:50:51 2015
+;;                         Last modified: Sat Dec 24 20:12:10 2016
 
-;; FTP Directory: sources/emacs #
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords: 
 
@@ -60,16 +59,12 @@
 (global-set-key "\C-c\C-t" 'my-increment-lambda-copy-region-register)
 (global-set-key "\C-x\C-y" 'my-increment-lambda-copy-yank)
 
-(global-set-key "\M-n" 'find-include-etc-at-position)
-(global-set-key "\M-m" "\C-m")
-
 (global-set-key "\C-o" 'dabbrev-expand)
-;バッファをkill
+
 (if (not (featurep 'kill-this-buffer))
     (defun kill-this-buffer ()
       (interactive)
       (kill-buffer (current-buffer))))
-;(global-set-key "\C-c\C-k" 'copy-line)
 
 (global-set-key "\C-xk" 'kill-this-buffer)
 (global-set-key "\M-w" 'kill-word)
@@ -84,35 +79,18 @@
 ;; keyの設定
 (global-set-key "\C-h" 'backward-delete-char) ;; Ctrl+h  BSキー
 
-(global-set-key "\M-f" 'my-recursive-grep)
+;(global-set-key "\M-f" 'my-recursive-grep)
 (global-set-key "\M-g" 'grep)
-(global-set-key "\M-c" 'my-cgrep)
+;(global-set-key "\M-c" 'my-cgrep)
 
 ;;lisp
-;(global-set-key "\M-l" 'lisp-interaction-mode)
-
-(global-set-key [f1] 'help-command)           ;; F1   ヘルプ
-(global-set-key [f2] 'manual-entry)
-(global-set-key [(meta f2)] 'rename-buffer)
-;(global-set-key [(control f4)] 'my-html-browse-nearest-target)
-(global-set-key [(meta f4)] 
-  '(lambda () (interactive)
-     (or (my-html-browse-location)
-	 (my-browse-ftp-directory)
-	 (message "no location!!"))))
-
-;; (global-set-key [f5] 'manual-entry)
-;; (global-set-key [(shift f5)] 'manual-entry-at-position)
-
-;(global-set-key [(shift f7)] 'compose-mail-at-position)
-;(global-set-key [(control f7)] '(lambda ()
-;				  (interactive)
-;				  (let ((buffer-name "+inbox"))
-;				    (if (get-buffer buffer-name)
-;					(switch-to-buffer "+inbox")
-;				      (message "inbox is not alive.")))))
-;(load "mygoogle.el")
-;(global-set-key [(meta f7)] 'my-google-search-in-minibuffer)
+(global-set-key [f1] 'help-command)
+(global-set-key [(control f1)] 'manual-entry)
+;; (global-set-key [(meta f4)] 
+;;   '(lambda () (interactive)
+;;      (or (my-html-browse-location)
+;; 	 (my-browse-ftp-directory)
+;; 	 (message "no location!!"))))
 
 (global-set-key [f5] (lambda () (interactive) (progn (shell "*f5-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
 (global-set-key [f6] (lambda () (interactive) (progn (shell "*f6-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
@@ -122,7 +100,6 @@
 (global-set-key [(control f5)] '(lambda () (interactive) (my-pushd-current-directory "*f5-shell*")))
 (global-set-key [(control f6)] '(lambda () (interactive) (my-pushd-current-directory "*f6-shell*")))
 (global-set-key [(control f7)] '(lambda () (interactive) (my-pushd-current-directory "*f7-shell*")))
-
 (global-set-key [(control f8)] 'my-pushd-current-directory)
 
 (global-set-key "\C-xm" 'ignore)
@@ -162,42 +139,23 @@
 (global-set-key [(meta f12)] 'bookmark-delete)
 (global-set-key [(meta f1)] 'find-include-etc-at-position)
 
-(global-set-key "\M-a" 'apropos)
+;(global-set-key "\M-a" 'apropos)
 (global-unset-key "\C-z")
 (define-key completion-list-mode-map "\C-f" 'other-window)
 ;;;;;;;;;;;;;; New keybindings
 (global-set-key "\M-s" 'search-forward)
 (global-set-key "\M-r" 'search-backward)
-;(global-set-key "\C-@\C-s" 'my-search-forward-word-at-position)
-;(global-set-key "\C-@\C-r" 'my-search-backward-word-at-position)
 
 (global-set-key [(control ?\; )]
   '(lambda () (interactive)
      (dabbrev-expand -1)))
 
-;(global-set-key [(control ?c) right]
-;  'my-copy-line)
-
-;(global-set-key [(control ?x) right]
-;  'my-activate-line)
-;(global-set-key "\C-c\C-l"
-;  'my-activate-line)
-
 (define-key isearch-mode-map "\C-k" 'isearch-edit-string)
-(global-set-key "\C-c\C-]" 'eqn2eps)
+;(global-set-key "\C-c\C-]" 'eqn2eps)
+;(global-set-key "\C-c\C-]" 'eqn2eps-insert-filename)
 
-(global-set-key "\C-c\C-]" 'eqn2eps-insert-filename)
-(global-set-key "\C-xve" 'cvs-examine)
-;(global-set-key "\M-e" 'find-tag)
-;(global-set-key "\M-." 
-;  '(lambda () (interactive) 
-;     (let ((word (or (my-word-at-position) 
-;		     (completing-read "tag: " tag-completion-table))))
-;       (find-tag word))))
 (global-set-key "\M-l" 'list-tags)
 
-;(iswitchb-default-keybindings)
-;(require 'iswitchb)
 (defun my-list-buffers ()
   (interactive)
   (if (= (count-windows) 1)
@@ -208,7 +166,6 @@
 (global-set-key "\C-xb" 'list-buffers)
 (global-set-key "\M-v" 'other-frame)
 (global-set-key "\M-." 'find-tag-other-window)
-
 (provide 'mykeymap)
 
 ;;; mykeymap.el ends here
