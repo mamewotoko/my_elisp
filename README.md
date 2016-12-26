@@ -7,8 +7,8 @@ Target Version
 --------------
 
     (version)
-    "GNU Emacs 22.3.1 (i386-apple-darwin9.8.0, Carbon Version 1.6.0)
-     of 2010-01-10 on gs674-seijiz.local"
+    "GNU Emacs 24.5.1 (x86_64-apple-darwin14.5.0, NS apple-appkit-1348.17)
+     of 2015-12-19 on mamec.local"
 
 How to use
 ----------
@@ -26,9 +26,9 @@ How to use
 Features
 --------
 * Multiple shell buffers (f5,f6,f7,f8)
-* pushd to shell buffer (Ctrl-f5,Ctrl-f6,Ctrl-f7,Ctrl-f8)
+* pushd to shell buffer (C-f5,C-f6,C-f7,C-f8)
 * manual, appropos
-* error jump from shell buffer
+* error jump from shell buffer(C-j)
 
 ----
 Takashi Masuyama < mamewotoko@gmail.com >  
