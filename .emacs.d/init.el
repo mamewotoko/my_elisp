@@ -6,7 +6,8 @@
 		    load-path))
 
 (defalias 'list-buffers 'ibuffer)
-(tool-bar-mode nil)
+(tool-bar-mode 0)
+(menu-bar-mode 0)
 
 (setq max-lisp-eval-depth 10000)
 (if nil    ; xemacs code
@@ -15,25 +16,12 @@
     (set-specifier top-toolbar-visible-p nil) 
     (set-specifier default-gutter-visible-p nil)))
 
-;; (set-face-font 'default "-misc-fixed-medium-r-normal-*-12-*-*-*-*-*-*-*")
-;; (set-face-font 'default "-apple-osaka-medium-*-*-*-12-*-*-*-*-*-*-*")
-;(set-face-font 'default "-sony-fixed-medium-*-*-*-11-*-*-*-*-*-*-*")
-
-;
-;======================================================================
-; Anthy
-;======================================================================
-;(load-library "anthy")
-;; (load "anthy.el")
-;; (load "leim-list.el")
-;; (setq default-input-method "japanese-anthy")
-;(setq anthy-default-enable-enum-candidate-p nil)
-
 (auto-compression-mode t)	
 
 ; xemacs code
 ;(set-face-background 'default "lavender" nil '(x color))
-(set-face-background 'default "#F0FFF0")
+(if (or (eq window-system 'ns) (eq window-system 'x))
+  (set-face-background 'default "#F0FFF0"))
 
 ;(autoload 'lookup "lookup" nil t)
 ;(autoload 'lookup-region "lookup" nil t)
@@ -65,8 +53,6 @@
 (autoload 'run-caml "inf-caml" "Run an inferior Caml process." t)
 
 ; for highlighting
-
-(if window-system (require 'caml-font))
 
 (set-default-coding-systems 'utf-8)
 (set-selection-coding-system 'utf-8)
