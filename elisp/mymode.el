@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Sat May 28 08:44:36 2016
+;;; mymode.el --- Last modified: Thu Sep 07 20:08:38 2017
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -15,6 +15,8 @@
   (Info-search Info-last-search))
 (require 'info)
 (define-key Info-mode-map "\C-n" 'my-Info-search-next)
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; HTML mode
@@ -60,18 +62,25 @@
 	(my-html-copy-format-register-function start end)
 	(goto-char here))))
 
+(add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
+(setq flymake-python-pyflakes-executable "/usr/local/bin/flake8")
+
+(add-hook 'org-mode-hook '(lambda () (require org-ditaa)))
+(custom-set-variables
+ '(flymake-python-pyflakes-extra-arguments (quote ("--max-line-length=120" "--ignore=E128,D103,E501,D100"))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Mew mode
 ;;
 ;;
-(add-hook 'mew-message-mode-hook
-	  '(lambda ()
-	     (define-key mew-message-mode-map [(shift button2)]
-	       'browse-url-at-mouse)))
-(add-hook 'mew-summary-mode-hook
-	  '(lambda ()
-	     (make-local-variable 'namazu-default-dir)
-	     (setq namazu-default-dir (expand-file-name "~/.Mail_namazu"))))
+;; (add-hook 'mew-message-mode-hook
+;; 	  '(lambda ()
+;; 	     (define-key mew-message-mode-map [(shift button2)]
+;; 	       'browse-url-at-mouse)))
+;; (add-hook 'mew-summary-mode-hook
+;; 	  '(lambda ()
+;; 	     (make-local-variable 'namazu-default-dir)
+;; 	     (setq namazu-default-dir (expand-file-name "~/.Mail_namazu"))))
 
 ;(add-hook 'mew-draft-mode-hook
 ;	  '(lambda ()
@@ -180,6 +189,8 @@
        (my-gdb-jump-to-point-sub error-message)
 	  (progn (message "no error found") (goto-char start-point) nil)))))
 
+(require 'dirtrack)
+
 (add-hook 'shell-mode-hook
 	  '(lambda ()
 	     (define-key shell-mode-map
@@ -191,7 +202,9 @@
 	     (define-key shell-mode-map [f12] 'dirs)
 	     (define-key shell-mode-map
 	       "\C-c\C-j" 'my-goto-error)
-	     (shell-dirtrack-mode t)
+	     (shell-dirtrack-mode 1)
+             (setq dirtrack-list '(":*\\([A-Za-z]*:*~*[\/\\].*?\\)[^-+A-Za-z0-9_.()//\\ ]" 1)) ;for help making this regular expression you may want to use "M-x re-builder", where M is usually alt
+             ;(dirtrack-mode)
 	     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -324,7 +337,14 @@
 ;	  '(lambda ()
 ;	     (my-vi-bind view-mode-map)))
 
+(require 'ssh)
+(setq ssh-directory-tracking-mode 'ftp)
+(add-hook 'ssh-mode-hook
+          (lambda ()
+            (shell-dirtrack-mode t)
+            (setq dirtrackp nil)))
 
+(require 'markdown-mode)
 (setq auto-mode-alist
       (append (list
 ;	       (cons "\\.tex$" 'yatex-mode)
@@ -338,6 +358,9 @@
 		    (cons "\\.opa$" 'opa-classic-mode)
 ;		    (cons "\\.scope$" 'java-mode)
 		    (cons "\\.java$" 'java-mode)
+                    (cons "\\.md$" 'markdown-mode)
+                    (cons "\\.markdown$" 'markdown-mode)
+                    (cons "README\\.md$" 'gfm-mode)
 ;		    (cons "\\.prom$" 'promela-mode)
 ;		    (cons "\\.hs$" 'haskell-mode)
 ;		    (cons "\\.sml$" 'sml-mode))

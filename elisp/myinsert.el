@@ -1,4 +1,4 @@
-;;; myinsert.el --- Last modified: Thu May 05 10:56:16 2016
+;;; myinsert.el --- Last modified: Sat Aug 12 11:48:57 2017
 ;; Location: http://www002.upp.so-net.ne.jp/mamewo/sources/emacs/myinsert.el #
 ;; FTP Directory: sources/emacs #
 ;; Author: MASUYAMA Takashi <mamewotoko@gmail.com>
@@ -158,9 +158,7 @@
     (insert-string (format "### %s\n### %s make -f %s %s\nOCAMLMAKEFILE=%s\nSOURCES=%s\nLIBS=\nINCDIRS=\nRESULT=%s\n\ninclude $(OCAMLMAKEFILE)\n" filename myexecute-start filename mycompile-end "/home/tak/lib/ocaml/OCamlMakefile" (concat source-filename ".ml") source-filename))))
 
 (defun sh-template-function ()
-  (insert-string "#! /bin/sh\n")
-  (insert-header "#" "")
-  (insert-string (concat "#\t\t\t" time-stamp-start "\n############################################################\n# Written by Takashi Masuyama <mamewotoko@gmail.com>\n\n")))
+  (insert-string "#! /bin/sh\n"))
 
 (defun perl-template-function ()
   (insert-string (concat "#! /usr/bin/perl -w\n#" my-line "\n"))
