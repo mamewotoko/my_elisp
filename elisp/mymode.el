@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Sat Sep 09 09:45:56 2017
+;;; mymode.el --- Last modified: Sat Sep 09 20:22:48 2017
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -187,7 +187,7 @@
        (my-gdb-jump-to-point-sub error-message)
 	  (progn (message "no error found") (goto-char start-point) nil)))))
 
-(require 'dirtrack)
+;(require 'dirtrack)
 
 (add-hook 'shell-mode-hook
 	  '(lambda ()

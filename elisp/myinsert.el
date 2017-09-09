@@ -1,4 +1,4 @@
-;;; myinsert.el --- Last modified: Sat Aug 12 11:48:57 2017
+;;; myinsert.el --- Last modified: Sat Sep 09 19:54:59 2017
 ;; Location: http://www002.upp.so-net.ne.jp/mamewo/sources/emacs/myinsert.el #
 ;; FTP Directory: sources/emacs #
 ;; Author: MASUYAMA Takashi <mamewotoko@gmail.com>
@@ -200,7 +200,7 @@
 	     mycompile-end
 	     mycompile-end))))
 
-(load "mypromelaextend.el")
+;(load "mypromelaextend.el")
 
 (setq auto-insert-query nil
       auto-insert-directory my-auto-insert-path

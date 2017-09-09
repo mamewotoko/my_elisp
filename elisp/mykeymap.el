@@ -1,5 +1,5 @@
 ;;; mykeymap.el
-;;                         Last modified: Sat Sep 09 19:18:38 2017
+;;                         Last modified: Sat Sep 09 20:26:37 2017
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords: 
@@ -17,7 +17,7 @@
 
 ;;;置換
 (global-set-key "\C-cr" 'query-replace)
-(global-set-key "\C-ct" 'insert-date-yy/mm/dd-format)
+;(global-set-key "\C-ct" 'insert-date-yy/mm/dd-format)
 (global-set-key "\C-cf" 'insert-file-name)
 (global-set-key "\C-cp" 'insert-file-name-prefix)
 
@@ -32,7 +32,9 @@
                                (let ((ps-filename (read-input "ps filename: ")))
                                  (ps-print-buffer ps-filename))))
 
-(global-set-key "\C-x\C-f" 'helm-find-files)
+                                        ;(global-set-key "\C-x\C-f" 'helm-find-files)
+(require 'magit)
+(global-set-key "\C-xg" 'magit-status)
 
 ;;;ブックマークをつける
 ;;(global-set-key "\C-b" 'bookmark-set)
@@ -116,7 +118,7 @@
 (helm-mode 1)
 (global-set-key "\M-y" 'helm-show-kill-ring)
 (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
-(define-key helm-M-x-map (kbd "TAB") 'helm-execute-persistent-action)
+;(define-key helm-M-x-map (kbd "TAB") 'helm-execute-persistent-action)
 
 ;(load "mynamazu.el")
 ;(global-set-key [(control f10)] 'set-namazu-dir-of-buffer-command)
