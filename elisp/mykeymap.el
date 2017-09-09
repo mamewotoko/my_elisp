@@ -1,11 +1,9 @@
 ;;; mykeymap.el
-;;                         Last modified: Sat Sep 09 09:35:18 2017
+;;                         Last modified: Sat Sep 09 19:18:38 2017
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords: 
 
-(load "mylibrary.el")
-(load "myincrement.el")
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;;;キーバインドの変更
 
@@ -34,19 +32,21 @@
                                (let ((ps-filename (read-input "ps filename: ")))
                                  (ps-print-buffer ps-filename))))
 
+(global-set-key "\C-x\C-f" 'helm-find-files)
+
 ;;;ブックマークをつける
 ;;(global-set-key "\C-b" 'bookmark-set)
 ;;;ブックマークジャンプ
 ;;(global-set-key "\C-j" 'bookmark-jump)
 ;;;ブックマークを保存
 ;;(setq bookmark-save-flag 1)
-;(global-set-key "\C-v" 'other-window)
+(global-set-key "\C-v" 'other-window)
 ;(global-set-key "\C-v" 'scroll-up-command)
 
 (global-set-key "\C-t" 'copy-region-as-kill)
 
-(global-set-key "\C-c\C-t" 'my-increment-lambda-copy-region-register)
-(global-set-key "\C-x\C-y" 'my-increment-lambda-copy-yank)
+;(global-set-key "\C-c\C-t" 'my-increment-lambda-copy-region-register)
+;(global-set-key "\C-x\C-y" 'my-increment-lambda-copy-yank)
 
 (global-set-key "\C-o" 'dabbrev-expand)
 
@@ -56,17 +56,18 @@
       (kill-buffer (current-buffer))))
 
 (global-set-key "\C-xk" 'kill-this-buffer)
-(global-set-key "\M-w" 'kill-word)
-(global-set-key "\C-xC-o" 'other-window)
-;(global-set-key "\C-xC-o" 'find-file-other-window)
+;(global-set-key "\M-w" 'kill-word)
+(global-set-key "\C-x\C-o" 'find-file-other-window)
 
 (global-set-key [hiragana-katakana] 'toggle-input-method)
 (global-set-key [(control tab)] 'next-buffer)
 (global-set-key [(control shift tab)] 'previous-buffer)
-(global-set-key "\C-x\C-o" 'find-file-other-window)
 
-(global-set-key [(super e)] 'edict-search-english)
-(global-set-key [(super j)] 'edict-search-kanji)
+(setq load-path (cons "/Users/tak/lib/emacs/elisp/dict" load-path))
+(autoload 'sdic-describe-word "sdic" "英単語の意味を調べる" t nil)
+(global-set-key "\C-cw" 'sdic-describe-word)
+(autoload 'sdic-describe-word-at-point "sdic" "カーソルの位置の英単語の意味を調べる" t nil)
+(global-set-key "\C-cW" 'sdic-describe-word-at-point)
 
 (define-key key-translation-map [?\C-h] [?\C-?])
 (global-set-key "\C-h" 'backward-delete-char) ;; Ctrl+h  BSキー
@@ -114,6 +115,8 @@
 (require 'helm-config)
 (helm-mode 1)
 (global-set-key "\M-y" 'helm-show-kill-ring)
+(define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
+(define-key helm-M-x-map (kbd "TAB") 'helm-execute-persistent-action)
 
 ;(load "mynamazu.el")
 ;(global-set-key [(control f10)] 'set-namazu-dir-of-buffer-command)
@@ -143,11 +146,7 @@
 (define-key global-map [?¥] [?\\]) 
 ;(global-set-key "\M-a" 'apropos)
 (global-unset-key "\C-z")
-(define-key completion-list-mode-map "\C-f" 'other-window)
 ;;;;;;;;;;;;;; New keybindings
-(global-set-key "\M-s" 'search-forward)
-(global-set-key "\M-r" 'search-backward)
-
 (global-set-key [(control ?\; )]
   '(lambda () (interactive)
      (dabbrev-expand -1)))
@@ -159,8 +158,6 @@
 (global-set-key "\M-l" 'list-tags)
 (global-set-key "\C-x\C-b" 'list-buffers)
 (global-set-key "\C-xb" 'list-buffers)
-;(global-set-key "\M-v" 'other-frame)
 (global-set-key "\M-." 'find-tag-other-window)
 (provide 'mykeymap)
-
 ;;; mykeymap.el ends here

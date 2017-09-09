@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Thu Sep 07 20:08:38 2017
+;;; mymode.el --- Last modified: Sat Sep 09 09:45:56 2017
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -15,8 +15,6 @@
   (Info-search Info-last-search))
 (require 'info)
 (define-key Info-mode-map "\C-n" 'my-Info-search-next)
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; HTML mode
@@ -65,10 +63,10 @@
 (add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
 (setq flymake-python-pyflakes-executable "/usr/local/bin/flake8")
 
-(add-hook 'org-mode-hook '(lambda () (require org-ditaa)))
 (custom-set-variables
  '(flymake-python-pyflakes-extra-arguments (quote ("--max-line-length=120" "--ignore=E128,D103,E501,D100"))))
 
+(add-hook 'org-mode-hook '(lambda () (require org-ditaa)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Mew mode
 ;;
@@ -291,27 +289,6 @@
 (add-hook 'java-mode-hook
 	  '(lambda ()
 	     (setq tab-width 4)))
-;	     (define-key java-mode-map
-;	       "\M-j" 'next-line)
-;	     (define-key java-mode-map
-;	       "\M-e" 'find-tag-other-window)
-;	     (define-key java-mode-map
-;	       "\C-j"
-;	       'c++-insert-incremental-for)
-;	     (define-key java-mode-map
-;	       "\C-cm"
-;	       'my-java-extend-menu)
-;	     (define-key java-mode-map
-;	       [(shift f5)]
-;	       'my-java-search-keyword-at-point)
-;	     (define-key java-mode-map
-;	       [(control f5)]
-;	       'my-java-search-keyword-from-source)
-;	     (define-key java-mode-map
-;	       [f5] 'my-java-keyword-search)
-;	     (progn
-;	       (make-local-variable 'namazu-default-dir)
-;	       (setq namazu-default-dir (expand-file-name "~/.indexes/java/")))))
 
 ;(add-hook 'help-mode-hook
 ;	  '(lambda ()
@@ -325,6 +302,16 @@
 ;	     (define-key flyspell-mode-map
 ;	       "\C-n"
 ;	       'flyspell-goto-next-error)))
+
+(add-hook 'flymake-mode-hook
+	  '(lambda ()
+	     (define-key flymake-mode-map
+	       [(control <)]
+	       'flymake-goto-previous-error)
+	     (define-key flymake-mode-map
+	       [(control >)]
+	       'flymake-goto-next-error)
+             ))
 
 (add-hook 'calendar-mode-hook
 	  '(lambda ()

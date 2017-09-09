@@ -1,4 +1,4 @@
-k;;; myhtmlmode.el --- 
+;;; myhtmlmode.el --- 
 ;; FTP Directory: sources/emacs #
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
