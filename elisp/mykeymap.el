@@ -1,5 +1,5 @@
 ;;; mykeymap.el
-;;                         Last modified: Sat Sep 09 20:26:37 2017
+;;                         Last modified: Wed Sep 20 19:17:03 2017
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords: 
@@ -42,8 +42,7 @@
 ;;(global-set-key "\C-j" 'bookmark-jump)
 ;;;ブックマークを保存
 ;;(setq bookmark-save-flag 1)
-(global-set-key "\C-v" 'other-window)
-;(global-set-key "\C-v" 'scroll-up-command)
+(global-set-key (kbd "C-.") 'other-window)
 
 (global-set-key "\C-t" 'copy-region-as-kill)
 
@@ -97,8 +96,9 @@
 (global-set-key [(control f8)] 'my-pushd-current-directory)
 (global-set-key [(control f7)] '(lambda () (interactive) (my-pushd-current-directory "*f9-shell*")))
 
-(global-set-key (kbd "<M-up>") '(lambda () (interactive) (other-window -1)))
-(global-set-key (kbd "<M-down>") '(lambda () (interactive) (other-window 1)))
+(require 'flymake)
+(global-set-key (kbd "<M-up>") 'flymake-goto-previous-error)
+(global-set-key (kbd "<M-down>") 'flymake-goto-next-error)
 
 (define-key ctl-x-map [f8] 'ssh)
 (global-set-key [(super h)] 'ignore)
@@ -114,10 +114,11 @@
 
 (global-set-key [zenkaku-hankaku] 'toggle-input-method)
 
-(require 'helm-config)
-(helm-mode 1)
-(global-set-key "\M-y" 'helm-show-kill-ring)
-(define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
+;; (require 'helm-config)
+;; (helm-mode 1)
+;; (global-set-key "\M-y" 'helm-show-kill-ring)
+;; (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
+;; (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
 ;(define-key helm-M-x-map (kbd "TAB") 'helm-execute-persistent-action)
 
 ;(load "mynamazu.el")

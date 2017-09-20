@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Sat Sep 09 20:22:48 2017
+;;; mymode.el --- Last modified: Mon Sep 11 20:25:20 2017
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -24,30 +24,8 @@
 (defvar my-html-image-scale 0.4)
 (add-hook 'html-mode-hook
 	  '(lambda ()
-	     (define-key html-mode-map "\C-b"
-	       'my-html-insert-space)
-	     (define-key html-mode-map "\C-p"
-	       'my-html-insert-paragraph)
-	     (define-key html-mode-map "\C-n"
-	       'my-html-insert-br)
-	     (define-key html-mode-map "\C-j"
-	       'my-html-tag-insert)
 	     (define-key html-mode-map [(control space)]
 	       'my-html-insert-space)
-	     (define-key html-mode-map "\C-cm"
-	       'my-html-insert-item-menu)
-	     (define-key html-mode-map "\C-cj"
-	       'my-html-jump)
-	     (define-key html-mode-map "\C-c\C-j"
-	       'my-html-jump)
-	     (define-key html-mode-map "\C-c\C-l"
-	       'my-activate-line)
-	     (define-key html-mode-map "\C-c\C-m"
-	       'my-html-insert-item-menu)
-	     (define-key html-mode-map "\C-c\C-y"
-	       'my-html-copy-format-yank)
-	     (define-key html-mode-map "\C-c\C-]"
-	       '(lambda () (interactive) (eqn2eps-insert-filename my-html-image-scale)))
 ))
 
 (defun my-html-copy-format-command-and-other ()
@@ -60,7 +38,6 @@
 	(my-html-copy-format-register-function start end)
 	(goto-char here))))
 
-(add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
 (setq flymake-python-pyflakes-executable "/usr/local/bin/flake8")
 
 (custom-set-variables
@@ -305,6 +282,7 @@
 
 (add-hook 'flymake-mode-hook
 	  '(lambda ()
+             (flymake-python-pyflakes-load)
 	     (define-key flymake-mode-map
 	       [(control <)]
 	       'flymake-goto-previous-error)
@@ -316,8 +294,6 @@
 (add-hook 'calendar-mode-hook
 	  '(lambda ()
 	     (define-key calendar-mode-map
-	       "\C-f" (other-window -1))
-	     (define-key calendar-mode-map
 	       "\C-v" (other-window 1))))
 
 ;(add-hook 'view-mode-hook
@@ -327,11 +303,15 @@
 (require 'ssh)
 (setq ssh-directory-tracking-mode 'ftp)
 (add-hook 'ssh-mode-hook
-          (lambda ()
+          '(lambda ()
             (shell-dirtrack-mode t)
             (setq dirtrackp nil)))
 
 (require 'markdown-mode)
+(add-hook 'markdown-mode-hook
+           '(lambda ()
+              (flyspell-mode)))
+
 (setq auto-mode-alist
       (append (list
 ;	       (cons "\\.tex$" 'yatex-mode)

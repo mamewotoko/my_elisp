@@ -1,11 +1,12 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Sat Sep 09 20:05:36 2017
+;;			Last modified: Tue Sep 19 20:56:15 2017
 ;;------------------------------------------------------------
 ;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs ;;
 
 (require 'tuareg)
-(setq shell-command-switch "-ic")
+                                        ;(setq shell-command-switch "-ic")
+(setq shell-command-switch "-i")
 (setq backup-directory-alist
           `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
@@ -83,6 +84,7 @@
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 
 (scroll-bar-mode -1)
+(tool-bar-mode -1)
 (setq scroll-step 1)
 
 ;; (require 'helm)
