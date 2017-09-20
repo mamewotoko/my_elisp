@@ -1,5 +1,5 @@
 ;;; mykeymap.el
-;;                         Last modified: Wed Sep 20 19:17:03 2017
+;;                         Last modified: Wed Sep 20 19:50:51 2017
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords: 
@@ -9,7 +9,7 @@
 
 (global-set-key "\C-ci" 'my-insert-item-menu)
 (global-set-key "\C-cy" 'my-increment-by-current-format-function)
-(global-set-key "\C-cl" 'my-measure-length-of-region)
+(global-set-key "\C-cl" 'locate)
 
 ;;;ジャンプ
 (global-set-key "\C-l" 'goto-line)
@@ -24,8 +24,6 @@
 (define-key global-map [?¥] [?\\])  ;; ¥の代わりにバックスラッシュを入力する
 
 ;;;正規表現で検索
-(global-set-key "\C-c\C-r" 'search-backward-regexp)
-(global-set-key "\C-c\C-s" 'search-forward-regexp)
 (global-set-key "\C-c\C-c" 'comment-region)
 
 (global-set-key [(super p)] '(lambda () (interactive)
@@ -57,6 +55,8 @@
       (kill-buffer (current-buffer))))
 
 (global-set-key "\C-xk" 'kill-this-buffer)
+(global-set-key "\C-x\C-k" 'kill-this-buffer)
+
 ;(global-set-key "\M-w" 'kill-word)
 (global-set-key "\C-x\C-o" 'find-file-other-window)
 
@@ -140,11 +140,10 @@
      (lisp-interaction-mode)
 ))
 
-(global-set-key [f12] 'bookmark-jump)
-(global-set-key [(shift f12)] 'bookmark-set)
-(global-set-key [(control f12)] 'bookmark-save)
+(global-set-key [f12] 'bookmark-bmenu-list)
+(global-set-key [(control f12)] 'bookmark-set)
+(global-set-key [(shift f12)] 'bookmark-save)
 (global-set-key [(meta f12)] 'bookmark-delete)
-;(global-set-key [(meta f1)] 'find-include-etc-at-position)
 
 (define-key global-map [?¥] [?\\]) 
 ;(global-set-key "\M-a" 'apropos)

@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Mon Sep 11 20:25:20 2017
+;;; mymode.el --- Last modified: Wed Sep 20 19:46:09 2017
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -274,12 +274,6 @@
 ;	       'apropos-follow
 ;	     )))
 
-;(add-hook 'flyspell-mode-hook
-;	  '(lambda ()
-;	     (define-key flyspell-mode-map
-;	       "\C-n"
-;	       'flyspell-goto-next-error)))
-
 (add-hook 'flymake-mode-hook
 	  '(lambda ()
              (flymake-python-pyflakes-load)
@@ -295,10 +289,6 @@
 	  '(lambda ()
 	     (define-key calendar-mode-map
 	       "\C-v" (other-window 1))))
-
-;(add-hook 'view-mode-hook
-;	  '(lambda ()
-;	     (my-vi-bind view-mode-map)))
 
 (require 'ssh)
 (setq ssh-directory-tracking-mode 'ftp)
