@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Wed Sep 20 19:46:09 2017
+;;; mymode.el --- Last modified: Sat Sep 23 08:27:56 2017
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -14,7 +14,7 @@
   (interactive)
   (Info-search Info-last-search))
 (require 'info)
-(define-key Info-mode-map "\C-n" 'my-Info-search-next)
+(define-key Info-mode-map "\M-n" 'my-Info-search-next)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; HTML mode
@@ -168,12 +168,6 @@
 
 (add-hook 'shell-mode-hook
 	  '(lambda ()
-	     (define-key shell-mode-map
-	       "\C-p"
-	       'comint-previous-input)
-	     (define-key shell-mode-map
-	       "\C-n"
-	       'comint-next-input)
 	     (define-key shell-mode-map [f12] 'dirs)
 	     (define-key shell-mode-map
 	       "\C-c\C-j" 'my-goto-error)
@@ -229,24 +223,9 @@
 ;	     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; comint mode
-;;
-;;
-(require 'comint)
-(add-hook 'comint-mode-hook
-	  '(lambda ()
-	     (define-key comint-mode-map
-	       "\C-p"
-	       'comint-previous-input)
-	     (define-key comint-mode-map
-	       "\C-n"
-	       'comint-next-input)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; perl mode
 ;;
 ;;
-;(require 'comint)
 (load "myperlextend.el")
 
 (add-hook 'cperl-mode-hook
