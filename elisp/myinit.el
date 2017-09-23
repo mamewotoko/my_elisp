@@ -1,12 +1,11 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Tue Sep 19 20:56:15 2017
+;;			Last modified: 土曜日 9月 23 08:44:28 2017
 ;;------------------------------------------------------------
 ;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs ;;
 
 (require 'tuareg)
-                                        ;(setq shell-command-switch "-ic")
-(setq shell-command-switch "-i")
+(setq shell-command-switch "-ic")
 (setq backup-directory-alist
           `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
@@ -112,8 +111,8 @@
 (setq display-time-default-load-average nil)
 
 (exec-path-from-shell-initialize)
-(load-file "~/lib/emacs/elisp/opa/emacs_conf.el")
-(load-file "~/lib/emacs/elisp/opa/opa-mode.el")
+;(load-file "~/lib/emacs/elisp/opa/emacs_conf.el")
+;(load-file "~/lib/emacs/elisp/opa/opa-mode.el")
 
 (line-number-mode 1)
 (column-number-mode 1)
