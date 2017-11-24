@@ -1,5 +1,5 @@
 ;;; mykeymap.el
-;;                         Last modified: Wed Sep 20 19:50:51 2017
+;;                         Last modified: Fri Nov 24 19:43:31 2017
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords: 
@@ -7,8 +7,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;;;キーバインドの変更
 
-(global-set-key "\C-ci" 'my-insert-item-menu)
-(global-set-key "\C-cy" 'my-increment-by-current-format-function)
+;(global-set-key "\C-ci" 'my-insert-item-menu)
+;(global-set-key "\C-cy" 'my-increment-by-current-format-function)
 (global-set-key "\C-cl" 'locate)
 
 ;;;ジャンプ
@@ -79,6 +79,11 @@
                    (let ((pattern (read-from-minibuffer "pattern: ")))
                      (ag pattern default-directory))))
 
+(defun my-pushd-current-directory (&optional buffer)
+  (interactive)
+  (let ((target-dir (expand-file-name ".")))
+    (my-input-command-to-shell (concat "pushd " target-dir) buffer)))
+
 ;;lisp
 (global-set-key [f1] 'help-command)
 (global-set-key [(control f1)] 'manual-entry)
@@ -96,11 +101,15 @@
 (global-set-key [(control f8)] 'my-pushd-current-directory)
 (global-set-key [(control f7)] '(lambda () (interactive) (my-pushd-current-directory "*f9-shell*")))
 
+(global-set-key [(shift f8)] '(lambda () (interactive) (ssh "deskvm")))
+(global-set-key [(shift f7)] '(lambda () (interactive) (ssh "mamewo")))
+(global-set-key [(shift f6)] '(lambda () (interactive) (ssh "google")))
+
 (require 'flymake)
 (global-set-key (kbd "<M-up>") 'flymake-goto-previous-error)
 (global-set-key (kbd "<M-down>") 'flymake-goto-next-error)
 
-(define-key ctl-x-map [f8] 'ssh)
+;(define-key ctl-x-map [f8] 'ssh)
 (global-set-key [(super h)] 'ignore)
 
 (global-set-key "\C-xm" 'ignore)
@@ -133,11 +142,10 @@
      (lisp-interaction-mode)
 ))
 
-(global-set-key [(control f11)]
+(global-set-key [(shift f11)]
   '(lambda ()
      (interactive)
-     (switch-to-buffer "*scratch*")
-     (lisp-interaction-mode)
+     (find-file "~/dev/diary/diary.org")
 ))
 
 (global-set-key [f12] 'bookmark-bmenu-list)
@@ -160,6 +168,7 @@
 (global-set-key "\M-l" 'list-tags)
 (global-set-key "\C-x\C-b" 'list-buffers)
 (global-set-key "\C-xb" 'list-buffers)
+(global-set-key [f2] 'ibuffer)
 (global-set-key "\M-." 'find-tag-other-window)
 (provide 'mykeymap)
 ;;; mykeymap.el ends here

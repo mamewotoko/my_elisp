@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Sun Sep 24 11:18:39 2017
+;;			Last modified: Fri Nov 24 20:00:22 2017
 ;;------------------------------------------------------------
 ;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs ;;
@@ -11,6 +11,8 @@
 (when (< emacs-major-version 24)
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
 (package-initialize) ;; You might already have this line
 
@@ -25,8 +27,10 @@
 ;(which-function-mode nil)
 (setq desktop-restore-eager 3)
 (setq max-lisp-eval-depth 10000)
+(setq bookmark-save-flag 1)
 
 (setq ring-bell-function 'ignore)
+
 
 ;;; Mac-only configuration to use command and options keys
 (when (eq system-type 'darwin)
@@ -77,6 +81,13 @@
 (load "myinsert.el")
 (load "mymode.el")
 (load "mykeymap.el")
+(load "namazu.el")
+
+;;;;;;;;;;;;
+;; namazu
+(setq namazu-default-dir (expand-file-name "~/tmp/namazu"))
+
+;;;;;;;;;;;;
 
 (setq minibuffer-max-depth nil)
 
