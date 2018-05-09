@@ -1,5 +1,5 @@
 ;;; mykeymap.el
-;;                         Last modified: Fri Nov 24 19:43:31 2017
+;;                         Last modified: Wed May 09 20:53:06 2018
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords: 
@@ -89,11 +89,31 @@
 (global-set-key [(control f1)] 'manual-entry)
 (global-set-key [(meta f1)] 'apropos)
 
+(defun shell-or-ssh ()
+  (interactive)
+  (if (not buffer-file-name)
+      (shell)
+    (condition-case nil
+      (tramp-file-name-user 
+       (with-parsed-tramp-file-name buffer-file-name nil
+         (if (not (tramp-file-name-p v))
+             (shell)
+           (let ((method (tramp-file-name-method v))
+                 (user (tramp-file-name-user v))
+                 (host (tramp-file-name-host v)))
+             (message method)
+             (if (string= method "scp")
+                 (let ((connect (if user (format "%s@%s" user host)
+                                  host)))
+                   (ssh connect))
+               (shell))))))
+      (error (shell)))
+  (set-buffer-process-coding-system 'utf-8 'utf-8)))
+
 (global-set-key [f5] (lambda () (interactive) (progn (shell "*f5-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
 (global-set-key [f6] (lambda () (interactive) (progn (shell "*f6-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
 (global-set-key [f7] (lambda () (interactive) (progn (shell "*f7-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
-(global-set-key [f8] (lambda () (interactive) (progn (shell) (set-buffer-process-coding-system 'utf-8 'utf-8))))
-(global-set-key [f9] (lambda () (interactive) (progn (shell "*f9-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
+(global-set-key [f8] 'shell-or-ssh)
 
 (global-set-key [(control f5)] '(lambda () (interactive) (my-pushd-current-directory "*f5-shell*")))
 (global-set-key [(control f6)] '(lambda () (interactive) (my-pushd-current-directory "*f6-shell*")))
@@ -101,9 +121,13 @@
 (global-set-key [(control f8)] 'my-pushd-current-directory)
 (global-set-key [(control f7)] '(lambda () (interactive) (my-pushd-current-directory "*f9-shell*")))
 
+(define-key shell-mode-map "\C-p" 'comint-previous-input)
+(define-key shell-mode-map "\C-n" 'comint-next-input)
+
 (global-set-key [(shift f8)] '(lambda () (interactive) (ssh "deskvm")))
 (global-set-key [(shift f7)] '(lambda () (interactive) (ssh "mamewo")))
 (global-set-key [(shift f6)] '(lambda () (interactive) (ssh "google")))
+(global-set-key [(shift f5)] '(lambda () (interactive) (ssh "vm")))
 
 (require 'flymake)
 (global-set-key (kbd "<M-up>") 'flymake-goto-previous-error)
@@ -113,8 +137,8 @@
 (global-set-key [(super h)] 'ignore)
 
 (global-set-key "\C-xm" 'ignore)
-(global-set-key [(control f9)] 'customize-apropos)
-(global-set-key [(shift f9)] 'apropos-at-position)
+(global-set-key [f9] 'query-replace-regexp)
+(global-set-key [(shift f9)] 'apropos)
 (global-set-key [f10] 'namazu)
 (global-set-key [(shift f10)] 
   (lambda () (interactive) 
@@ -166,9 +190,65 @@
 ;(global-set-key "\C-c\C-]" 'eqn2eps-insert-filename)
 
 (global-set-key "\M-l" 'list-tags)
-(global-set-key "\C-x\C-b" 'list-buffers)
-(global-set-key "\C-xb" 'list-buffers)
+(autoload 'ibuffer "ibuffer" "List buffers." t)
+
+(global-set-key "\C-x\C-b" 'ibuffer)
+(global-set-key "\C-xb" 'ibuffer)
 (global-set-key [f2] 'ibuffer)
 (global-set-key "\M-." 'find-tag-other-window)
+
+(global-set-key "\M-f" 'forward-word)
+(global-set-key "\M-b" 'backward-word)
+
+(modify-syntax-entry ?_ "w")
+(modify-syntax-entry ?\" "w")
+(modify-syntax-entry ?\\ "w")
+(modify-syntax-entry ?- "w")
+
+(defun get-point (symbol &optional arg)
+  "get the point"
+  (funcall symbol arg)
+  (point)
+  )
+
+(defun copy-thing (begin-of-thing end-of-thing &optional arg)
+  "copy thing between beg & end into kill ring"
+  (save-excursion
+    (let ((beg (get-point begin-of-thing 1))
+          (end (get-point end-of-thing arg)))
+      (copy-region-as-kill beg end)))
+  )
+
+(defun paste-to-mark(&optional arg)
+  "Paste things to mark, or to the prompt in shell-mode"
+  (let ((pasteMe 
+     	 (lambda()
+     	   (if (string= "shell-mode" major-mode)
+               (progn (comint-next-prompt 25535) (yank))
+             (progn (goto-char (mark)) (yank) )))))
+    (if arg
+        (if (= arg 1)
+            nil
+          (funcall pasteMe))
+      (funcall pasteMe))
+    ))
+
+(defun copy-word (&optional arg)
+  "Copy words at point into kill-ring"
+  (interactive "P")
+  (copy-thing 'backward-word 'forward-word arg)
+  ;;(paste-to-mark arg)
+  )
+
+(global-set-key (kbd "C-c w") (quote copy-word))
+
+(defun copy-line (&optional arg)
+      "Save current line into Kill-Ring without mark the line "
+       (interactive "P")
+       (copy-thing 'beginning-of-line 'end-of-line arg)
+       ;;(paste-to-mark arg)
+       )
+(global-set-key (kbd "C-c l")         (quote copy-line))
+
 (provide 'mykeymap)
 ;;; mykeymap.el ends here
