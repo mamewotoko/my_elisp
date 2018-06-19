@@ -1,10 +1,8 @@
 ;;; myftp.el --- 
-;; Last modified: Sat Jul 16 18:56:55 2011
+;; Last modified: Tue Jun 19 21:16:20 2018
 ;; FTP Directory: sources/emacs #
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; Keywords: 
-
-(load "mycompile.el")
 
 ;;; Code:
 (defconst myftp-dir-start "FTP Directory: ")
@@ -20,26 +18,6 @@
 "現在編集中のファイルをWEBサーバーにアップロードする"
   (interactive)
   (shell-command (format "%s %s" myftp-hget-path (buffer-file-name))))
-
-(defun myftp-get-path ()
-  (mycompile-get-command myftp-dir-start mycompile-end 15))
-
-;(defun myftp-put-with-dir-enter-password ()
-;"現在編集中のファイルをWEBサーバーにアップロードする"
-;  (interactive)
-;  (let* ((dir (myftp-get-path))
-;	 (real-dir (or dir "."))
-;	 (process (start-process "PUT" myftp-buffer-name
-;			        ;;; このプログラムにすべてがある
-;				(expand-file-name "~/bin/hput2")
-;				"-d" real-dir
-;				(file-name-nondirectory (buffer-file-name)))))
-;    (process-send-string process
-;			 (format "%s\n" (read-passwd "FTP password: ")))
-;    (sit-for myftp-sit-for-second) ;;これがないとfailしても成功したといってしまう
-;    (message (if (= (process-exit-status process) 0)
-;		 "Succeeded"
-;	       "Failed"))))
 
 (defun myftp-put-with-dir ()
 "現在編集中のファイルをWEBサーバーにアップロードする"

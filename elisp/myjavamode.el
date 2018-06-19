@@ -1,4 +1,4 @@
-;;; myjavamode.el --- Last modified: Thu Nov 19 19:36:05 2015
+;;; myjavamode.el --- Last modified: Tue Jun 19 21:13:10 2018
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs #
 ;; Location: http://www002.upp.so-net.ne.jp/mamewo/sources/emacs/myjavamode.el #
@@ -51,27 +51,6 @@
 	(find-file-other-window path)
       (message (concat "Not found the file: " filename)))))
 
-;; 個人的に読んでいるjavaプログラムです↓
-(defun my-java-search-source-file-of-comet ()
-  (interactive)
-  (let ((class (my-word-at-position)))
-    (my-java-open-source-file class my-search-directory-comet)))
-
-(defun my-java-extend-menu (&optional index)
-  (interactive "P")
-  (message "O)utput F)or I)f L)ink T)ry")
-  (let ((sw (selected-window))
-	(local-index (or index (read-char))))
-    (message nil)
-    (cond
-     ((= local-index ?o) (progn (insert-string "System.out.println();")
-				(backward-char 2)))
-     ((= local-index ?f) (c++-insert-incremental-for))
-     ((= local-index ?i) (my-c-insert-if))
-     ((= local-index ?l) (progn (insert-string "{@link #}") (backward-char 2)))
-     ((= local-index ?t) (insert-string "try {\n} catch (Exception e) {\n    e.printStackTrace();\n}"))
-     )))
-
 (defun my-java-search-api-at-point ()
   (interactive)
   (let ((obj (my-word-at-position)))
@@ -86,68 +65,6 @@
 	(message "Irregural Position!")
       (my-java-search-api obj nil t))))
 
-
-(defun java-template-function ()
-  (message "a)pplet or s)wing or A)wt or not")
-  (let* ((ch (read-char))
-	 (appret-q (eq ch ?a))
-	 (swing-q (eq ch ?s))
-	 (awt-q   (eq ch ?A))
-	 (file-name (file-name-nondirectory (buffer-file-name)))
-	 (prefix (file-name-prefix file-name)))
-    (insert-header "//" "")
-    (insert-string 
-     (format "//\t\t\t%s\n// %s javac %s %s\n// %s %s %s %s\n// FTP Directory: sources/java #\n//%s\n//\n"
-	     time-stamp-start
-	     mycompile-start
-
-	     file-name ;; javac [filaneme] #
-	     mycompile-end
-
-	     myexecute-start
-	     (if appret-q "appletviewer" "java")
-	     (if appret-q file-name prefix)
-	     mycompile-end
-     my-line))
-    (insert-string
-     (concat "import java.io.*;\n"
-	     "import java.util.*;\n"
-	     (cond 
-	      (appret-q (concat "import java.applet.Applet;\n"
-				"import java.awt.*;\n"
-				"import java.awt.event.*;\n"
-				"/*\n  <applet code=" prefix " width=400 height=400>"
-				 "</applet>\n */\n\n\n"))
-	      (swing-q (concat "import javax.swing.*;\nimport java.awt.event.*;\nimport java.awt.*;\n\n"))
-	      (t ""))
-
-	     "public class " prefix 
-	     (if appret-q
-		 " extends Applet")
-	     " {\n"
-	     (if appret-q
-		 (concat 
-		  "    public void init() {\n\n    }\n"
-		  "    public void start() {\n\n    }\n"
-		  "    public void paint(Graphics g) {\n\n    }\n}"))
-	     (if swing-q
-		 (concat 
-		  "    public static void main(String argv[])\n"
-		  "    {\n"
-		  "        JFrame.setDefaultLookAndFeelDecorated(true);\n"
-		  "        JFrame f = new JFrame();\n"
-		  "        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n"
-		  "        Container cont = f.getContentPane();\n\n\n"
-		  "        f.pack();\n        f.setVisible(true);\n"
-		  "    }\n"
-		  "}\n"))
-	     (if (and (not appret-q) (not swing-q))
-		 (concat "    public static void main(String argv[])\n    {\n        try {\n\n        } catch (Exception e) {\n            e.printStackTrace();\n        }\n    }\n}"))))
-    (previous-line (if appret-q 12 6))))
-
-(defvar my-java-search-path '("."))
-
-;  (and (string-match "(^\tat|\\[javac\\]\\) [^\(]+(\\([^:]+\\):\\([0-9]+\\))" error-line)
 
 (defun my-java-jump-at-exception (error-message &optional path)
   ;;(and (string-match "javac. [^\(]+(\\([^:]+\\):\\([0-9]+\\))" error-message)

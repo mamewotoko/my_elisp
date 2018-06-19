@@ -245,23 +245,6 @@
 </table>")) ;;ソースを表示。ボーダー1の枠で囲む
      )))
 
-(defun my-html-browse-location ()
-  (interactive)
-  (let ((location-string
-	 (mycompile-get-command my-html-location-header
-				my-html-location-end
-				my-html-location-header-line-limit)))
-    (if (and location-string
-	     (string-match "\\(http:[^ ]+\\)" location-string))
-	(let* ((start (match-beginning 1))
-	       (end (match-end 1))
-	       (location (substring location-string start end)))
-	  (browse-url location)
-	  (message "browsing...")
-	  t)
-      nil)))
-;      (message "cannnot find location!!"))))
-
 (provide 'myhtmlmode)
 
 ;;; myhtmlmode.el ends here

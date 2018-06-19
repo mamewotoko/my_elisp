@@ -1,4 +1,4 @@
-;;; mylibrary.el --- personal use    Last modified: Wed Jun 19 20:58:25 2013
+;;; mylibrary.el --- personal use    Last modified: Tue Jun 19 21:13:33 2018
 ;; Copyright (C) 2001 by Free Software Foundation, Inc.
 
 ;; Author: MASUYAMA Takashi <tak@is.s.u-tokyo.ac.jp>
@@ -177,32 +177,6 @@
     (if (eq (aref time-string 8) ?0)
 	(aset time-string 8 ?  ))
     (insert-string time-string)))
-
-;;--------------------------------------------------
-;; 個人情報などグローバルなアイテム
-;;
-(defun my-insert-item-menu (&optional index)
-  (interactive "P")
-  (message "N)ame D)ate U)rl M)ail F)ilename P)refix T)ime-mark C)ompile L)ine")
-  (let ((sw (selected-window))
-	(local-index (or index (read-char))))
-    (message nil)
-    (cond
-     ((= local-index ?n) (insert-string (user-full-name)))
-     ((= local-index ?d) (insert-date-yy/mm/dd-format))
-     ((= local-index ?u) (insert-string user-url))
-     ((= local-index ?m) (insert-string (user-mail-address)))
-;     ((= local-index ?s) (insert-file signature-file))
-     ((= local-index ?f) (insert-file-name))
-     ((= local-index ?p) (insert-file-name-prefix))
-     ((= local-index ?t) (insert-string time-stamp-start))
-     ((= local-index ?l) (insert-string my-line))
-     ;;; mycompile.el
-     ((= local-index ?c)
-      (progn 
-	(insert-string (format "%s %s" mycompile-start mycompile-end))
-	(backward-char (+ (length mycompile-end) 1))))
-)))
 
 (defun my-search-forward-word-at-position ()
   (interactive)

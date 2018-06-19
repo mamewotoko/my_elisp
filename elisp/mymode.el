@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Sat Sep 23 08:27:56 2017
+;;; mymode.el --- Last modified: Sat Jun 09 10:38:24 2018
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -67,41 +67,7 @@
 ;;
 ;(load "mycextend.el")
 
-;(load "mycextend.el")
-;(add-hook 'c-mode-hook
-;	  '(lambda ()
-;	     (define-key c-mode-map "\C-x\C-h" 'my-c-open-header-and-source)
-;	     (setq namazu-default-dir "/home/tak/.indexes/gtk2.0")
-;	     (setq c-basic-offset 4)
-;	     (setq tab-width 4)
-;	     (setq font-lock-keywords c-font-lock-keywords-2)
-;	     (define-key c-mode-map "\C-c\C-c" 'comment-region)
-;	     ))
-
-;; ctypes.el
-;(add-hook 'c++-mode-hook
-;	  '(lambda ()
-;	     (setq font-lock-keywords c++-font-lock-keywords-2)
-;	     (define-key c++-mode-map "\C-c\C-c" 'comment-region)
-;	     (define-key c++-mode-map "\C-j" 'c++-insert-incremental-for)
-;	     (define-key c++-mode-map "\C-cj" 'c-insert-conditional-compile)
-;	     (define-key c++-mode-map [f6] 'mycompile-compile)
-;	     (define-key c++-mode-map "\C-cm" 'my-c++-extend-menu)
-;	     (define-key c++-mode-map "\C-c\C-d" 'delete-rectangle)
-;	     (define-key c++-mode-map "\C-c\C-t\C-y" 'my-increment-repeat)
-;	     (define-key c++-mode-map "\C-b\C-b" 'my-c++-open-header-and-source)
-;	     (define-key c++-mode-map "\C-c\C-b" 'my-c-prototype-to-implementation-repeat)
-;	     ))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; PROLOG mode
-;;
-;;
-;(add-hook 'prolog-mode-hook 
-;	  '(lambda ()
-;	     (setq tab-width 2)
-;	     (define-key prolog-mode-map "\C-c\C-c" 'comment-region)
-;	     ))
+(setq-default c-basic-offset 4)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Shell Script mode
@@ -140,6 +106,12 @@
 	     (char-number (match-string 3 error-message)))
 	 (my-error-jump-to-point filename line-number char-number))))
 
+(defun my-hadolint-jump-to-error-point (error-message)
+  (and (string-match "^\\([^\"]+\\):\\([0-9]+\\) \\(.*\\)" error-message)
+       (let ((filename (match-string 1 error-message))
+	     (line-number (match-string 2 error-message)))
+	 (my-error-jump-to-point filename line-number 0))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Shell mode
 ;;
@@ -156,6 +128,7 @@
 ;       (my-promela-jump-to-error-point error-message)
        (my-caml-jump-to-error-at-point-entry-point error-message)
 ;       (my-opa-jump-to-error-point error-message)
+       (my-hadolint-jump-to-error-point error-message)
        (my-c-jump-to-error-point-sub error-message t)
        (my-perl-jump-to-error-point error-message)
        (and (boundp 'shell-dirstack) (my-java-jump-at-exception error-message shell-dirstack))
@@ -212,15 +185,13 @@
 ;			  ((eq searchtype ?v)
 ;			   (my-search-ocaml-value))
 ;			  (t (my-search-ocaml-all))))))
-;	     ))
+                                        ;	     ))
+(add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
 
-;(add-hook 'inferior-caml-mode-hook
-;	  '(lambda ()
-;;	     (define-key inferior-caml-mode-map
-;;	       "\C-c\C-c" 'comment-region)
-;	     (define-key inferior-caml-mode-map
-;	       [(shift f5)] 'my-browse-caml-api-at-region)
-;	     ))
+(setq flymake-python-pyflakes-executable "/usr/local/bin/flake8")
+
+(custom-set-variables
+ '(flymake-python-pyflakes-extra-arguments (quote ("--max-line-length=120"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; perl mode
@@ -253,16 +224,15 @@
 ;	       'apropos-follow
 ;	     )))
 
-(add-hook 'flymake-mode-hook
-	  '(lambda ()
-             (flymake-python-pyflakes-load)
-	     (define-key flymake-mode-map
-	       [(control <)]
-	       'flymake-goto-previous-error)
-	     (define-key flymake-mode-map
-	       [(control >)]
-	       'flymake-goto-next-error)
-             ))
+;; (add-hook 'flymake-mode-hook
+;; 	  '(lambda ()
+;; 	     (define-key flymake-mode-map
+;; 	       [(control <)]
+;; 	       'flymake-goto-previous-error)
+;; 	     (define-key flymake-mode-map
+;; 	       [(control >)]
+;; 	       'flymake-goto-next-error)
+;;              ))
 
 (add-hook 'calendar-mode-hook
 	  '(lambda ()

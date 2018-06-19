@@ -26,7 +26,7 @@
 
 ;;; Code:
 ;;変数参照するので必要
-(load "mycompile.el")
+;(load "mycompile.el")
 
 (defun my-print-variable (f)
   (interactive)

@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Fri Nov 24 20:00:22 2017
+;;			Last modified: Sun Mar 18 17:39:00 2018
 ;;------------------------------------------------------------
 ;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs ;;
@@ -70,6 +70,7 @@
 
 (auto-compression-mode t)
 (set-fringe-mode 1)
+(setq calendar-week-start-day 1)
 
 ; utf8 
 (set-language-environment "Japanese")
@@ -77,11 +78,16 @@
 (set-default-coding-systems 'utf-8)
 (set-selection-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
 
 (load "myinsert.el")
 (load "mymode.el")
 (load "mykeymap.el")
 (load "namazu.el")
+
+(load "edit-server.el")
+(edit-server-start)
+(setq edit-server-new-frame nil)
 
 ;;;;;;;;;;;;
 ;; namazu
@@ -90,9 +96,6 @@
 ;;;;;;;;;;;;
 
 (setq minibuffer-max-depth nil)
-
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-(autoload 'ibuffer "ibuffer" "List buffers." t)
 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -137,7 +140,6 @@
 (setq enable-recursive-minibuffers nil)
 
 (add-to-list 'load-path (expand-file-name "~/lib/emacs/elisp/scala-mode"))
-;(load "grep-edit.el")
 (load "yaml-mode.el")
 (setq time-stamp-line-limit 30)
 

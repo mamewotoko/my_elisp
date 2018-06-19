@@ -1,5 +1,5 @@
 ;;; mykeymap.el
-;;                         Last modified: Wed May 09 20:53:06 2018
+;;                         Last modified: Wed Jun 20 07:17:26 2018
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords: 
@@ -114,6 +114,24 @@
 (global-set-key [f6] (lambda () (interactive) (progn (shell "*f6-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
 (global-set-key [f7] (lambda () (interactive) (progn (shell "*f7-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
 (global-set-key [f8] 'shell-or-ssh)
+
+(defun my-input-command-to-shell (command &optional buffer)
+  (if buffer
+      (if (get-buffer buffer)
+        (shell buffer))
+    (shell))
+  (end-of-buffer)
+  (insert-string command)
+  (comint-send-input)
+  (comint-next-prompt 1))
+
+(defun my-pushd-current-directory (&optional buffer)
+  (interactive)
+  (let ((target-dir (expand-file-name ".")))
+    (if (> (count-windows) 1)
+	(other-window-except-minibuffer-window) 
+      (split-window-vertically))
+    (my-input-command-to-shell (concat "pushd " target-dir) buffer)))
 
 (global-set-key [(control f5)] '(lambda () (interactive) (my-pushd-current-directory "*f5-shell*")))
 (global-set-key [(control f6)] '(lambda () (interactive) (my-pushd-current-directory "*f6-shell*")))
