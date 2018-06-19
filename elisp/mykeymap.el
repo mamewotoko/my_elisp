@@ -1,5 +1,5 @@
 ;;; mykeymap.el
-;;                         Last modified: Wed Jun 20 07:17:26 2018
+;;                         Last modified: Wed Jun 20 07:18:40 2018
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords: 
@@ -129,7 +129,7 @@
   (interactive)
   (let ((target-dir (expand-file-name ".")))
     (if (> (count-windows) 1)
-	(other-window-except-minibuffer-window) 
+	(other-window)
       (split-window-vertically))
     (my-input-command-to-shell (concat "pushd " target-dir) buffer)))
 
