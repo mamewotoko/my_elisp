@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Sat Jun 09 10:38:24 2018
+;;; mymode.el --- Last modified: Thu Jun 21 20:34:50 2018
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -162,33 +162,10 @@
 ;(defvar my-ocaml-manual-url "file:///home/tak/Doc/htmlman/index.html")
 ;(require 'search_ocaml_type)
 
-;(add-hook 'caml-mode-hook
-;	  '(lambda ()
-;	     (make-local-variable 'namazu-default-dir)
-;;	     (setq namazu-default-dir 
-;;		   (concat (expand-file-name "~/.ocaml_namazu") " " (expand-file-name "~/.labltk_namazu")))
-;	     (define-key caml-mode-map "\C-c\C-c" 'comment-region)
-;	     (define-key caml-mode-map [(shift f5)] 'my-browse-caml-api-at-position)
-;	     (define-key caml-mode-map [button2] 'mouse-yank)
-;	     (define-key caml-mode-map [f5] 
-;	       '(lambda () (interactive) 
-;		  (let ((word (read-input "variable: ")))
-;		    (if (equal word "")
-;			(browse-url my-ocaml-manual-url)
-;		      (my-browse-caml-api-from-word word)))))
-;	     (define-key caml-mode-map [(control f5)] 
-;	       '(lambda () (interactive)
-;		  (message "t)ype or v)alue or a)ll?: ")
-;		  (let* ((searchtype (read-char)))
-;		    (cond ((eq searchtype ?t)
-;			   (my-search-ocaml-type))
-;			  ((eq searchtype ?v)
-;			   (my-search-ocaml-value))
-;			  (t (my-search-ocaml-all))))))
-                                        ;	     ))
+(require 'flymake-python-pyflakes)
+(setq flymake-python-pyflakes-executable "flake8")
 (add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
 
-(setq flymake-python-pyflakes-executable "/usr/local/bin/flake8")
 
 (custom-set-variables
  '(flymake-python-pyflakes-extra-arguments (quote ("--max-line-length=120"))))
@@ -216,23 +193,6 @@
 (add-hook 'java-mode-hook
 	  '(lambda ()
 	     (setq tab-width 4)))
-
-;(add-hook 'help-mode-hook
-;	  '(lambda ()
-;	     (define-key help-mode-map
-;	       [return]
-;	       'apropos-follow
-;	     )))
-
-;; (add-hook 'flymake-mode-hook
-;; 	  '(lambda ()
-;; 	     (define-key flymake-mode-map
-;; 	       [(control <)]
-;; 	       'flymake-goto-previous-error)
-;; 	     (define-key flymake-mode-map
-;; 	       [(control >)]
-;; 	       'flymake-goto-next-error)
-;;              ))
 
 (add-hook 'calendar-mode-hook
 	  '(lambda ()
