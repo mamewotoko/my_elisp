@@ -1,5 +1,5 @@
 ;;; camlapi.el --- 
-;;                              Last modified: Thu Dec 19 02:45:02 2002
+;;                              Last modified: Sat Jul 07 21:10:31 2018
 
 ;; Copyright (C) 2002 by Free Software Foundation, Inc.
 
@@ -62,7 +62,7 @@
 
 (defun my-browse-caml-api-at-position ()
   (interactive)
-  (let ((word (or (my-word-at-position) (read-input "variable: "))))
+  (let ((word (or (my-word-at-position) (read-string "variable: "))))
     (my-browse-caml-api-from-word word)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

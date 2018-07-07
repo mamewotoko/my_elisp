@@ -130,7 +130,8 @@
 	(setq end (+ start insert-length))
 	(insert-string
 	 (concat start-string c++-insert-incremental-for-end-string))
-	(previous-line 2)))
+                                        ;(previous-line 2)))
+        (forward-line -2)))
     (c-indent-region start end)
     (search-forward "<")
     (forward-char 1)
@@ -160,7 +161,8 @@
       (if (not (eq (char-before)?\n))
 	  (insert-char ?\n))
       (insert-string "#ifdef \n#endif\n");
-      (previous-line 2)
+                                        ;(previous-line 2)
+      (forward-line -2)
       (end-of-line))))
 
 ;;------------------------------------------------------------

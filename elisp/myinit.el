@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Sat Jul 07 21:00:41 2018
+;;			Last modified: Sat Jul 07 21:19:11 2018
 ;;------------------------------------------------------------
 ;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs ;;
@@ -31,9 +31,6 @@
 
 (setq ring-bell-function 'ignore)
 (load "ssh.el")
-
-(require 'cask "~/.cask/cask.el")
-(cask-initialize)
 
 (with-eval-after-load 'merlin
   ;; Disable Merlin's own error checking

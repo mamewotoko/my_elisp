@@ -1,4 +1,4 @@
-;;; myjavamode.el --- Last modified: Tue Jun 19 21:13:10 2018
+;;; myjavamode.el --- Last modified: Sat Jul 07 21:06:46 2018
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs #
 ;; Location: http://www002.upp.so-net.ne.jp/mamewo/sources/emacs/myjavamode.el #
@@ -26,7 +26,8 @@
 		  (other-window 1) ;;minibufferに入ると....
 		(split-window-vertically)))
 	  (switch-to-buffer my-java-api-search-output-buffer)
-	  (beginning-of-buffer)
+                                        ;(beginning-of-buffer)
+          (goto-char (point-min))
 	  (search-forward "\"")
 	  (let ((start (point)))
 	    (search-forward "\"")

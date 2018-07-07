@@ -1,5 +1,5 @@
 ;;; myftp.el --- 
-;; Last modified: Tue Jun 19 21:16:20 2018
+;; Last modified: Sat Jul 07 21:09:14 2018
 ;; FTP Directory: sources/emacs #
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; Keywords: 
@@ -34,7 +34,7 @@
     (message (if (= (process-exit-status process) 0)
 		 "Succeeded"
 	       "Failed"))
-    (or (my-html-browse-location) (my-browse-ftp-directory) (message no location!!))))
+    (or (my-html-browse-location) (my-browse-ftp-directory) (message "no location!!"))))
 
 (defun myftp-get (&optional filename)
   "WEBサーバーから myftp-hput-path にファイルをダウンロードする"
@@ -42,7 +42,7 @@
   (let ((process (start-process "GET" myftp-buffer-name
 				 ;;; このプログラムにすべてがある
 				myftp-hget-path
-				(or filename (read-input "filename: ")))))
+				(or filename (read-string "filename: ")))))
     (sit-for myftp-sit-for-second) ;;これがないとfailしても成功したといってしまう
     (let ((status (= (process-exit-status process) 0)))
       (message (if (= (process-exit-status process) 0)

@@ -1,4 +1,4 @@
-;;; myinsert.el --- Last modified: Sat Jul 07 21:00:41 2018
+;;; myinsert.el --- Last modified: Sat Jul 07 21:07:38 2018
 ;; Location: http://www002.upp.so-net.ne.jp/mamewo/sources/emacs/myinsert.el #
 ;; FTP Directory: sources/emacs #
 ;; Author: MASUYAMA Takashi <mamewotoko@gmail.com>
@@ -105,9 +105,10 @@
   (end-of-buffer))
 
 (defun html-template-function ()
-  (insert-file (concat my-auto-insert-path
-		       "html-template.html"))
-  (beginning-of-buffer)
+  (insert-file-contents (concat my-auto-insert-path
+                                "html-template.html"))
+                                        ;(beginning-of-buffer)
+  (goto-char (point-min))
   (replace-string "[LOCATION]"
 		  (concat my-web-base "/" 
 			  (file-name-nondirectory (buffer-file-name))))
