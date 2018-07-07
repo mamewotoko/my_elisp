@@ -36,7 +36,7 @@
 			my-search-ocaml-buffer-string)
 	  (let ((result (match-string 1 my-search-ocaml-buffer-string)))
 	    (setq continue-p t)
-	    (insert-string (concat result "\n"))
+	    (insert (concat result "\n"))
 	    (setq my-search-ocaml-buffer-string
 				 (substring my-search-ocaml-buffer-string
 					    (match-end 0)))))

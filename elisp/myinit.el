@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Sun Mar 18 17:39:00 2018
+;;			Last modified: Sat Jul 07 21:00:41 2018
 ;;------------------------------------------------------------
 ;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs ;;
@@ -30,10 +30,22 @@
 (setq bookmark-save-flag 1)
 
 (setq ring-bell-function 'ignore)
+(load "ssh.el")
 
+(require 'cask "~/.cask/cask.el")
+(cask-initialize)
+
+(with-eval-after-load 'merlin
+  ;; Disable Merlin's own error checking
+  (setq merlin-error-after-save nil)
+
+  ;; Enable Flycheck checker
+  (flycheck-ocaml-setup))
+
+(add-hook 'tuareg-mode-hook #'merlin-mode)
 
 ;;; Mac-only configuration to use command and options keys
-(when (eq system-type 'darwin)
+(when (and (eq system-type 'darwin) (display-graphic-p))
   (setq mac-pass-command-to-system nil)
 
   (set-face-font 'default "Monaco-11")
@@ -85,9 +97,9 @@
 (load "mykeymap.el")
 (load "namazu.el")
 
-(load "edit-server.el")
-(edit-server-start)
-(setq edit-server-new-frame nil)
+;(load "edit-server.el")
+;(edit-server-start)
+;(setq edit-server-new-frame nil)
 
 ;;;;;;;;;;;;
 ;; namazu
@@ -98,22 +110,10 @@
 (setq minibuffer-max-depth nil)
 
 (scroll-bar-mode -1)
+(menu-bar-mode -1)
 (tool-bar-mode -1)
 (setq scroll-step 1)
 
-;; (require 'helm)
-;; (require 'helm-config)
-
-;; ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
-;; ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
-;; ;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
-;; (global-set-key (kbd "C-c h") 'helm-command-prefix)
-;; (global-unset-key (kbd "C-x c"))
-
-;(setq default-input-method "MacOSX")
-;(setq default-input-method "japanese")
-;;(global-set-key [(control ?¥)] 'toggle-input-method)
-;;(global-set-key [?\]\\
 (global-set-key "\C-h" 'backward-delete-char)
 (global-set-key [f1] 'help-command)
 (setq help-char nil)
@@ -124,18 +124,15 @@
 (display-time)
 (setq display-time-day-and-date t)
 (setq display-time-default-load-average nil)
+(setq display-time-string-forms
+      '((format "%s/%s/%s(%s) %s:%s" year month day dayname 24-hours minutes)))
 
 (exec-path-from-shell-initialize)
-;(load-file "~/lib/emacs/elisp/opa/emacs_conf.el")
-;(load-file "~/lib/emacs/elisp/opa/opa-mode.el")
 
 (line-number-mode 1)
 (column-number-mode 1)
 
 (setq enable-double-n-syntax t)
-
-;; (autoload 'mwheel-install "mwheel" "Enable mouse wheel support.")
-;; (mwheel-install)
 
 (setq enable-recursive-minibuffers nil)
 
@@ -148,5 +145,9 @@
 
 (setq grep-use-null-device nil)
 ;(ansi-color-for-comint-mode-on)
+
+nil
+;; for emacs26
+(defalias 'insert 'insert)
 
 (provide 'myinit)

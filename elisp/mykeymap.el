@@ -1,5 +1,5 @@
 ;;; mykeymap.el
-;;                         Last modified: Wed Jun 20 07:23:51 2018
+;;                         Last modified: Sat Jul 07 21:00:41 2018
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords: 
@@ -79,6 +79,8 @@
                    (let ((pattern (read-from-minibuffer "pattern: ")))
                      (ag pattern default-directory))))
 
+(push (cons "\\*.*shell\\*" display-buffer--same-window-action) display-buffer-alist)
+
 (defun my-pushd-current-directory (&optional buffer)
   (interactive)
   (let ((target-dir (expand-file-name ".")))
@@ -120,7 +122,7 @@
       (shell buffer)
     (shell))
   (end-of-buffer)
-  (insert-string command)
+  (insert command)
   (comint-send-input)
   (comint-next-prompt 1))
 
@@ -164,18 +166,6 @@
 
 (global-set-key [zenkaku-hankaku] 'toggle-input-method)
 
-;; (require 'helm-config)
-;; (helm-mode 1)
-;; (global-set-key "\M-y" 'helm-show-kill-ring)
-;; (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
-;; (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
-;(define-key helm-M-x-map (kbd "TAB") 'helm-execute-persistent-action)
-
-;(load "mynamazu.el")
-;(global-set-key [(control f10)] 'set-namazu-dir-of-buffer-command)
-;(global-set-key [(meta f10)] 'irchat)
-;(global-set-key [(shift f10)] 'bbdb)
-
 (global-set-key [f11]
   '(lambda ()
      (interactive)
@@ -211,7 +201,7 @@
 
 (global-set-key "\C-x\C-b" 'ibuffer)
 (global-set-key "\C-xb" 'ibuffer)
-(global-set-key [f2] 'ibuffer)
+(global-set-key [f2] 'imenu)
 (global-set-key "\M-." 'find-tag-other-window)
 
 (global-set-key "\M-f" 'forward-word)

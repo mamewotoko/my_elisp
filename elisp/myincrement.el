@@ -1,4 +1,4 @@
-;;; myincrement.el ---    Last modified: Wed Jun 19 20:58:25 2013
+;;; myincrement.el ---    Last modified: Sat Jul 07 21:00:41 2018
 
 ;; Copyright (C) 2001 by Free Software Foundation, Inc.
 
@@ -70,7 +70,7 @@
 	     (new-args (my-map '(lambda (x) (+ x delta)) myargs))
 	     (new-exp (cons 'format (cons myformat new-args))))
 	(setq my-increment-current-format-function new-exp)
-	(insert-string (eval new-exp)))))
+	(insert (eval new-exp)))))
   
 ;;------------------------------------------------------------
 ;; епо©╢ь©Т
@@ -163,7 +163,7 @@
 	     (number-of-format (cdr lambda-copy-region-current-format))
 	     (element-list (make-list number-of-format
 				      element)))
-	(insert-string (eval (cons 'format (cons current-format element-list)))))))
+	(insert (eval (cons 'format (cons current-format element-list)))))))
 
 (provide 'myincrement)
 ;;; myincrement.el ends here

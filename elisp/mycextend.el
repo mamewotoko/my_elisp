@@ -209,38 +209,6 @@
 ;;gccのエラーコードを読む。エラー個所へ飛ぶ
 (defvar gcc-error-top "In function")
 
-;;------------------------------------------------------------
-;; バッファ名はどうでもいいのですがシェルであることが大前提です。
-;;
-;;
-(defvar default-shell-buffer-name "*shell*")
-
-;;------------------------------------------------------------
-;;shell出力のみ対応
-;;
-; (defun my-ez-length ()
-;   (let ((start (point)))
-;     (end-of-line)
-;     (+ 1 (- (point) start))))
-
-; (defun my-c-jump-to-error-point ()
-;   (interactive)
-;   (switch-to-buffer-other-window default-buffer-name)
-;   (end-of-buffer)
-;   (search-backward gcc-error-top)
-;   (comint-previous-prompt 1)
-;   (if (search-forward gcc-error-top)
-;       (progn (next-line 1)
-; 	     (my-c-jump-to-error-at-point))))
-
-;;------------------------------------------------------------
-;; シェルが立ち上がってることが前提。
-;;
-(defun my-c-jump-to-next-error ()
-  (interactive)
-  (switch-to-buffer-other-window default-shell-buffer-name)
-  (next-line 1)
-  (my-c-jump-to-error-at-point))
 
 ;;------------------------------------------------------------
 ;;シェルにカーソルがある。その行のエラーメッセージを読む

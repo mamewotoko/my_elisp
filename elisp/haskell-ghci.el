@@ -292,7 +292,7 @@ error line otherwise show the *ghci* buffer."
          "^\\([^:\n]+\\):\\([0-9]+\\):" nil t)
         (let ((efile (buffer-substring (match-beginning 1)
                                        (match-end 1)))
-              (eline (string-to-int (buffer-substring (match-beginning 2)
+              (eline (string-to-number (buffer-substring (match-beginning 2)
                                                       (match-end 2)))))
 
           (recenter 2)

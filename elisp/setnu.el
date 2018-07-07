@@ -308,7 +308,7 @@ the line number extents accordingly."
 		       e 'line-number (setnu-extent-property ee 'line-number))
 		      (setq e (setnu-extent-property e 'setnu-next-extent)
 			    ee (setnu-extent-property ee 'setnu-next-extent)))
-		    (setq n (1+ (string-to-int
+		    (setq n (1+ (string-to-number
 				 (setnu-extent-property
 				  (setnu-extent-property e 'setnu-prev-extent)
 				  'line-number))))
@@ -438,7 +438,7 @@ it is created based on where the extent failed to be found."
 	       (setnu-set-extent-property ee 'setnu-next-extent e)
 	       (setq numstr
 		     (format setnu-line-number-format
-			     (1+ (string-to-int
+			     (1+ (string-to-number
 				  (setnu-extent-property ee 'line-number)))))
 	       (setnu-set-extent-property e 'line-number numstr)
 	       (setnu-set-extent-begin-glyph e (setnu-number-glyph numstr))

@@ -1,4 +1,4 @@
-;;; myinsert.el --- Last modified: Tue Jun 19 21:16:51 2018
+;;; myinsert.el --- Last modified: Sat Jul 07 21:00:41 2018
 ;; Location: http://www002.upp.so-net.ne.jp/mamewo/sources/emacs/myinsert.el #
 ;; FTP Directory: sources/emacs #
 ;; Author: MASUYAMA Takashi <mamewotoko@gmail.com>
@@ -6,11 +6,33 @@
 ;;; Code:
 
 (require 'autoinsert)
-(load "myinsertlibs.el")
 
 (defconst sources-of-work "/home/tak/work/home/emfg/source/")
 (defconst my-c-ftp-directory "sources/c")
 (defconst my-line "------------------------------------------------------------")
+
+(defvar my-perl-path "/usr/bin/perl")
+(defvar my-auto-insert-path "~/lib/emacs/template/")
+(defvar my-web-base "https://mamewo.ddo.jp/")
+(defvar my-full-name "Takashi Masuyama")
+(defvar my-mail-address "mamewo@dk9.so-net.ne.jp")
+(defvar my-signature (format "Written by %s <%s>\n" my-full-name my-mail-address))
+
+(defun insert-header (start-comment end-comment)
+  (let ((this-file-name (file-name-nondirectory
+			  (buffer-file-name))))
+    (insert (concat start-comment
+			   " "
+			   this-file-name
+			   (let ((file-name-length (length this-file-name)))
+			     (if (> file-name-length 12)
+				 "\t"
+			       (if (> file-name-length 5)
+				   "\t\t" "\t\t\t")))
+			   "Created      : "
+			   (current-time-string)
+			   end-comment
+			   "\n"))))
 
 (add-hook  'find-file-hooks 'auto-insert)
 
@@ -28,7 +50,7 @@
 	  (concat (file-name-prefix this-file-name)
 		  ".h")))
     (if (file-exists-p header-file-name)
-	(insert-string
+	(insert
 	 (concat "#include \""
 		 (file-name-nondirectory header-file-name)
 		 "\"\n")))))
@@ -38,14 +60,14 @@
 (defun camllexer-header-function ()
   (let ((f (file-name-nondirectory (buffer-file-name))))
     (insert-header "(*" "*)")
-    (insert-string (format "(*  \t\t\t%s\n * Compile: ocamllex %s #\n *)\n\n" time-stamp-start f))
+    (insert (format "(*  \t\t\t%s\n * Compile: ocamllex %s #\n *)\n\n" time-stamp-start f))
     (insert-file camllexer-template-filename)
     ))
 
 (defun camlparser-header-function ()
   (let ((f (file-name-nondirectory (buffer-file-name))))
     (insert-header "/*" "*/")
-    (insert-string (format "/*  \t\t\t%s     \n * Compile: ocamlyacc %s #\n */\n\n" time-stamp-start f))
+    (insert (format "/*  \t\t\t%s     \n * Compile: ocamlyacc %s #\n */\n\n" time-stamp-start f))
     (insert-file camlparser-template-filename)
     ))
 
@@ -53,27 +75,27 @@
 
 (defun tex-template-function ()
   (insert-header "%%%" "")
-  (insert-string (concat "%%%\t\t\t"
+  (insert (concat "%%%\t\t\t"
 			 time-stamp-start
 			 "\n"))
   (let ((f (file-name-nondirectory (buffer-file-name))))
-    (insert-string (concat "%%%  Compile: " tex-compiler " " f "#\n")))
+    (insert (concat "%%%  Compile: " tex-compiler " " f "#\n")))
   (insert-file
    (concat auto-insert-directory "tex-template.tex")))
 
 (defun sh-template-function ()
-  (insert-string "#! /bin/sh\n"))
+  (insert "#! /bin/sh\n"))
 
 (defun perl-template-function ()
-  (insert-string (concat "#! /usr/bin/perl -w\n#" my-line "\n"))
+  (insert (concat "#! /usr/bin/perl -w\n#" my-line "\n"))
   (insert-header "#" "")
-  (insert-string (concat "#\t\t\t" time-stamp-start "\n#" my-line "\n# " my-signature "# FTP Directory: sources/perl #\nuse strict;\n\n")))
+  (insert (concat "#\t\t\t" time-stamp-start "\n#" my-line "\n# " my-signature "# FTP Directory: sources/perl #\nuse strict;\n\n")))
 
 (defun emacs-lisp-template-function ()
   (insert-header ";;" "")
   (let* ((file-name (file-name-nondirectory (buffer-file-name)))
 	 (prefix (file-name-prefix file-name)))
-    (insert-string (concat ";;\t\t\t" time-stamp-start "\n;;" my-line "\n;; " my-signature ";; FTP Directory: sources/emacs #\n;;\n\n\n(provide '" prefix ")\n" ))))
+    (insert (concat ";;\t\t\t" time-stamp-start "\n;;" my-line "\n;; " my-signature ";; FTP Directory: sources/emacs #\n;;\n\n\n(provide '" prefix ")\n" ))))
 
 (defun cgi-template-function () (perl-template-function))
 

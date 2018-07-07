@@ -1,5 +1,5 @@
 ;; myposition_history.el	Created      : Tue Jan  6 01:01:46 2004
-;;			Last modified: Tue Jan 06 01:02:07 2004
+;;			Last modified: Sat Jul 07 21:00:41 2018
 ;;------------------------------------------------------------
 ;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs #
@@ -18,7 +18,7 @@
 		   (progn
 		     (set-buffer target-buffer)
 		     (goto-char (point-max))
-		     (insert-string (format "%s:%d:\n" filename linenum)))))))))
+		     (insert (format "%s:%d:\n" filename linenum)))))))))
        (other-window 1)))
 
 

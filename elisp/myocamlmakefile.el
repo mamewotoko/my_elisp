@@ -40,7 +40,7 @@
 	       (s (if source source ""))
 	       (prefix (if source (file-name-prefix source) "")))
 	  (switch-to-buffer buf)
-	  (insert-string
+	  (insert
 	   (format "## Makefile\n## for OcamlMakefile\n## Compile: make #\nSOURCES = %s\nRESULT = %s\nOCAMLOPT = ocamlopt.opt\nall: native-code\ninclude $(OCAMLMAKEFILE)\n" s prefix))
 	  (write-file makefile-filename)
 	  (kill-buffer buf)
@@ -49,11 +49,11 @@
 (defun caml-header-function ()
   (let ((f (file-name-nondirectory (buffer-file-name))))
     (caml-make-ocamlmakefile f)
-    (insert-string
+    (insert
      "(************************************************************\n")
     (insert-header "  " "")
-    (insert-string (format "  \t\t\t%s\n  Compile: make #\n" time-stamp-start))
-    (insert-string
+    (insert (format "  \t\t\t%s\n  Compile: make #\n" time-stamp-start))
+    (insert
      "************************************************************)\n")))
 
 ;;; Code:

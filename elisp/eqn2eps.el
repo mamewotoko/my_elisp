@@ -226,7 +226,7 @@
 (defun eqn2eps-insert-filename (&optional scale)
   (interactive)
   (let ((filename (completing-read "filename: " eqn2eps-output-file-name-alist)))
-    (insert-string (concat "<img src=\"" filename "\" " 
+    (insert (concat "<img src=\"" filename "\" " 
 			   (my-get-image-size filename (or scale 1.0))
 			   ">"))))
     

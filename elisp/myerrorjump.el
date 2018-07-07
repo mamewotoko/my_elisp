@@ -34,8 +34,8 @@
   (if (file-exists-p filename)
       (progn
 	(find-file-other-window filename)
-	(goto-line (string-to-int line-number))
-	(forward-char (if charactor (string-to-int charactor) 0))
+	(goto-line (string-to-number line-number))
+	(forward-char (if charactor (string-to-number charactor) 0))
 	(message "done (file %s | line %s | char %s)" 
 		 filename line-number charactor)
 	t)

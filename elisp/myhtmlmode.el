@@ -63,27 +63,27 @@
 		  (setq r-beginning tmp)))
 	    ;;リージョンの最後に閉じタグ
 	    (goto-char r-end)
-	    (insert-string end)
+	    (insert end)
 	    ;;リージョンの最初に開きタグ
 	    (goto-char r-beginning)
-	    (insert-string start)
+	    (insert start)
 	    (if addition
 		(progn 
 		  (setq back nil)
-		  (insert-string (concat " " addition ">")) ;ad hoc
+		  (insert (concat " " addition ">")) ;ad hoc
 		  (backward-char 2))
-	      (insert-string ">"))))
+	      (insert ">"))))
       (if close
 	  (progn
-	    (insert-string (format "<%s></%s>" tag tag))
+	    (insert (format "<%s></%s>" tag tag))
 	    (search-backward "><")
 	    (if addition
 		(progn 
 		  (setq back nil)
-		  (insert-string (concat " " addition))
+		  (insert (concat " " addition))
 		  (backward-char 1))
 	      (forward-char 1)))
-	(insert-string (concat "<"
+	(insert (concat "<"
 			       (concat tag (if addition (concat " " addition) "")
 				       ">"))))
     (if back (goto-char here)))))
@@ -99,7 +99,7 @@
 	    (end (region-end))
 	    (element (buffer-substring start end)))
 	(delete-region start end)
-	(insert-string (format lambda-copy-region-current-format 
+	(insert (format lambda-copy-region-current-format 
 			       element)))))
   
 (defun my-html-copy-format-register-command ()
@@ -122,19 +122,19 @@
 
 (defun my-html-insert-space ()
   (interactive)
-  (insert-string "&nbsp;"))
+  (insert "&nbsp;"))
 
 (defun my-html-insert-br ()
   (interactive)
-  (insert-string "<br />"))
+  (insert "<br />"))
 
 (defun my-html-insert-paragraph
   (interactive)
-  (insert-string "<p>"))
+  (insert "<p>"))
 
 (defun my-html-insert-simple-table ()
   (interactive)
-  (insert-string "<table border=\"0\">\n<tr><td></td><td></td></tr>\n</table>\n")
+  (insert "<table border=\"0\">\n<tr><td></td><td></td></tr>\n</table>\n")
   (previous-line 2)
   (search-forward "td")
   (forward-char 1))
@@ -207,7 +207,7 @@
 
 (defun my-html-insert-table-column ()
   (let ((here (point)))
-    (insert-string "<tr><td></td><td></td></tr>")
+    (insert "<tr><td></td><td></td></tr>")
     (goto-char here)
     (forward-char 8)))
   
@@ -224,7 +224,7 @@
      ((= local-index ?a) (my-html-tag-insert "a" t))
      ((= local-index ?u) (my-html-tag-insert "u" t))
      ((= local-index ?U) (progn (my-html-tag-insert "ul" t)
-				(insert-string "\n\n")
+				(insert "\n\n")
 				(backward-char 1)
 				))
      ((= local-index ?B) (my-html-tag-insert "b" t))
@@ -232,13 +232,13 @@
      ((= local-index ?I) (my-html-tag-insert (read-input "tag: ") t))
      ((= local-index ?t) (my-html-insert-simple-table))
      ((= local-index ?c) (my-html-insert-table-column))
-     ((= local-index ?C) (progn (insert-string "<!--  -->")
+     ((= local-index ?C) (progn (insert "<!--  -->")
 				(backward-char 4)))
      ((= local-index ?h) (insert-string "http://")) ;httpをインサート
-     ((= local-index ?m) (insert-string "mailto:")) ;mail 
-     ((= local-index ?L) (insert-string "&lt;"))  
-     ((= local-index ?G) (insert-string "&gt;")) 
-     ((= local-index ?s) (insert-string "<table border=\"1\">
+     ((= local-index ?m) (insert "mailto:")) ;mail 
+     ((= local-index ?L) (insert "&lt;"))  
+     ((= local-index ?G) (insert "&gt;")) 
+     ((= local-index ?s) (insert "<table border=\"1\">
 <tr><td><pre>
 
 </pre></td></tr>

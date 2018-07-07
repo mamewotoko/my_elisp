@@ -46,7 +46,7 @@
 	 (buf
 	  (get-buffer-create
 	   my-java-api-search-output-buffer)))
-    (insert-string 
+    (insert 
      (format "<html><head><title>%sの検索結果</title></head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=euc-jp\"><body bgcolor=#ffffff><center><u>%sの検索結果</u></center><blockquote>%s</blockquote></body></html>"
 	     target target
 	     (shell-command-to-string 

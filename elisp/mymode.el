@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Thu Jun 21 20:34:50 2018
+;;; mymode.el --- Last modified: Sat Jul 07 20:49:10 2018
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -20,28 +20,11 @@
 ;; HTML mode
 ;;
 ;;
-(load "myhtmlmode.el")
-(defvar my-html-image-scale 0.4)
-(add-hook 'html-mode-hook
-	  '(lambda ()
-	     (define-key html-mode-map [(control space)]
-	       'my-html-insert-space)
-))
-
-(defun my-html-copy-format-command-and-other ()
-  (interactive)
-  (if (tooltip-region-active-p)
-      (let ((here (point))
-	    (start (region-beginning))
-	    (end (region-end)))
-	(my-copy-primary-selection-and-add-to-my-incremental start end)
-	(my-html-copy-format-register-function start end)
-	(goto-char here))))
 
 (setq flymake-python-pyflakes-executable "/usr/local/bin/flake8")
 
 (custom-set-variables
- '(flymake-python-pyflakes-extra-arguments (quote ("--max-line-length=120" "--ignore=E128,D103,E501,D100"))))
+ '(flymake-python-pyflakes-extra-arguments (quote ("--max-line-length=120" "--ignore=E128,D103,E501,D100,D103"))))
 
 (add-hook 'org-mode-hook '(lambda () (require org-ditaa)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -65,7 +48,6 @@
 ;; C/C++ mode
 ;;
 ;;
-;(load "mycextend.el")
 
 (setq-default c-basic-offset 4)
 
@@ -111,6 +93,12 @@
        (let ((filename (match-string 1 error-message))
 	     (line-number (match-string 2 error-message)))
 	 (my-error-jump-to-point filename line-number 0))))
+
+(defun my-xvcg-jump-to-error (error-message)
+  (and (string-match "^Syntax error (\\([^:]+\\): l:\\([0-9]+\\)" error-message)
+       (let ((filename (match-string 1 error-message))
+	     (linenumber (match-string 2 error-message)))
+	 (my-error-jump-to-point filename linenumber))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Shell mode
@@ -163,32 +151,33 @@
 ;(require 'search_ocaml_type)
 
 (require 'flymake-python-pyflakes)
-(setq flymake-python-pyflakes-executable "flake8")
-(add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
-
+(setq flymake-python-pyflakes-executable "/usr/local/bin/flake8")
 
 (custom-set-variables
  '(flymake-python-pyflakes-extra-arguments (quote ("--max-line-length=120"))))
+
+(add-hook 'python-mode-hook
+          '(lambda ()
+             (flymake-mode t)
+             (flymake-python-pyflakes-load)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; perl mode
 ;;
 ;;
-(load "myperlextend.el")
+;(load "myperlextend.el")
 
-(add-hook 'cperl-mode-hook
-	  '(lambda ()
-	     (define-key cperl-mode-map
-	       "\C-h"
-	       'backward-delete-char)
-	     ))
+;; (add-hook 'cperl-mode-hook
+;; 	  '(lambda ()
+;; 	     (define-key cperl-mode-map
+;; 	       "\C-h"
+;; 	       'backward-delete-char)
+;; 	     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; JDE mode
 ;;
 ;;
-;(load "myjavamode.el")
-;(load "myjavaapisearch.el")
 
 (add-hook 'java-mode-hook
 	  '(lambda ()
@@ -232,6 +221,30 @@
 ;		    (cons "\\.sml$" 'sml-mode))
 		    )
             auto-mode-alist))
+
+;;; tags
+;;;  Jonas.Jarnestrom<at>ki.ericsson.se A smarter               
+;;;  find-tag that automagically reruns etags when it cant find a               
+;;;  requested item and then makes a new try to locate it.                      
+;;;  Fri Mar 15 09:52:14 2002    
+(defadvice find-tag (around refresh-etags activate)
+  "Rerun etags and reload tags if tag not found and redo find-tag.              
+   If buffer is modified, ask about save before running etags."
+  (let ((extension (file-name-extension (buffer-file-name))))
+    (condition-case err
+        ad-do-it
+      (error (and (buffer-modified-p)
+                  (not (ding))
+                  (y-or-n-p "Buffer is modified, save it? ")
+                  (save-buffer))
+             (er-refresh-etags extension)
+             ad-do-it))))
+(defun er-refresh-etags (&optional extension)
+  "Run etags on all peer files in current dir and reload them silently."
+  (interactive)
+  (shell-command (format "etags *.%s" (or extension "el")))
+  (let ((tags-revert-without-query t))  ; don't query, revert silently          
+    (visit-tags-table default-directory nil)))
 
 (provide 'mymode)
 ;;; mymode.el ends here
