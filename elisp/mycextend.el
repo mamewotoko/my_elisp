@@ -60,7 +60,7 @@
 (defun my-c-insert-treat-option ()
   (let ((subscript (read-string "index: " "i"))
 	(begining-point (point)))
-    (insert-string
+    (insert
      (format
       "for(int %s = 1; %s < argc; %s++) {\nif(strcmp(argv[%s],\"\") == 0){\n}\n}\n"
       subscript subscript subscript subscript))

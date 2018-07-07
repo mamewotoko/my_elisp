@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Sat Jul 07 21:19:11 2018
+;;			Last modified: Sun Jul 08 07:05:31 2018
 ;;------------------------------------------------------------
 ;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs ;;
@@ -16,7 +16,7 @@
 
 (package-initialize) ;; You might already have this line
 
-(require 'tuareg)
+;(require 'tuareg)
 (setq shell-command-switch "-ic")
 (setq backup-directory-alist
           `((".*" . ,temporary-file-directory)))
@@ -115,9 +115,6 @@
 (global-set-key [f1] 'help-command)
 (setq help-char nil)
 
-(require 'wgrep)
-(require 'wgrep-ag)
-
 (display-time)
 (setq display-time-day-and-date t)
 (setq display-time-default-load-average nil)
@@ -143,8 +140,31 @@
 (setq grep-use-null-device nil)
 ;(ansi-color-for-comint-mode-on)
 
-nil
 ;; for emacs26
 (defalias 'insert 'insert)
+
+(use-package 'magit)
+(global-set-key "\C-xg" 'magit-status)
+
+(use-package 'flymake-python-pyflakes)
+(setq flymake-python-pyflakes-executable "/usr/local/bin/flake8")
+
+(custom-set-variables
+ '(flymake-python-pyflakes-extra-arguments (quote ("--max-line-length=120"))))
+
+(use-package 'ssh)
+(setq ssh-directory-tracking-mode 'ftp)
+(add-hook 'ssh-mode-hook
+          '(lambda ()
+            (shell-dirtrack-mode t)
+            (setq dirtrackp nil)))
+
+(use-package 'markdown-mode)
+(add-hook 'markdown-mode-hook
+           '(lambda ()
+              (flyspell-mode)))
+
+(use-package 'wgrep)
+(use-package 'wgrep-ag)
 
 (provide 'myinit)

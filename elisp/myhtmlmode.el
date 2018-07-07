@@ -234,7 +234,7 @@
      ((= local-index ?c) (my-html-insert-table-column))
      ((= local-index ?C) (progn (insert "<!--  -->")
 				(backward-char 4)))
-     ((= local-index ?h) (insert-string "http://")) ;httpをインサート
+     ((= local-index ?h) (insert "http://")) ;httpをインサート
      ((= local-index ?m) (insert "mailto:")) ;mail 
      ((= local-index ?L) (insert "&lt;"))  
      ((= local-index ?G) (insert "&gt;")) 

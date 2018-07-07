@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Sat Jul 07 20:49:10 2018
+;;; mymode.el --- Last modified: Sun Jul 08 06:54:39 2018
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -150,12 +150,6 @@
 ;(defvar my-ocaml-manual-url "file:///home/tak/Doc/htmlman/index.html")
 ;(require 'search_ocaml_type)
 
-(require 'flymake-python-pyflakes)
-(setq flymake-python-pyflakes-executable "/usr/local/bin/flake8")
-
-(custom-set-variables
- '(flymake-python-pyflakes-extra-arguments (quote ("--max-line-length=120"))))
-
 (add-hook 'python-mode-hook
           '(lambda ()
              (flymake-mode t)
@@ -187,18 +181,6 @@
 	  '(lambda ()
 	     (define-key calendar-mode-map
 	       "\C-v" (other-window 1))))
-
-(require 'ssh)
-(setq ssh-directory-tracking-mode 'ftp)
-(add-hook 'ssh-mode-hook
-          '(lambda ()
-            (shell-dirtrack-mode t)
-            (setq dirtrackp nil)))
-
-(require 'markdown-mode)
-(add-hook 'markdown-mode-hook
-           '(lambda ()
-              (flyspell-mode)))
 
 (setq auto-mode-alist
       (append (list

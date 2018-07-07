@@ -1,5 +1,5 @@
 ;;; mykeymap.el
-;;                         Last modified: Sat Jul 07 21:00:41 2018
+;;                         Last modified: Sun Jul 08 06:47:08 2018
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords: 
@@ -31,8 +31,6 @@
                                  (ps-print-buffer ps-filename))))
 
                                         ;(global-set-key "\C-x\C-f" 'helm-find-files)
-(require 'magit)
-(global-set-key "\C-xg" 'magit-status)
 
 ;;;ブックマークをつける
 ;;(global-set-key "\C-b" 'bookmark-set)
