@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Sun Jul 08 07:05:31 2018
+;;			Last modified: Sun Jul 08 07:13:18 2018
 ;;------------------------------------------------------------
 ;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs ;;
@@ -131,7 +131,7 @@
 (setq enable-recursive-minibuffers nil)
 
 (add-to-list 'load-path (expand-file-name "~/lib/emacs/elisp/scala-mode"))
-(load "yaml-mode.el")
+(require 'yaml-mode)
 (setq time-stamp-line-limit 30)
 
 ;;(set-frame-height (selected-frame) 40)
@@ -143,28 +143,28 @@
 ;; for emacs26
 (defalias 'insert 'insert)
 
-(use-package 'magit)
+(require 'magit)
 (global-set-key "\C-xg" 'magit-status)
 
-(use-package 'flymake-python-pyflakes)
+(require 'flymake-python-pyflakes)
 (setq flymake-python-pyflakes-executable "/usr/local/bin/flake8")
 
 (custom-set-variables
  '(flymake-python-pyflakes-extra-arguments (quote ("--max-line-length=120"))))
 
-(use-package 'ssh)
+(require 'ssh)
 (setq ssh-directory-tracking-mode 'ftp)
 (add-hook 'ssh-mode-hook
           '(lambda ()
             (shell-dirtrack-mode t)
             (setq dirtrackp nil)))
 
-(use-package 'markdown-mode)
+(require 'markdown-mode)
 (add-hook 'markdown-mode-hook
            '(lambda ()
               (flyspell-mode)))
 
-(use-package 'wgrep)
-(use-package 'wgrep-ag)
+(require 'wgrep)
+(require 'wgrep-ag)
 
 (provide 'myinit)
