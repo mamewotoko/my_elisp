@@ -5,4 +5,4 @@ world:
 	emacs -batch -q -l compile-file.el -e batch-byte-compile *.el
 
 clean:
-	rm *~
+	rm -f *~ *.elc
