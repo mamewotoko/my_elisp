@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Sun Jul 08 07:13:18 2018
+;;			Last modified: Sun Jul 15 07:24:49 2018
 ;;------------------------------------------------------------
 ;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs ;;
@@ -30,6 +30,7 @@
 (setq bookmark-save-flag 1)
 
 (setq ring-bell-function 'ignore)
+;; customized
 (load "ssh.el")
 
 (with-eval-after-load 'merlin
@@ -133,9 +134,6 @@
 (add-to-list 'load-path (expand-file-name "~/lib/emacs/elisp/scala-mode"))
 (require 'yaml-mode)
 (setq time-stamp-line-limit 30)
-
-;;(set-frame-height (selected-frame) 40)
-;(setq comint-scroll-show-maximum-output t)
 
 (setq grep-use-null-device nil)
 ;(ansi-color-for-comint-mode-on)
