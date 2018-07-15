@@ -4,13 +4,13 @@
 
 ;;; Commentary:
 
-;; ¤ä¤¿¤é¥ê¡¼¥¸¥ç¥ó»ØÄê¤·¤Ş¤¹¡£
+;; ã‚„ãŸã‚‰ãƒªãƒ¼ã‚¸ãƒ§ãƒ³æŒ‡å®šã—ã¾ã™ã€‚
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ¹¹¿·ÍúÎò
+;; æ›´æ–°å±¥æ­´
 ; 2002/ 5/23
-;  my-html-browse-location¤òÄÉ²Ã¡£
-;  ¤¢¤ë¥Õ¥¡¥¤¥ë¤Ë´ØÏ¢¤·¤Æ¤¤¤ëWeb¥Ú¡¼¥¸¤ò¤ß¤ë
-;  ·ë²Ì¤Î³ÎÇ§¤È¤«
+;  my-html-browse-locationã‚’è¿½åŠ ã€‚
+;  ã‚ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã«é–¢é€£ã—ã¦ã„ã‚‹Webãƒšãƒ¼ã‚¸ã‚’ã¿ã‚‹
+;  çµæœã®ç¢ºèªã¨ã‹
 ; 2003/ 8/ 3
 ;  s/BORDER/border/;
 
@@ -48,7 +48,7 @@
 	(back nil)
 	(addition (my-search-alist2 tag my-html-tag-alist 'equal)))
     (if (tooltip-region-active-p)
-	;;¥ê¡¼¥¸¥ç¥ó¤ò¤Ï¤µ¤à
+	;;ãƒªãƒ¼ã‚¸ãƒ§ãƒ³ã‚’ã¯ã•ã‚€
 	(progn 
 	  (setq back t)
 	  (let* ((start (concat "<" tag))
@@ -61,10 +61,10 @@
 		  (setq tmp r-end)
 		  (setq r-end r-beginning)
 		  (setq r-beginning tmp)))
-	    ;;¥ê¡¼¥¸¥ç¥ó¤ÎºÇ¸å¤ËÊÄ¤¸¥¿¥°
+	    ;;ãƒªãƒ¼ã‚¸ãƒ§ãƒ³ã®æœ€å¾Œã«é–‰ã˜ã‚¿ã‚°
 	    (goto-char r-end)
 	    (insert end)
-	    ;;¥ê¡¼¥¸¥ç¥ó¤ÎºÇ½é¤Ë³«¤­¥¿¥°
+	    ;;ãƒªãƒ¼ã‚¸ãƒ§ãƒ³ã®æœ€åˆã«é–‹ãã‚¿ã‚°
 	    (goto-char r-beginning)
 	    (insert start)
 	    (if addition
@@ -90,7 +90,7 @@
 
 
 ;;------------------------------------------------------------
-;; ¥¹¥¿¡¼¥È°ÌÃÖ¤Ë¥«¡¼¥½¥ë¤ò¤ª¤¯
+;; ã‚¹ã‚¿ãƒ¼ãƒˆä½ç½®ã«ã‚«ãƒ¼ã‚½ãƒ«ã‚’ãŠã
 ;;
 (defun my-html-copy-format-yank ()
   (interactive)
@@ -135,14 +135,14 @@
 (defun my-html-insert-simple-table ()
   (interactive)
   (insert "<table border=\"0\">\n<tr><td></td><td></td></tr>\n</table>\n")
-  (previous-line 2)
+  (forward-line -2)
   (search-forward "td")
   (forward-char 1))
 
 (defvar my-html-target-regexp "\\(name\\|NAME\\)=\"")
 ;;------------------------------------------------------------
-;; °ìÈÖ¶á¤¤¥¿¡¼¥²¥Ã¥ÈÌ¾¤Çbrowse¤¹¤ë
-;; ¤Á¤Ê¤ß¤Ëmeta name¤Ç¤â¥Ş¥Ã¥Á¤·¤Ş¤¹¡£µ¤¤Ë¤·¤Ê¤¤¡£
+;; ä¸€ç•ªè¿‘ã„ã‚¿ãƒ¼ã‚²ãƒƒãƒˆåã§browseã™ã‚‹
+;; ã¡ãªã¿ã«meta nameã§ã‚‚ãƒãƒƒãƒã—ã¾ã™ã€‚æ°—ã«ã—ãªã„ã€‚
 (defun my-html-browse-nearest-target ()
   (interactive)
   (let ((here (point))
@@ -162,8 +162,8 @@
 
 (defvar href-sharp-limit 20)
 ;;------------------------------------------------------------
-;; target¤Ø¥¸¥ã¥ó¥×
-;; flag = nil ¤Ç¥Õ¥¡¥¤¥ë¤ò³«¤¯
+;; targetã¸ã‚¸ãƒ£ãƒ³ãƒ—
+;; flag = nil ã§ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 (defun my-html-jump ()
   (interactive)
   (let ((here (point))
@@ -172,11 +172,11 @@
     (if (search-backward-regexp "\\(href\\|name\\|NAME\\)=\"" 0 t)
 	(let ((matched-point (point)))
 	  (if (eq (char-after) ?h)
-	      ;; href¤«¤é¥¸¥ã¥ó¥×
+	      ;; hrefã‹ã‚‰ã‚¸ãƒ£ãƒ³ãƒ—
 	      (progn
 		(if (search-forward "\""
 				    (+ matched-point href-sharp-limit)
-				    t) ;¤³¤³¤é¤Ø¤ó¤Î¥¨¥é¡¼½èÍı¤Ï¡©
+				    t) ;ã“ã“ã‚‰ã¸ã‚“ã®ã‚¨ãƒ©ãƒ¼å‡¦ç†ã¯ï¼Ÿ
 		    (progn
 		      (if (eq (char-after) ?#)
 			  (forward-char 1)
@@ -188,14 +188,14 @@
 			     (if flag
 				 (setq obj (concat my-html-target-regexp name))
 			       (setq obj name))))))
-	    ;;name¤«¤é¤¸¤ã¡¼¤ó¤×
+	    ;;nameã‹ã‚‰ã˜ã‚ƒãƒ¼ã‚“ã·
 	    (progn 
-	      (search-forward "\"") ;¤³¤³¤é¤Ø¤ó¤Î¥¨¥é¡¼½èÍı¤Ï¡©
+	      (search-forward "\"") ;ã“ã“ã‚‰ã¸ã‚“ã®ã‚¨ãƒ©ãƒ¼å‡¦ç†ã¯ï¼Ÿ
 	      (setq name (thing-at-point 'filename))
 	      (setq obj (concat "href=\"#" name))))
 	  (if flag
 	      (progn
-		(beginning-of-buffer)
+                (goto-char (point-max))
 		(if (not (search-forward-regexp obj (point-max) t))
 		    (progn
 		      (message "Can't find target %s (regexp %s)" name obj)
@@ -229,12 +229,12 @@
 				))
      ((= local-index ?B) (my-html-tag-insert "b" t))
      ((= local-index ?i) (my-html-tag-insert "i" t))
-     ((= local-index ?I) (my-html-tag-insert (read-input "tag: ") t))
+     ((= local-index ?I) (my-html-tag-insert (read-string "tag: ") t))
      ((= local-index ?t) (my-html-insert-simple-table))
      ((= local-index ?c) (my-html-insert-table-column))
      ((= local-index ?C) (progn (insert "<!--  -->")
 				(backward-char 4)))
-     ((= local-index ?h) (insert "http://")) ;http¤ò¥¤¥ó¥µ¡¼¥È
+     ((= local-index ?h) (insert "http://")) ;httpã‚’ã‚¤ãƒ³ã‚µãƒ¼ãƒˆ
      ((= local-index ?m) (insert "mailto:")) ;mail 
      ((= local-index ?L) (insert "&lt;"))  
      ((= local-index ?G) (insert "&gt;")) 
@@ -242,7 +242,7 @@
 <tr><td><pre>
 
 </pre></td></tr>
-</table>")) ;;¥½¡¼¥¹¤òÉ½¼¨¡£¥Ü¡¼¥À¡¼1¤ÎÏÈ¤Ç°Ï¤à
+</table>")) ;;ã‚½ãƒ¼ã‚¹ã‚’è¡¨ç¤ºã€‚ãƒœãƒ¼ãƒ€ãƒ¼1ã®æ ã§å›²ã‚€
      )))
 
 (provide 'myhtmlmode)

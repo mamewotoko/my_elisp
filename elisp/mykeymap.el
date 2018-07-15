@@ -1,5 +1,5 @@
 ;;; mykeymap.el
-;;                         Last modified: Sun Jul 08 06:47:08 2018
+;;                         Last modified: Sun Jul 15 09:43:50 2018
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords: 
@@ -96,6 +96,7 @@
     (condition-case nil
       (tramp-file-name-user 
        (with-parsed-tramp-file-name buffer-file-name nil
+         ;; v is defined in with-parsed-tramp-file-name macro
          (if (not (tramp-file-name-p v))
              (shell)
            (let ((method (tramp-file-name-method v))
@@ -119,7 +120,7 @@
   (if buffer
       (shell buffer)
     (shell))
-  (end-of-buffer)
+  (goto-char (point-max))
   (insert command)
   (comint-send-input)
   (comint-next-prompt 1))

@@ -1,4 +1,4 @@
-;;; myinsert.el --- Last modified: Sat Jul 07 21:07:38 2018
+;;; myinsert.el --- Last modified: Sun Jul 15 09:49:38 2018
 ;; Location: http://www002.upp.so-net.ne.jp/mamewo/sources/emacs/myinsert.el #
 ;; FTP Directory: sources/emacs #
 ;; Author: MASUYAMA Takashi <mamewotoko@gmail.com>
@@ -61,14 +61,14 @@
   (let ((f (file-name-nondirectory (buffer-file-name))))
     (insert-header "(*" "*)")
     (insert (format "(*  \t\t\t%s\n * Compile: ocamllex %s #\n *)\n\n" time-stamp-start f))
-    (insert-file camllexer-template-filename)
+    (insert-file-contents camllexer-template-filename)
     ))
 
 (defun camlparser-header-function ()
   (let ((f (file-name-nondirectory (buffer-file-name))))
     (insert-header "/*" "*/")
     (insert (format "/*  \t\t\t%s     \n * Compile: ocamlyacc %s #\n */\n\n" time-stamp-start f))
-    (insert-file camlparser-template-filename)
+    (insert-file-contents camlparser-template-filename)
     ))
 
 (defvar tex-compiler "platex")
@@ -80,7 +80,7 @@
 			 "\n"))
   (let ((f (file-name-nondirectory (buffer-file-name))))
     (insert (concat "%%%  Compile: " tex-compiler " " f "#\n")))
-  (insert-file
+  (insert-file-contents
    (concat auto-insert-directory "tex-template.tex")))
 
 (defun sh-template-function ()
@@ -100,19 +100,18 @@
 (defun cgi-template-function () (perl-template-function))
 
 (defun opa-template-function ()
-  (insert-file (concat my-auto-insert-path
-		      "opa-template.opa"))
-  (end-of-buffer))
+  (insert-file-contents (concat my-auto-insert-path
+		                "opa-template.opa"))
+  (goto-char (point-max)))
 
 (defun html-template-function ()
   (insert-file-contents (concat my-auto-insert-path
                                 "html-template.html"))
-                                        ;(beginning-of-buffer)
   (goto-char (point-min))
   (replace-string "[LOCATION]"
 		  (concat my-web-base "/" 
 			  (file-name-nondirectory (buffer-file-name))))
-  (beginning-of-buffer))
+  (goto-char (point-min)))
 
 (setq auto-insert-query nil
       auto-insert-directory my-auto-insert-path
