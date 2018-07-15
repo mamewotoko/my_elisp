@@ -1,6 +1,6 @@
 ;;; eqn2eps.el --- emacs interface for eqn2eps
 ;; Author: Katsuaki KAWACHI <kawachi@cim.pe.u-tokyo.ac.jp>
-;; Edit: Takashi Masuyama <mamewo@okuiaki.com>
+;; Edit: Takashi Masuyama <mamewotoko@gmail.com>
 ;; ver 0.1  : 03 Nov 1997
 ;; ver 0.11 : 06 Nov 1997
 ;; ver 0.12 : 11 Nov 1997
@@ -103,7 +103,7 @@
 (defun eqn2eps-mode (&optional x)
   "Toggle GIF or EPSI"
   (interactive)
-  (if (interactive-p)
+  (if (called-interactively-p)
       (if eqn2eps-make-epsi
           (progn (setq eqn2eps-make-epsi nil)
                  (message "eqn2eps: GIF mode"))
@@ -114,7 +114,7 @@
 (defun eqn2eps-set-mag (&optional m)
   "Set magnification"
   (interactive)
-  (if (interactive-p)
+  (if (called-interactively-p)
       (progn
         (setq m (read-from-minibuffer
                  "eqn2eps magnification (1000 means 100%) :" nil nil t nil))))
@@ -218,15 +218,4 @@
                                 " running, kill it? "))
            (delete-process process))
           (t (error "Cannot have two ean2ps processes")))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; セーブしたファイル名をinsertする。
-;;
-(load "mylibrary.el")
-(defun eqn2eps-insert-filename (&optional scale)
-  (interactive)
-  (let ((filename (completing-read "filename: " eqn2eps-output-file-name-alist)))
-    (insert (concat "<img src=\"" filename "\" " 
-			   (my-get-image-size filename (or scale 1.0))
-			   ">"))))
     

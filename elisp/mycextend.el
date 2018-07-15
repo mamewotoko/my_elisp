@@ -31,7 +31,7 @@
 (defun my-print-variable (f)
   (interactive)
   (let ((variable (read-string "variable: ")))
-    (insert-string (format f variable variable))))
+    (insert (format f variable variable))))
 	
 (defvar my-c-print-format "printf(\"%s: %%s\\n\",%s);\n")
 (defvar my-c++-print-format "cout << \"%s: \" << %s << endl;\n")
@@ -47,15 +47,15 @@
      ((= local-index ?f) (c++-insert-incremental-for))
      ((= local-index ?i) (my-c-insert-if))
      ((= local-index ?I) (my-c-insert-conditional-compile))
-     ((= local-index ?L) (insert-string "__LINE__"))
-     ((= local-index ?F) (insert-string
+     ((= local-index ?L) (insert "__LINE__"))
+     ((= local-index ?F) (insert
 			  "FILE* [input/output] = fopen([filename],\"rw\");"))
      ((= local-index ?m) (my-c++-insert-method-head))
      ((= local-index ?o) (my-c-insert-treat-option))
-     ((= local-index ?p) (progn (insert-string "printf(\"\\n\");\n")
+     ((= local-index ?p) (progn (insert "printf(\"\\n\");\n")
 				(backward-char 6)))
      ((= local-index ?v) (my-print-variable my-c++-print-format))
-     ))) ;insert-optition
+     ))) ;insert-option
 
 (defun my-c-insert-treat-option ()
   (let ((subscript (read-string "index: " "i"))
@@ -76,7 +76,7 @@
   (interactive)
   (let* ((class-name (my-c++-get-classname))
 	 (method_header (format "%s::(){\n}\n" class-name)))
-    (insert-string method_header)
+    (insert method_header)
     (backward-char 6)))
 
 (defun my-make-up-up-name (string)
@@ -128,7 +128,7 @@
       (progn
 	(setq start (point))
 	(setq end (+ start insert-length))
-	(insert-string
+	(insert
 	 (concat start-string c++-insert-incremental-for-end-string))
                                         ;(previous-line 2)))
         (forward-line -2)))
@@ -160,7 +160,7 @@
     (progn 
       (if (not (eq (char-before)?\n))
 	  (insert-char ?\n))
-      (insert-string "#ifdef \n#endif\n");
+      (insert "#ifdef \n#endif\n");
                                         ;(previous-line 2)
       (forward-line -2)
       (end-of-line))))
@@ -179,7 +179,7 @@
 	  (goto-char start))
       (progn 
 	(setq start (point))
-	(insert-string "if() {\n}")
+	(insert "if() {\n}")
 	(setq end (point))))
     (c-indent-region start end)
     (goto-char start)
