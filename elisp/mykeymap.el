@@ -1,25 +1,32 @@
-;;; mykeymap.el
-;;                         Last modified: Sun Jul 15 09:43:50 2018
+;;;　mykeymap.el --- keybindings
+;;; Commentary:
+;;                         Last modified: Sun Feb 10 09:41:06 2019
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
-;; Keywords: 
+;; Keywords:
+
+;;; Code:
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;;;キーバインドの変更
 
 ;(global-set-key "\C-ci" 'my-insert-item-menu)
 ;(global-set-key "\C-cy" 'my-increment-by-current-format-function)
+
 (global-set-key "\C-cl" 'locate)
 
 ;;;ジャンプ
 (global-set-key "\C-l" 'goto-line)
 (global-set-key "\C-c\C-j" 'my-goto-error)
 
+(global-set-key (kbd "C-c g l") 'git-link)
+(global-set-key (kbd "C-c g c") 'git-link-commit)
+
 ;;;置換
 (global-set-key "\C-cr" 'query-replace)
 ;(global-set-key "\C-ct" 'insert-date-yy/mm/dd-format)
-(global-set-key "\C-cf" 'insert-file-name)
-(global-set-key "\C-cp" 'insert-file-name-prefix)
+;(global-set-key "\C-cf" 'insert-file-name)
+;(global-set-key "\C-cp" 'insert-file-name-prefix)
 
 (define-key global-map [?¥] [?\\])  ;; ¥の代わりにバックスラッシュを入力する
 
@@ -142,14 +149,22 @@
 (define-key shell-mode-map "\C-p" 'comint-previous-input)
 (define-key shell-mode-map "\C-n" 'comint-next-input)
 
-(global-set-key [(shift f8)] '(lambda () (interactive) (ssh "deskvm")))
-(global-set-key [(shift f7)] '(lambda () (interactive) (ssh "mamewo")))
+(global-set-key [(shift f8)] '(lambda () (interactive) (ssh "mamewo")))
+(global-set-key [(shift f7)] '(lambda () (interactive) (ssh "deskvm")))
 (global-set-key [(shift f6)] '(lambda () (interactive) (ssh "google")))
 (global-set-key [(shift f5)] '(lambda () (interactive) (ssh "vm")))
 
-(require 'flymake)
-(global-set-key (kbd "<M-up>") 'flymake-goto-previous-error)
-(global-set-key (kbd "<M-down>") 'flymake-goto-next-error)
+;(require 'flymake)
+;(global-set-key (kbd "<M-up>") 'flymake-goto-previous-error)
+;(global-set-key (kbd "<M-down>") 'flymake-goto-next-error)
+
+(require 'flycheck)
+(global-set-key (kbd "<M-up>") 'flycheck-previous-error)
+(global-set-key (kbd "<M-down>") 'flycheck-next-error)
+
+;; (global-set-key (kbd "M-x") 'smex)
+;; (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+(global-set-key (kbd "M-x") 'helm-M-x)
 
 ;(define-key ctl-x-map [f8] 'ssh)
 (global-set-key [(super h)] 'ignore)
@@ -172,10 +187,10 @@
      (lisp-interaction-mode)
 ))
 
-(global-set-key [(shift f11)]
+(global-set-key [(control f11)]
   '(lambda ()
      (interactive)
-     (find-file "~/dev/diary/diary.org")
+     (find-file "~/dev/diary/diary.md")
 ))
 
 (global-set-key [f12] 'bookmark-bmenu-list)

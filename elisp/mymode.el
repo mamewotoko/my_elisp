@@ -1,8 +1,8 @@
-;;; mymode.el --- Last modified: Sun Jul 08 06:54:39 2018
+;;; mymode.el --- Last modified: Sat Oct 13 17:33:22 2018
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
-;; 2003/ 2/ 5 gdb §Œ•®•È°º•∏•„•Û•◊§Úƒ…≤√°£•®•È°º•∏•„•Û•◊§Ú¬Á…˝≤˛¬§
-;;   myerrorjump.el §À•∏•„•Û•◊•Î°º•¡•Û§Ú∆˛§Ï§ø°£
+;; 2003/ 2/ 5 gdb „ÅÆ„Ç®„É©„Éº„Ç∏„É£„É≥„Éó„ÇíËøΩÂä†„ÄÇ„Ç®„É©„Éº„Ç∏„É£„É≥„Éó„ÇíÂ§ßÂπÖÊîπÈÄ†
+;;   myerrorjump.el „Å´„Ç∏„É£„É≥„Éó„É´„Éº„ÉÅ„É≥„ÇíÂÖ•„Çå„Åü„ÄÇ
 
 ;; namazu indexes
 (defconst emacs-namazu-dir "/home/tak/.Elisp_namazu")
@@ -17,43 +17,12 @@
 (define-key Info-mode-map "\M-n" 'my-Info-search-next)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; HTML mode
-;;
-;;
-
-(setq flymake-python-pyflakes-executable "/usr/local/bin/flake8")
-
-(custom-set-variables
- '(flymake-python-pyflakes-extra-arguments (quote ("--max-line-length=120" "--ignore=E128,D103,E501,D100,D103"))))
-
-(add-hook 'org-mode-hook '(lambda () (require org-ditaa)))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Mew mode
-;;
-;;
-;; (add-hook 'mew-message-mode-hook
-;; 	  '(lambda ()
-;; 	     (define-key mew-message-mode-map [(shift button2)]
-;; 	       'browse-url-at-mouse)))
-;; (add-hook 'mew-summary-mode-hook
-;; 	  '(lambda ()
-;; 	     (make-local-variable 'namazu-default-dir)
-;; 	     (setq namazu-default-dir (expand-file-name "~/.Mail_namazu"))))
-
-;(add-hook 'mew-draft-mode-hook
-;	  '(lambda ()
-;	     (auto-fill-mode 1)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; C/C++ mode
 ;;
-;;
-
 (setq-default c-basic-offset 4)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Shell Script mode
-;;
 ;;
 (add-hook 'shell-script-mode-hook
 	  '(lambda ()
@@ -62,7 +31,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Emacs Lisp mode
-;;
 ;;
 (add-hook 'emacs-lisp-mode-hook
 	  '(lambda ()
@@ -74,7 +42,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Makefile mode
-;;
 ;;
 (add-hook 'makefile-mode-hook
 	  '(lambda ()
@@ -125,8 +92,6 @@
        (my-gdb-jump-to-point-sub error-message)
 	  (progn (message "no error found") (goto-char start-point) nil)))))
 
-;(require 'dirtrack)
-
 (add-hook 'shell-mode-hook
 	  '(lambda ()
 	     (define-key shell-mode-map [f12] 'dirs)
@@ -140,7 +105,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; caml mode
 ;;
-;;
 ;(require 'caml)
 ;(require 'caml-font)
 ;(load "mycamlapi.el")
@@ -150,28 +114,22 @@
 ;(defvar my-ocaml-manual-url "file:///home/tak/Doc/htmlman/index.html")
 ;(require 'search_ocaml_type)
 
-(add-hook 'python-mode-hook
+;; ruby
+(add-hook 'ruby-mode-hook
           '(lambda ()
-             (flymake-mode t)
-             (flymake-python-pyflakes-load)))
+             (setq flycheck-checker 'ruby-rubocop)
+             (flycheck-mode 1)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; perl mode
-;;
-;;
-;(load "myperlextend.el")
-
-;; (add-hook 'cperl-mode-hook
-;; 	  '(lambda ()
-;; 	     (define-key cperl-mode-map
-;; 	       "\C-h"
-;; 	       'backward-delete-char)
-;; 	     ))
+;; ssh config
+(autoload 'ssh-config-mode "ssh-config-mode" t)
+(add-to-list 'auto-mode-alist '("/\\.ssh/config\\'"     . ssh-config-mode))
+(add-to-list 'auto-mode-alist '("/sshd?_config\\'"      . ssh-config-mode))
+(add-to-list 'auto-mode-alist '("/known_hosts\\'"       . ssh-known-hosts-mode))
+(add-to-list 'auto-mode-alist '("/authorized_keys2?\\'" . ssh-authorized-keys-mode))
+(add-hook 'ssh-config-mode-hook 'turn-on-font-lock)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; JDE mode
-;;
-;;
 
 (add-hook 'java-mode-hook
 	  '(lambda ()

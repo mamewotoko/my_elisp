@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Sun Jul 15 07:24:49 2018
+;;			Last modified: Tue Jan 29 19:13:37 2019
 ;;------------------------------------------------------------
 ;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs ;;
@@ -7,7 +7,6 @@
 (require 'package)
 (add-to-list 'package-archives
              '("melpa-stable" . "http://stable.melpa.org/packages/") t)
-
 (when (< emacs-major-version 24)
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
@@ -16,7 +15,25 @@
 
 (package-initialize) ;; You might already have this line
 
-;(require 'tuareg)
+(scroll-bar-mode -1)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(setq scroll-step 1)
+
+;;; sdic
+(setq load-path (cons (expand-file-name "~/lib/emacs/elisp/sdic-2.1.3/lisp") load-path))
+(autoload 'sdic-describe-word "sdic" "英単語の意味を調べる" t nil)
+(global-set-key "\C-cw" 'sdic-describe-word)
+(autoload 'sdic-describe-word-at-point "sdic" "カーソルの位置の英単語の意味を調べる" t nil)
+(global-set-key "\C-cW" 'sdic-describe-word-at-point)
+
+;; (ido-mode 0)
+;; (ido-everywhere 0)
+;; (ido-vertical-mode 1)
+;(setq ido-enable-flex-matching t)
+
+(setq dired-listing-switches "-alh")
+
 (setq shell-command-switch "-ic")
 (setq backup-directory-alist
           `((".*" . ,temporary-file-directory)))
@@ -24,7 +41,7 @@
       `((".*" ,temporary-file-directory t)))
 
 (desktop-save-mode 1)
-;(which-function-mode nil)
+
 (setq desktop-restore-eager 3)
 (setq max-lisp-eval-depth 10000)
 (setq bookmark-save-flag 1)
@@ -32,6 +49,9 @@
 (setq ring-bell-function 'ignore)
 ;; customized
 (load "ssh.el")
+
+;; skip warning
+(setq exec-path-from-shell-check-startup-files nil)
 
 (with-eval-after-load 'merlin
   ;; Disable Merlin's own error checking
@@ -42,11 +62,14 @@
 
 (add-hook 'tuareg-mode-hook #'merlin-mode)
 
+; (require 'anything-config)
+
 ;;; Mac-only configuration to use command and options keys
 (when (and (eq system-type 'darwin) (display-graphic-p))
   (setq mac-pass-command-to-system nil)
 
-  (set-face-font 'default "Monaco-11")
+  (set-face-font 'default "Monaco-13")
+  (set-face-attribute 'mode-line nil :font "Monaco-11")
   (set-background-color "#003300")
   (set-foreground-color "light gray")
 
@@ -80,9 +103,8 @@
 
 (auto-compression-mode t)
 (set-fringe-mode 1)
-(setq calendar-week-start-day 1)
 
-; utf8 
+;; utf8
 (set-language-environment "Japanese")
 
 (set-default-coding-systems 'utf-8)
@@ -93,62 +115,69 @@
 (load "myinsert.el")
 (load "mymode.el")
 (load "mykeymap.el")
-(load "namazu.el")
+;(load "namazu.el")
 
 ;(load "edit-server.el")
 ;(edit-server-start)
 ;(setq edit-server-new-frame nil)
 
-;;;;;;;;;;;;
-;; namazu
-(setq namazu-default-dir (expand-file-name "~/tmp/namazu"))
-
-;;;;;;;;;;;;
-
 (setq minibuffer-max-depth nil)
-
-(scroll-bar-mode -1)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(setq scroll-step 1)
 
 (global-set-key "\C-h" 'backward-delete-char)
 (global-set-key [f1] 'help-command)
 (setq help-char nil)
 
-(display-time)
 (setq display-time-day-and-date t)
 (setq display-time-default-load-average nil)
-(setq display-time-string-forms
-      '((format "%s/%s/%s(%s) %s:%s" year month day dayname 24-hours minutes)))
+(when (window-system)
+  (setq display-time-string-forms
+        '((format "%s/%s/%s(%s) %s:%s" year month day dayname 24-hours minutes)))
+  (display-time)
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
+  (setq frame-title-format '("" global-mode-string
+                             (:eval (if (buffer-file-name) " %f" " %b")))))
+
 
 (exec-path-from-shell-initialize)
+
+(require 'helm-config)
+(helm-mode 1)
+(require 'helm)
+
+;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
+;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
+;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
+(global-set-key (kbd "C-x h") 'helm-command-prefix)
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab 
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
 
 (line-number-mode 1)
 (column-number-mode 1)
 
-(setq enable-double-n-syntax t)
-
 (setq enable-recursive-minibuffers nil)
 
 (add-to-list 'load-path (expand-file-name "~/lib/emacs/elisp/scala-mode"))
-(require 'yaml-mode)
-(setq time-stamp-line-limit 30)
+;(require 'yaml-mode)
+(setq time-stamp-line-limit 100)
 
 (setq grep-use-null-device nil)
-;(ansi-color-for-comint-mode-on)
+(ansi-color-for-comint-mode-on)
 
 ;; for emacs26
-(defalias 'insert 'insert)
+(defalias 'insert-string 'insert)
+(defalias 'default-fill-column 'fill-column)
 
 (require 'magit)
 (global-set-key "\C-xg" 'magit-status)
 
-(require 'flymake-python-pyflakes)
-(setq flymake-python-pyflakes-executable "/usr/local/bin/flake8")
+;(add-hook 'python-mode-hook 'flycheck-mode)
+;(add-to-list 'flycheck-disabled-checkers 'python-pylint)
+                                        ;(add-to-list 'flycheck-disabled-checkers 'python-pyflakes)
 
-(custom-set-variables
- '(flymake-python-pyflakes-extra-arguments (quote ("--max-line-length=120"))))
+(global-flycheck-mode 1)
+(with-eval-after-load 'flycheck
+  (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
 
 (require 'ssh)
 (setq ssh-directory-tracking-mode 'ftp)
@@ -161,6 +190,23 @@
 (add-hook 'markdown-mode-hook
            '(lambda ()
               (flyspell-mode)))
+
+(setq calendar-week-start-day 1)
+(eval-after-load "holidays"
+  '(progn
+     (require 'japanese-holidays)
+     (setq calendar-holidays ; 他の国の祝日も表示させたい場合は適当に調整
+           (append japanese-holidays holiday-local-holidays holiday-other-holidays))
+     (setq mark-holidays-in-calendar t) ; 祝日をカレンダーに表示
+     ;; 土曜日・日曜日を祝日として表示する場合、以下の設定を追加します。
+     ;; 変数はデフォルトで設定済み
+     (setq japanese-holiday-weekend '(0 6)     ; 土日を祝日として表示
+           japanese-holiday-weekend-marker     ; 土曜日を水色で表示
+           '(holiday nil nil nil nil nil japanese-holiday-saturday))
+     (add-hook 'calendar-today-visible-hook 'japanese-holiday-mark-weekend)
+     (add-hook 'calendar-today-invisible-hook 'japanese-holiday-mark-weekend)
+     ;; “きょう”をマークするには以下の設定を追加します。
+     (add-hook 'calendar-today-visible-hook 'calendar-mark-today)))
 
 (require 'wgrep)
 (require 'wgrep-ag)
