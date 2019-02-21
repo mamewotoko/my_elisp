@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Tue Jan 29 19:13:37 2019
+;;			Last modified: Thu Feb 21 21:19:39 2019
 ;;------------------------------------------------------------
 ;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs ;;
@@ -31,6 +31,9 @@
 ;; (ido-everywhere 0)
 ;; (ido-vertical-mode 1)
 ;(setq ido-enable-flex-matching t)
+
+(require 'whitespace)
+(whitespace-mode)
 
 (setq dired-listing-switches "-alh")
 
