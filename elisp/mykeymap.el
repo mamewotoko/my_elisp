@@ -1,6 +1,6 @@
 ;;;　mykeymap.el --- keybindings
 ;;; Commentary:
-;;                         Last modified: Sun Feb 10 09:41:06 2019
+;;                         Last modified: Thu Feb 28 07:53:58 2019
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords:
@@ -96,7 +96,9 @@
 (global-set-key [(control f1)] 'manual-entry)
 (global-set-key [(meta f1)] 'apropos)
 
-(defun shell-or-ssh ()
+;;; older emacs: version xxxx
+;;; use ssh.el
+(defun shell-or-ssh-old ()
   (interactive)
   (if (not buffer-file-name)
       (shell)
@@ -118,9 +120,25 @@
       (error (shell)))
   (set-buffer-process-coding-system 'utf-8 'utf-8)))
 
+(require 'tramp)
+
+;;; use shell
+(defun shell-or-ssh ()
+  (interactive)
+  (if (not buffer-file-name)
+      (shell)
+    (if tramp-current-host
+        (let* ((connect (if tramp-current-user (format "%s@%s" tramp-current-user tramp-current-host)
+                          tramp-current-host))
+               (bufname (format "*shell %s*" connect)))
+          (shell bufname))
+      (shell)))
+  (set-buffer-process-coding-system 'utf-8 'utf-8))
+
 (global-set-key [f5] (lambda () (interactive) (progn (shell "*f5-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
 (global-set-key [f6] (lambda () (interactive) (progn (shell "*f6-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
 (global-set-key [f7] (lambda () (interactive) (progn (shell "*f7-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
+
 (global-set-key [f8] 'shell-or-ssh)
 
 (defun my-input-command-to-shell (command &optional buffer)
