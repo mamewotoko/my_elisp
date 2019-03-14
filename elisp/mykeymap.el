@@ -1,6 +1,6 @@
 ;;;　mykeymap.el --- keybindings
 ;;; Commentary:
-;;                         Last modified: 金曜日 3月 15 08:12:50 2019
+;;                         Last modified: 金曜日 3月 15 08:33:10 2019
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords:
@@ -87,7 +87,7 @@
 (defun my-pushd-current-directory (&optional buffer)
   (interactive)
   (let ((target-dir (expand-file-name ".")))
-    (my-input-command-to-shell (concat "pushd " target-dir) buffer)))
+    (my-input-command-to-shell (concat (format "pushd '%s'" target-dir)) buffer)))
 
 ;;lisp
 (global-set-key [f1] 'help-command)
