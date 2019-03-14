@@ -1,6 +1,6 @@
 ;;;　mykeymap.el --- keybindings
 ;;; Commentary:
-;;                         Last modified: Thu Feb 28 07:53:58 2019
+;;                         Last modified: 金曜日 3月 15 08:12:50 2019
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords:
@@ -49,10 +49,8 @@
 
 (global-set-key "\C-t" 'copy-region-as-kill)
 
-;(global-set-key "\C-c\C-t" 'my-increment-lambda-copy-region-register)
-;(global-set-key "\C-x\C-y" 'my-increment-lambda-copy-yank)
-
-(global-set-key "\C-o" 'dabbrev-expand)
+;(global-set-key "\C-o" 'dabbrev-expand)
+(global-set-key "\C-o" 'helm-dabbrev)
 
 (if (not (featurep 'kill-this-buffer))
     (defun kill-this-buffer ()
@@ -117,22 +115,24 @@
                                   host)))
                    (ssh connect))
                (shell))))))
-      (error (shell)))
-  (set-buffer-process-coding-system 'utf-8 'utf-8)))
+      (error (shell))))
+    (set-buffer-process-coding-system 'utf-8 'utf-8))
 
 (require 'tramp)
 
 ;;; use shell
 (defun shell-or-ssh ()
-  (interactive)
-  (if (not buffer-file-name)
-      (shell)
-    (if tramp-current-host
-        (let* ((connect (if tramp-current-user (format "%s@%s" tramp-current-user tramp-current-host)
-                          tramp-current-host))
-               (bufname (format "*shell %s*" connect)))
-          (shell bufname))
-      (shell)))
+  (interactive)  
+  (condition-case nil
+      (with-parsed-tramp-file-name default-directory nil
+        (if (and (not (equal "ibuffer-name" major-mode)) tramp-current-host)
+            (let* ((user (tramp-file-name-user v))
+                   (host (tramp-file-name-host v))
+                   (connect (if tramp-current-user (format "%s@%s" user host)
+                              host))
+                   (bufname (format "*shell %s*" connect)))
+          (shell bufname))))
+    (error (shell)))
   (set-buffer-process-coding-system 'utf-8 'utf-8))
 
 (global-set-key [f5] (lambda () (interactive) (progn (shell "*f5-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
@@ -190,12 +190,8 @@
 (global-set-key "\C-xm" 'ignore)
 (global-set-key [f9] 'query-replace-regexp)
 (global-set-key [(shift f9)] 'apropos)
+(global-set-key [(ctrl f9)] 'helm-apropos)
 (global-set-key [f10] 'namazu)
-(global-set-key [(shift f10)] 
-  (lambda () (interactive) 
-    (let ((word (my-word-at-position)))
-      (namazu 0 namazu-default-dir word))))
-
 (global-set-key [zenkaku-hankaku] 'toggle-input-method)
 
 (global-set-key [f11]
@@ -233,7 +229,7 @@
 
 (global-set-key "\C-x\C-b" 'ibuffer)
 (global-set-key "\C-xb" 'ibuffer)
-(global-set-key [f2] 'imenu)
+(global-set-key [f2] 'helm-imenu)
 (global-set-key "\M-." 'find-tag-other-window)
 
 (global-set-key "\M-f" 'forward-word)

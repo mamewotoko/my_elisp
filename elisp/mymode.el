@@ -92,6 +92,7 @@
        (my-gdb-jump-to-point-sub error-message)
 	  (progn (message "no error found") (goto-char start-point) nil)))))
 
+(require 'shell)
 (add-hook 'shell-mode-hook
 	  '(lambda ()
 	     (define-key shell-mode-map [f12] 'dirs)

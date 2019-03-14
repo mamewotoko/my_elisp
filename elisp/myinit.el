@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Thu Feb 21 21:19:39 2019
+;;			Last modified: 金曜日 3月 15 08:22:02 2019
 ;;------------------------------------------------------------
 ;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs ;;
@@ -27,11 +27,6 @@
 (autoload 'sdic-describe-word-at-point "sdic" "カーソルの位置の英単語の意味を調べる" t nil)
 (global-set-key "\C-cW" 'sdic-describe-word-at-point)
 
-;; (ido-mode 0)
-;; (ido-everywhere 0)
-;; (ido-vertical-mode 1)
-;(setq ido-enable-flex-matching t)
-
 (require 'whitespace)
 (whitespace-mode)
 
@@ -50,8 +45,6 @@
 (setq bookmark-save-flag 1)
 
 (setq ring-bell-function 'ignore)
-;; customized
-(load "ssh.el")
 
 ;; skip warning
 (setq exec-path-from-shell-check-startup-files nil)
@@ -64,8 +57,6 @@
   (flycheck-ocaml-setup))
 
 (add-hook 'tuareg-mode-hook #'merlin-mode)
-
-; (require 'anything-config)
 
 ;;; Mac-only configuration to use command and options keys
 (when (and (eq system-type 'darwin) (display-graphic-p))
@@ -103,6 +94,8 @@
   ;; values can be 'control (C), 'alt (A), 'meta (M), 'super (s), or 'hyper (H).
   ;; setting to nil allows the OS to assign values
 )
+; (set-face-font 'default "Monaco-13")
+;  (set-face-attribute 'mode-line nil :font "Monaco-11")
 
 (auto-compression-mode t)
 (set-fringe-mode 1)
@@ -118,11 +111,6 @@
 (load "myinsert.el")
 (load "mymode.el")
 (load "mykeymap.el")
-;(load "namazu.el")
-
-;(load "edit-server.el")
-;(edit-server-start)
-;(setq edit-server-new-frame nil)
 
 (setq minibuffer-max-depth nil)
 
@@ -130,6 +118,7 @@
 (global-set-key [f1] 'help-command)
 (setq help-char nil)
 
+;(display-time)
 (setq display-time-day-and-date t)
 (setq display-time-default-load-average nil)
 (when (window-system)
@@ -141,8 +130,7 @@
   (setq frame-title-format '("" global-mode-string
                              (:eval (if (buffer-file-name) " %f" " %b")))))
 
-
-(exec-path-from-shell-initialize)
+;(exec-path-from-shell-initialize)
 
 (require 'helm-config)
 (helm-mode 1)
@@ -174,15 +162,31 @@
 (require 'magit)
 (global-set-key "\C-xg" 'magit-status)
 
-;(add-hook 'python-mode-hook 'flycheck-mode)
-;(add-to-list 'flycheck-disabled-checkers 'python-pylint)
-                                        ;(add-to-list 'flycheck-disabled-checkers 'python-pyflakes)
-
 (global-flycheck-mode 1)
 (with-eval-after-load 'flycheck
   (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
 
-(require 'ssh)
+(require 'emms-setup)
+(emms-standard)
+(emms-default-players)
+(setq emms-source-file-default-directory "~/Music/")
+; Play FLAC with flac123.
+(define-emms-simple-player flac123 '(file) 
+  "\\.flac$" "/usr/local/bin/flac123")
+(add-to-list 'emms-player-list emms-player-flac123)
+
+; Add music file or directory to EMMS playlist on ! in dired.
+(define-key dired-mode-map "!" 'emms-add-dired)
+(define-emms-simple-player afplay '(file)
+  (regexp-opt '(".mp3" ".m4a" ".aac"))
+  "afplay")
+(setq emms-player-list `(,emms-player-afplay))
+
+(global-set-key [(shift f1)] 'emms-metaplaylist-mode-go)
+
+;; customized
+(load "ssh.el")
+;(require 'ssh)
 (setq ssh-directory-tracking-mode 'ftp)
 (add-hook 'ssh-mode-hook
           '(lambda ()
