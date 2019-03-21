@@ -1,6 +1,6 @@
 ;;;　mykeymap.el --- keybindings
 ;;; Commentary:
-;;                         Last modified: Thu Feb 28 07:53:58 2019
+;;                         Last modified: 金曜日 3月 22 07:39:42 2019
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords:
@@ -127,7 +127,8 @@
   (interactive)
   (if (not buffer-file-name)
       (shell)
-    (if tramp-current-host
+    (if (or (string-prefix-p "/scp:" buffer-file-name)
+	    (string-prefix-p "/ssh:" buffer-file-name))
         (let* ((connect (if tramp-current-user (format "%s@%s" tramp-current-user tramp-current-host)
                           tramp-current-host))
                (bufname (format "*shell %s*" connect)))
