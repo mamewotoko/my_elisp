@@ -1,6 +1,5 @@
 ;;;　mykeymap.el --- keybindings
 ;;; Commentary:
-;;                         Last modified: 金曜日 3月 22 07:39:42 2019
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords:
@@ -49,10 +48,8 @@
 
 (global-set-key "\C-t" 'copy-region-as-kill)
 
-;(global-set-key "\C-c\C-t" 'my-increment-lambda-copy-region-register)
-;(global-set-key "\C-x\C-y" 'my-increment-lambda-copy-yank)
-
-(global-set-key "\C-o" 'dabbrev-expand)
+;(global-set-key "\C-o" 'dabbrev-expand)
+(global-set-key "\C-o" 'helm-dabbrev)
 
 (if (not (featurep 'kill-this-buffer))
     (defun kill-this-buffer ()
@@ -89,7 +86,7 @@
 (defun my-pushd-current-directory (&optional buffer)
   (interactive)
   (let ((target-dir (expand-file-name ".")))
-    (my-input-command-to-shell (concat "pushd " target-dir) buffer)))
+    (my-input-command-to-shell (concat (format "pushd '%s'" target-dir)) buffer)))
 
 ;;lisp
 (global-set-key [f1] 'help-command)
@@ -117,8 +114,8 @@
                                   host)))
                    (ssh connect))
                (shell))))))
-      (error (shell)))
-  (set-buffer-process-coding-system 'utf-8 'utf-8)))
+      (error (shell))))
+    (set-buffer-process-coding-system 'utf-8 'utf-8))
 
 (require 'tramp)
 
@@ -191,12 +188,8 @@
 (global-set-key "\C-xm" 'ignore)
 (global-set-key [f9] 'query-replace-regexp)
 (global-set-key [(shift f9)] 'apropos)
+(global-set-key [(ctrl f9)] 'helm-apropos)
 (global-set-key [f10] 'namazu)
-(global-set-key [(shift f10)] 
-  (lambda () (interactive) 
-    (let ((word (my-word-at-position)))
-      (namazu 0 namazu-default-dir word))))
-
 (global-set-key [zenkaku-hankaku] 'toggle-input-method)
 
 (global-set-key [f11]
@@ -234,7 +227,7 @@
 
 (global-set-key "\C-x\C-b" 'ibuffer)
 (global-set-key "\C-xb" 'ibuffer)
-(global-set-key [f2] 'imenu)
+(global-set-key [f2] 'helm-imenu)
 (global-set-key "\M-." 'find-tag-other-window)
 
 (global-set-key "\M-f" 'forward-word)
