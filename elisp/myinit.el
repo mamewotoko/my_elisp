@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: 金曜日 3月 15 08:22:02 2019
+;;			Last modified: Mon Apr 01 08:15:36 2019
 ;;------------------------------------------------------------
 ;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs ;;
@@ -32,7 +32,7 @@
 
 (setq dired-listing-switches "-alh")
 
-(setq shell-command-switch "-ic")
+(setq shell-command-switch "-c")
 (setq backup-directory-alist
           `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
