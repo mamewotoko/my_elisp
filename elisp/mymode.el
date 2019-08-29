@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Fri Aug 30 08:06:28 2019
+;;; mymode.el --- Last modified: Fri Aug 30 08:19:25 2019
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -19,19 +19,11 @@
 (setq-default c-basic-offset 4)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Shell Script mode
-;;
-(add-hook 'shell-script-mode-hook
-	  '(lambda ()
-	     (define-key sh-mode-map "\C-c\C-c" 'comment-region)
-))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Emacs Lisp mode
 ;;
 (add-hook 'emacs-lisp-mode-hook
 	  '(lambda ()
-	     (define-key emacs-lisp-mode-map "\C-c\C-c" 'comment-region)
+	     ;(define-key emacs-lisp-mode-map "\C-c\C-c" 'comment-region)
 	     (define-key emacs-lisp-mode-map "\C-j" 'eval-print-last-sexp)
 ))
 
@@ -40,7 +32,7 @@
 ;;
 (add-hook 'makefile-mode-hook
 	  '(lambda ()
-	     (define-key makefile-mode-map "\C-c\C-c" 'comment-region)
+	     ;(define-key makefile-mode-map "\C-c\C-c" 'comment-region)
 	     (define-key makefile-mode-map "\M-n" 'find-include-etc-at-position)))
 
 (defun my-opa-jump-to-error-point (error-message)

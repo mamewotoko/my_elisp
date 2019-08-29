@@ -125,7 +125,7 @@
       (shell buffer)
     (shell))
   (goto-char (point-max))
-  (comint-kill-whole-line)
+  (comint-kill-whole-line 1)
   (insert command)
   (comint-send-input)
   (comint-next-prompt 1))
