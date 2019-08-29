@@ -5,12 +5,6 @@
 
 ;;; Code:
 
-;;;;;;;;;;;;;;;;;;;;;;;
-;;;キーバインドの変更
-
-;(global-set-key "\C-ci" 'my-insert-item-menu)
-;(global-set-key "\C-cy" 'my-increment-by-current-format-function)
-
 (global-set-key "\C-cl" 'locate)
 
 ;;;ジャンプ
@@ -22,9 +16,6 @@
 
 ;;;置換
 (global-set-key "\C-cr" 'query-replace)
-;(global-set-key "\C-ct" 'insert-date-yy/mm/dd-format)
-;(global-set-key "\C-cf" 'insert-file-name)
-;(global-set-key "\C-cp" 'insert-file-name-prefix)
 
 (define-key global-map [?¥] [?\\])  ;; ¥の代わりにバックスラッシュを入力する
 
@@ -56,11 +47,11 @@
 (global-set-key [(control tab)] 'next-buffer)
 (global-set-key [(control shift tab)] 'previous-buffer)
 
-(setq load-path (cons "/Users/tak/lib/emacs/elisp/dict" load-path))
-(autoload 'sdic-describe-word "sdic" "英単語の意味を調べる" t nil)
-(global-set-key "\C-cw" 'sdic-describe-word)
-(autoload 'sdic-describe-word-at-point "sdic" "カーソルの位置の英単語の意味を調べる" t nil)
-(global-set-key "\C-cW" 'sdic-describe-word-at-point)
+;; (setq load-path (cons "/Users/tak/lib/emacs/elisp/dict" load-path))
+;; (autoload 'sdic-describe-word "sdic" "英単語の意味を調べる" t nil)
+;; (global-set-key "\C-cw" 'sdic-describe-word)
+;; (autoload 'sdic-describe-word-at-point "sdic" "カーソルの位置の英単語の意味を調べる" t nil)
+;; (global-set-key "\C-cW" 'sdic-describe-word-at-point)
 
 (define-key key-translation-map [?\C-h] [?\C-?])
 (global-set-key "\C-h" 'backward-delete-char)
@@ -210,10 +201,12 @@
 (global-set-key "\C-x\C-b" 'ibuffer)
 (global-set-key "\C-xb" 'ibuffer)
 (global-set-key [f2] 'helm-imenu)
+(global-set-key [(control f2)] 'helm-mini)
 (global-set-key "\M-." 'find-tag-other-window)
 
 (global-set-key "\M-f" 'forward-word)
 (global-set-key "\M-b" 'backward-word)
+(global-set-key "\M-o" 'helm-occur)
 
 (modify-syntax-entry ?_ "w")
 (modify-syntax-entry ?\" "w")
