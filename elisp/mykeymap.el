@@ -1,6 +1,6 @@
 ;;;　mykeymap.el --- keybindings
 ;;; Commentary:
-;;                         Last modified: 金曜日 3月 15 08:33:10 2019
+;;                         Last modified: Thu Aug 29 21:10:38 2019
 
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords:
@@ -37,16 +37,7 @@
                                (let ((ps-filename (read-input "ps filename: ")))
                                  (ps-print-buffer ps-filename))))
 
-                                        ;(global-set-key "\C-x\C-f" 'helm-find-files)
-
-;;;ブックマークをつける
-;;(global-set-key "\C-b" 'bookmark-set)
-;;;ブックマークジャンプ
-;;(global-set-key "\C-j" 'bookmark-jump)
-;;;ブックマークを保存
-;;(setq bookmark-save-flag 1)
 (global-set-key (kbd "C-.") 'other-window)
-
 (global-set-key "\C-t" 'copy-region-as-kill)
 
 ;(global-set-key "\C-o" 'dabbrev-expand)
@@ -74,13 +65,14 @@
 (global-set-key "\C-cW" 'sdic-describe-word-at-point)
 
 (define-key key-translation-map [?\C-h] [?\C-?])
-(global-set-key "\C-h" 'backward-delete-char) ;; Ctrl+h  BSキー
+(global-set-key "\C-h" 'backward-delete-char)
 
 (global-set-key "\M-g"
                 '(lambda ()
                      (interactive)
                    (let ((pattern (read-from-minibuffer "pattern: ")))
                      (ag pattern default-directory))))
+(global-set-key "\M-G" 'ag-files)
 
 (push (cons "\\*.*shell\\*" display-buffer--same-window-action) display-buffer-alist)
 
@@ -138,7 +130,6 @@
 (global-set-key [f5] (lambda () (interactive) (progn (shell "*f5-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
 (global-set-key [f6] (lambda () (interactive) (progn (shell "*f6-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
 (global-set-key [f7] (lambda () (interactive) (progn (shell "*f7-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
-
 (global-set-key [f8] 'shell-or-ssh)
 
 (defun my-input-command-to-shell (command &optional buffer)
@@ -146,6 +137,7 @@
       (shell buffer)
     (shell))
   (goto-char (point-max))
+  (comint-kill-whole-line)
   (insert command)
   (comint-send-input)
   (comint-next-prompt 1))
@@ -172,17 +164,11 @@
 (global-set-key [(shift f6)] '(lambda () (interactive) (ssh "google")))
 (global-set-key [(shift f5)] '(lambda () (interactive) (ssh "vm")))
 
-;(require 'flymake)
-;(global-set-key (kbd "<M-up>") 'flymake-goto-previous-error)
-;(global-set-key (kbd "<M-down>") 'flymake-goto-next-error)
-
 (require 'flycheck)
 (global-set-key (kbd "<M-up>") 'flycheck-previous-error)
 (global-set-key (kbd "<M-down>") 'flycheck-next-error)
 
-;; (global-set-key (kbd "M-x") 'smex)
-;; (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-(global-set-key (kbd "M-x") 'helm-M-x)
+;(global-set-key (kbd "M-x") 'helm-M-x)
 
 ;(define-key ctl-x-map [f8] 'ssh)
 (global-set-key [(super h)] 'ignore)
@@ -200,7 +186,7 @@
      (switch-to-buffer "*scratch*")
      (lisp-interaction-mode)
 ))
-
+(global-set-key [(shift f11)] 'calendar)
 (global-set-key [(control f11)]
   '(lambda ()
      (interactive)
@@ -213,7 +199,6 @@
 (global-set-key [(meta f12)] 'bookmark-delete)
 
 (define-key global-map [?¥] [?\\]) 
-;(global-set-key "\M-a" 'apropos)
 (global-unset-key "\C-z")
 ;;;;;;;;;;;;;; New keybindings
 (global-set-key [(control ?\; )]
@@ -221,8 +206,6 @@
      (dabbrev-expand -1)))
 
 (define-key isearch-mode-map "\C-k" 'isearch-edit-string)
-;(global-set-key "\C-c\C-]" 'eqn2eps)
-;(global-set-key "\C-c\C-]" 'eqn2eps-insert-filename)
 
 (global-set-key "\M-l" 'list-tags)
 (autoload 'ibuffer "ibuffer" "List buffers." t)
@@ -278,12 +261,12 @@
 (global-set-key (kbd "C-c w") (quote copy-word))
 
 (defun copy-line (&optional arg)
-      "Save current line into Kill-Ring without mark the line "
-       (interactive "P")
-       (copy-thing 'beginning-of-line 'end-of-line arg)
-       ;;(paste-to-mark arg)
-       )
-(global-set-key (kbd "C-c l")         (quote copy-line))
+  "Save current line into Kill-Ring without mark the line "
+  (interactive "P")
+  (copy-thing 'beginning-of-line 'end-of-line arg)
+  ;;(paste-to-mark arg)
+  )
+(global-set-key (kbd "C-c l") (quote copy-line))
 
 (provide 'mykeymap)
 ;;; mykeymap.el ends here
