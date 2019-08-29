@@ -1,7 +1,5 @@
 ;;;　mykeymap.el --- keybindings
 ;;; Commentary:
-;;                         Last modified: Thu Aug 29 21:10:38 2019
-
 ;; Author: Takashi Masuyama <mamewotoko@gmail.com>
 ;; Keywords:
 
@@ -114,17 +112,16 @@
 
 ;;; use shell
 (defun shell-or-ssh ()
-  (interactive)  
-  (condition-case nil
-      (with-parsed-tramp-file-name default-directory nil
-        (if (and (not (equal "ibuffer-name" major-mode)) tramp-current-host)
-            (let* ((user (tramp-file-name-user v))
-                   (host (tramp-file-name-host v))
-                   (connect (if tramp-current-user (format "%s@%s" user host)
-                              host))
-                   (bufname (format "*shell %s*" connect)))
-          (shell bufname))))
-    (error (shell)))
+  (interactive)
+  (if (not buffer-file-name)
+      (shell)
+    (if (or (string-prefix-p "/scp:" buffer-file-name)
+	    (string-prefix-p "/ssh:" buffer-file-name))
+        (let* ((connect (if tramp-current-user (format "%s@%s" tramp-current-user tramp-current-host)
+                          tramp-current-host))
+               (bufname (format "*shell %s*" connect)))
+          (shell bufname))
+      (shell)))
   (set-buffer-process-coding-system 'utf-8 'utf-8))
 
 (global-set-key [f5] (lambda () (interactive) (progn (shell "*f5-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
