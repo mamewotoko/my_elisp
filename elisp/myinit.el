@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Mon Apr 01 08:15:36 2019
+;;			Last modified: 金曜日 8月 30 08:11:07 2019
 ;;------------------------------------------------------------
 ;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs ;;
@@ -163,26 +163,26 @@
 (global-set-key "\C-xg" 'magit-status)
 
 (global-flycheck-mode 1)
-(with-eval-after-load 'flycheck
-  (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
+;; (with-eval-after-load 'flycheck
+;;   (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
 
-(require 'emms-setup)
-(emms-standard)
-(emms-default-players)
-(setq emms-source-file-default-directory "~/Music/")
-; Play FLAC with flac123.
-(define-emms-simple-player flac123 '(file) 
-  "\\.flac$" "/usr/local/bin/flac123")
-(add-to-list 'emms-player-list emms-player-flac123)
+;; (require 'emms-setup)
+;; (emms-standard)
+;; (emms-default-players)
+;; (setq emms-source-file-default-directory "~/Music/")
+;; ; Play FLAC with flac123.
+;; (define-emms-simple-player flac123 '(file) 
+;;   "\\.flac$" "/usr/local/bin/flac123")
+;; (add-to-list 'emms-player-list emms-player-flac123)
 
 ; Add music file or directory to EMMS playlist on ! in dired.
-(define-key dired-mode-map "!" 'emms-add-dired)
-(define-emms-simple-player afplay '(file)
-  (regexp-opt '(".mp3" ".m4a" ".aac"))
-  "afplay")
-(setq emms-player-list `(,emms-player-afplay))
+;; (define-key dired-mode-map "!" 'emms-add-dired)
+;; (define-emms-simple-player afplay '(file)
+;;   (regexp-opt '(".mp3" ".m4a" ".aac"))
+;;   "afplay")
+;; (setq emms-player-list `(,emms-player-afplay))
 
-(global-set-key [(shift f1)] 'emms-metaplaylist-mode-go)
+;; (global-set-key [(shift f1)] 'emms-metaplaylist-mode-go)
 
 ;; customized
 (load "ssh.el")

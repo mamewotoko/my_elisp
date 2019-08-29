@@ -1,11 +1,8 @@
-;;; mymode.el --- Last modified: 金曜日 3月 15 08:30:02 2019
+;;; mymode.el --- Last modified: Fri Aug 30 08:06:28 2019
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
 ;;   myerrorjump.el にジャンプルーチンを入れた。
-
-;; namazu indexes
-(defconst emacs-namazu-dir "/home/tak/.Elisp_namazu")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Info
@@ -36,8 +33,6 @@
 	  '(lambda ()
 	     (define-key emacs-lisp-mode-map "\C-c\C-c" 'comment-region)
 	     (define-key emacs-lisp-mode-map "\C-j" 'eval-print-last-sexp)
-	     (make-local-variable 'namazu-default-dir)
-	     (setq namazu-default-dir emacs-namazu-dir)
 ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
