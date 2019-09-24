@@ -19,9 +19,6 @@
 
 (define-key global-map [?¥] [?\\])  ;; ¥の代わりにバックスラッシュを入力する
 
-;;;正規表現で検索
-(global-set-key "\C-c\C-c" 'comment-region)
-
 (global-set-key [(super p)] '(lambda () (interactive)
                                (let ((ps-filename (read-input "ps filename: ")))
                                  (ps-print-buffer ps-filename))))
@@ -245,10 +242,26 @@
   "Copy words at point into kill-ring"
   (interactive "P")
   (copy-thing 'backward-word 'forward-word arg)
-  ;;(paste-to-mark arg)
+  ;(paste-to-mark arg)
+  )
+
+(defun back-to-space (&optional arg)
+  (interactive "P")
+  (skip-syntax-backward "^ "))
+
+(defun forward-to-space (&optional arg)
+  (paste-to-mark  (copy-thing  (interactive "P")
+  (skip-syntax-forward "^ "))
+
+(defun copy-non-space (&optional arg)
+  "Copy words at point into kill-ring"
+  (interactive "P")
+  (copy-thing 'back-to-space 'forward-to-space arg)
+  ;(paste-to-mark arg)
   )
 
 (global-set-key (kbd "C-c w") (quote copy-word))
+(global-set-key (kbd "C-c W") (quote copy-non-space))
 
 (defun copy-line (&optional arg)
   "Save current line into Kill-Ring without mark the line "
