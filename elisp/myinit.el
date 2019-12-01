@@ -1,8 +1,16 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: 金曜日 8月 30 08:11:07 2019
+;;			Last modified: Sun Dec 01 16:17:49 2019
 ;;------------------------------------------------------------
 ;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs ;;
+
+(setq load-path
+      (append (list
+	       (expand-file-name "~/lib/emacs/elisp/opa/")
+	       (expand-file-name "~/dev/ssh-el/")
+	       (expand-file-name "~/lib/emacs/elisp/ocaml/")
+	       (expand-file-name "~/lib/emacs/lisp/anthy"))
+	      load-path))
 
 (require 'package)
 (add-to-list 'package-archives
@@ -13,13 +21,40 @@
 
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
-(package-initialize) ;; You might already have this line
+(package-initialize)
+;; You might already have this line
+(load-theme 'solarized-dark t)
+
+(defalias 'list-buffers 'ibuffer)
+(setq max-lisp-eval-depth 10000)
+(auto-compression-mode t)
+
+; utf8 
+(set-language-environment "Japanese")
+; for highlighting
+(set-default-coding-systems 'utf-8)
+(set-selection-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
 
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (setq scroll-step 1)
 
+(display-time)
+(setq display-time-day-and-date t)
+
+(line-number-mode 1)
+(column-number-mode 1)
+
+(setq enable-recursive-minibuffers t)
+
+
+;; (load "yasima.el")
+;; (yasima-mode t)
+
+
+(setq time-stamp-line-limit 30)
 ;;; sdic
 (setq load-path (cons (expand-file-name "~/lib/emacs/elisp/sdic-2.1.3/lisp") load-path))
 (autoload 'sdic-describe-word "sdic" "英単語の意味を調べる" t nil)
@@ -45,6 +80,16 @@
 (setq bookmark-save-flag 1)
 
 (setq ring-bell-function 'ignore)
+
+(setq auto-mode-alist
+          (cons '("\\.ml[iylp]?$" . caml-mode) auto-mode-alist))
+(autoload 'caml-mode "caml" "Major mode for editing Caml code." t)
+(autoload 'run-caml "inf-caml" "Run an inferior Caml process." t)
+
+;;;(require 'advice)
+(load "myinsert.el")
+(load "mymode.el")
+(load "mykeymap.el")
 
 ;; skip warning
 (setq exec-path-from-shell-check-startup-files nil)
@@ -131,10 +176,9 @@
                              (:eval (if (buffer-file-name) " %f" " %b")))))
 
 ;(exec-path-from-shell-initialize)
-
+(require 'helm)
 (require 'helm-config)
 (helm-mode 1)
-(require 'helm)
 
 ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
 ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
@@ -154,6 +198,11 @@
 
 (setq grep-use-null-device nil)
 (ansi-color-for-comint-mode-on)
+
+(progn
+  (set-face-background 'mode-line "gray30")
+  (set-face-background 'mode-line-inactive "black"))
+(setq doom-modeline-height 1)
 
 ;; for emacs26
 (defalias 'insert-string 'insert)

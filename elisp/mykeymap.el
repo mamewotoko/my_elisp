@@ -5,6 +5,11 @@
 
 ;;; Code:
 
+
+(global-set-key [(control ?¥)] 'toggle-input-method)
+(global-set-key "\C-h" 'backward-delete-char)
+(global-set-key [f1] 'help-command)
+
 (global-set-key "\C-cl" 'locate)
 
 ;;;ジャンプ
@@ -149,9 +154,9 @@
 (global-set-key [(shift f6)] '(lambda () (interactive) (ssh "google")))
 (global-set-key [(shift f5)] '(lambda () (interactive) (ssh "vm")))
 
-(require 'flycheck)
-(global-set-key (kbd "<M-up>") 'flycheck-previous-error)
-(global-set-key (kbd "<M-down>") 'flycheck-next-error)
+;(require 'flycheck)
+;(global-set-key (kbd "<M-up>") 'flycheck-previous-error)
+;(global-set-key (kbd "<M-down>") 'flycheck-next-error)
 
 ;(global-set-key (kbd "M-x") 'helm-M-x)
 
@@ -250,7 +255,7 @@
   (skip-syntax-backward "^ "))
 
 (defun forward-to-space (&optional arg)
-  (paste-to-mark  (copy-thing  (interactive "P")
+  (interactive "P")
   (skip-syntax-forward "^ "))
 
 (defun copy-non-space (&optional arg)
