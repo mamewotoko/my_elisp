@@ -1,4 +1,4 @@
-;;; myinsert.el --- Last modified: Sun Jul 15 09:49:38 2018
+;;; myinsert.el --- Last modified: Mon Dec 30 09:45:24 2019
 ;; Location: http://www002.upp.so-net.ne.jp/mamewo/sources/emacs/myinsert.el #
 ;; FTP Directory: sources/emacs #
 ;; Author: MASUYAMA Takashi <mamewotoko@gmail.com>
@@ -44,17 +44,6 @@
 (setq time-stamp-line-limit 5)
 (add-hook 'write-file-hooks 'time-stamp)
 
-(defun insert-c-header-if-possible ()
-  (let* ((this-file-name (buffer-file-name))
-	 (header-file-name
-	  (concat (file-name-prefix this-file-name)
-		  ".h")))
-    (if (file-exists-p header-file-name)
-	(insert
-	 (concat "#include \""
-		 (file-name-nondirectory header-file-name)
-		 "\"\n")))))
-
 (load "myjavamode.el")
 
 (defun camllexer-header-function ()
@@ -91,12 +80,6 @@
   (insert-header "#" "")
   (insert (concat "#\t\t\t" time-stamp-start "\n#" my-line "\n# " my-signature "# FTP Directory: sources/perl #\nuse strict;\n\n")))
 
-(defun emacs-lisp-template-function ()
-  (insert-header ";;" "")
-  (let* ((file-name (file-name-nondirectory (buffer-file-name)))
-	 (prefix (file-name-prefix file-name)))
-    (insert (concat ";;\t\t\t" time-stamp-start "\n;;" my-line "\n;; " my-signature ";; FTP Directory: sources/emacs #\n;;\n\n\n(provide '" prefix ")\n" ))))
-
 (defun cgi-template-function () (perl-template-function))
 
 (defun opa-template-function ()
@@ -118,15 +101,12 @@
       auto-insert-alist
       (append
        '(
-	 ("\\.el$" . emacs-lisp-template-function)
-	 ;("\\.cc$" . c++-template-function)
-	 ;("\\.c$"  . c-template-function)
 	 ("\\.tex$". tex-template-function)
 	 ("\\.html$" . html-template-function)
 	 ("\\.opa$" . opa-template-function)
 	 ("\\.sh$" . sh-template-function)
-	 ("[Mm]akefile$". makefile-template-function)
-	 ("Makefile\\..+$" . caml-submakefile-template-funcion)
+	 ;; ("[Mm]akefile$". makefile-template-function)
+	 ;; ("Makefile\\..+$" . caml-submakefile-template-funcion)
 	 ("\\.prom$" . my-promela-header-insert)
 	 )
        auto-insert-alist))

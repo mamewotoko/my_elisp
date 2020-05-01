@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Fri Aug 30 08:33:00 2019
+;;; mymode.el --- Last modified: Sat Mar 21 09:38:14 2020
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -6,7 +6,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Info
-;; 
 (defun my-Info-search-next ()
   (interactive)
   (Info-search Info-last-search))
@@ -15,7 +14,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; C/C++ mode
-;;
 (setq-default c-basic-offset 4)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -73,12 +71,14 @@
 (require 'shell)
 (add-hook 'shell-mode-hook
 	  '(lambda ()
-	     (define-key shell-mode-map [(control f12)] 'dirs)
+         (define-key shell-mode-map [(control return)] 'dirs)
+         (define-key shell-mode-map (kbd "C-l") '(lambda ()
+                                                   (interactive)
+                                                   (zap-up-to-char -1 ?/)))
 	     (define-key shell-mode-map
 	       "\C-c\C-j" 'my-goto-error)
 	     (shell-dirtrack-mode 1)
              (setq dirtrack-list '(":*\\([A-Za-z]*:*~*[\/\\].*?\\)[^-+A-Za-z0-9_.()//\\ ]" 1)) ;for help making this regular expression you may want to use "M-x re-builder", where M is usually alt
-             ;(dirtrack-mode)
 	     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -100,12 +100,12 @@
              (flycheck-mode 1)))
 
 ;; ssh config
-(autoload 'ssh-config-mode "ssh-config-mode" t)
-(add-to-list 'auto-mode-alist '("/\\.ssh/config\\'"     . ssh-config-mode))
-(add-to-list 'auto-mode-alist '("/sshd?_config\\'"      . ssh-config-mode))
-(add-to-list 'auto-mode-alist '("/known_hosts\\'"       . ssh-known-hosts-mode))
-(add-to-list 'auto-mode-alist '("/authorized_keys2?\\'" . ssh-authorized-keys-mode))
-(add-hook 'ssh-config-mode-hook 'turn-on-font-lock)
+;(autoload 'ssh-config-mode "ssh-config-mode" t)
+;(add-to-list 'auto-mode-alist '("/\\.ssh/config\\'"     . ssh-config-mode))
+;(add-to-list 'auto-mode-alist '("/sshd?_config\\'"      . ssh-config-mode))
+;; (add-to-list 'auto-mode-alist '("/known_hosts\\'"       . ssh-known-hosts-mode))
+;; (add-to-list 'auto-mode-alist '("/authorized_keys2?\\'" . ssh-authorized-keys-mode))
+;(add-hook 'ssh-config-mode-hook 'turn-on-font-lock)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; JDE mode
@@ -119,6 +119,79 @@
 	     (define-key calendar-mode-map
 	       "\C-v" (other-window 1))))
 
+(require 'tuareg)
+;(require 'lsp)
+(require 'merlin)
+
+(add-hook 'tuareg-mode-hook #'merlin-mode)
+;(setq merlin-command "/Users/tak/dev/pandoc_serv/_opam/bin/ocamlmerlin")
+(setq merlin-ac-setup 'easy)
+(add-hook 'merlin-mode-hook
+          '(lambda ()
+             (define-key merlin-mode-map
+               "\C-ci" 'merlin-document)))
+
+;; Install use-package if not already installed
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(require 'use-package)
+
+
+;; Enable sbt mode for executing sbt commands
+(use-package sbt-mode
+  :commands sbt-start sbt-command
+  :config
+  ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
+  ;; allows using SPACE when in the minibuffer
+  (substitute-key-definition
+   'minibuffer-complete-word
+   'self-insert-command
+   minibuffer-local-completion-map)
+   ;; sbt-supershell kills sbt-mode:  https://github.com/hvesalai/emacs-sbt-mode/issues/152
+   (setq sbt:program-options '("-Dsbt.supershell=false"))
+)
+
+;; Enable nice rendering of diagnostics like compile errors.
+(use-package flycheck
+  :init (global-flycheck-mode))
+
+(use-package lsp-mode
+  ;; Optional - enable lsp-mode automatically in scala files
+  :hook  (scala-mode . lsp)
+         (lsp-mode . lsp-lens-mode)
+  :config (setq lsp-prefer-flymake nil))
+
+;; Enable nice rendering of documentation on hover
+(use-package lsp-ui)
+
+;; lsp-mode supports snippets, but in order for them to work you need to use yasnippet
+;; If you don't want to use snippets set lsp-enable-snippet to nil in your lsp-mode settings
+;;   to avoid odd behavior with snippets and indentation
+(use-package yasnippet)
+
+;; Add company-lsp backend for metals
+(use-package company-lsp)
+
+;; Use the Debug Adapter Protocol for running tests and debugging
+(use-package posframe
+  ;; Posframe is a pop-up tool that must be manually installed for dap-mode
+  )
+(use-package dap-mode
+  :hook
+  (lsp-mode . dap-mode)
+  (lsp-mode . dap-ui-mode)
+  )
+
+;; Use the Tree View Protocol for viewing the project structure and triggering compilation
+(use-package lsp-treemacs
+  :config
+  (lsp-metals-treeview-enable t)
+  (setq lsp-metals-treeview-show-when-views-received t)
+  )
+
+(require 'csv-mode)
 (setq auto-mode-alist
       (append (list
 ;	       (cons "\\.tex$" 'yatex-mode)
@@ -130,14 +203,13 @@
 		    (cons "\\.ml[iylp]?$" 'tuareg-mode)
 		    (cons "\\.sql$" 'sql-mode)
 		    (cons "\\.opa$" 'opa-classic-mode)
-;		    (cons "\\.scope$" 'java-mode)
+                                        ;		    (cons "\\.scope$" 'java-mode)
+            (cons "\\.csv$" 'csv-mode)
 		    (cons "\\.java$" 'java-mode)
+                    (cons "\\.md.html$" 'markdown-mode)
                     (cons "\\.md$" 'markdown-mode)
                     (cons "\\.markdown$" 'markdown-mode)
                     (cons "README\\.md$" 'gfm-mode)
-;		    (cons "\\.prom$" 'promela-mode)
-;		    (cons "\\.hs$" 'haskell-mode)
-;		    (cons "\\.sml$" 'sml-mode))
 		    )
             auto-mode-alist))
 

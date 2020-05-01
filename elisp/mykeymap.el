@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-(global-set-key "\C-cl" 'locate)
+(global-set-key (kbd "C-\;") 'completion-at-point)
 
 ;;;ジャンプ
 (global-set-key "\C-l" 'goto-line)
@@ -26,6 +26,18 @@
 (global-set-key (kbd "C-.") 'other-window)
 (global-set-key "\C-t" 'copy-region-as-kill)
 
+(require 'helm-config)
+(helm-mode 1)
+(require 'helm)
+
+;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
+;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
+;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
+(global-set-key (kbd "C-x h") 'helm-command-prefix)
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab 
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(setq helm-ff-skip-boring-files t)
+
 ;(global-set-key "\C-o" 'dabbrev-expand)
 (global-set-key "\C-o" 'helm-dabbrev)
 
@@ -36,8 +48,6 @@
 
 (global-set-key "\C-xk" 'kill-this-buffer)
 (global-set-key "\C-x\C-k" 'kill-this-buffer)
-
-;(global-set-key "\M-w" 'kill-word)
 (global-set-key "\C-x\C-o" 'find-file-other-window)
 
 (global-set-key [hiragana-katakana] 'toggle-input-method)
@@ -67,10 +77,14 @@
   (let ((target-dir (expand-file-name ".")))
     (my-input-command-to-shell (concat (format "pushd '%s'" target-dir)) buffer)))
 
+
+(global-set-key "\C-xg" 'magit-status)
+
 ;;lisp
 (global-set-key [f1] 'help-command)
 (global-set-key [(control f1)] 'manual-entry)
-(global-set-key [(meta f1)] 'apropos)
+(global-set-key [(meta f1)] 'helm-apropos)
+(define-key help-map "a" 'apropos)
 
 ;;; older emacs: version xxxx
 ;;; use ssh.el
@@ -104,7 +118,7 @@
   (if (not buffer-file-name)
       (shell)
     (if (or (string-prefix-p "/scp:" buffer-file-name)
-	    (string-prefix-p "/ssh:" buffer-file-name))
+            (string-prefix-p "/ssh:" buffer-file-name))
         (let* ((connect (if tramp-current-user (format "%s@%s" tramp-current-user tramp-current-host)
                           tramp-current-host))
                (bufname (format "*shell %s*" connect)))
@@ -153,7 +167,13 @@
 (global-set-key (kbd "<M-up>") 'flycheck-previous-error)
 (global-set-key (kbd "<M-down>") 'flycheck-next-error)
 
-;(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key "\C-x\C-f" 'helm-find-files)
+;; For find-file etc.
+(require 'helm-files)
+(define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
+;; For helm-find-files etc.
+(define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
 ;(define-key ctl-x-map [f8] 'ssh)
 (global-set-key [(super h)] 'ignore)
@@ -164,6 +184,9 @@
 (global-set-key [(ctrl f9)] 'helm-apropos)
 (global-set-key [f10] 'namazu)
 (global-set-key [zenkaku-hankaku] 'toggle-input-method)
+
+                                        ;(require 'zop-to-char)
+(global-set-key (kbd "M-z") 'zop-to-char)
 
 (global-set-key [f11]
   '(lambda ()
@@ -178,17 +201,19 @@
      (find-file "~/dev/diary/diary.md")
 ))
 
-(global-set-key [f12] 'bookmark-bmenu-list)
+(load "aquos.el")
+(global-set-key [(meta f11)] 'aquos-remocon)
+
+(global-set-key [f12] 'helm-bookmarks)
 (global-set-key [(control f12)] 'bookmark-set)
 (global-set-key [(shift f12)] 'bookmark-save)
 (global-set-key [(meta f12)] 'bookmark-delete)
 
 (define-key global-map [?¥] [?\\]) 
 (global-unset-key "\C-z")
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+
 ;;;;;;;;;;;;;; New keybindings
-(global-set-key [(control ?\; )]
-  '(lambda () (interactive)
-     (dabbrev-expand -1)))
 
 (define-key isearch-mode-map "\C-k" 'isearch-edit-string)
 
@@ -196,14 +221,22 @@
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 
 (global-set-key "\C-x\C-b" 'ibuffer)
-(global-set-key "\C-xb" 'ibuffer)
+(global-set-key "\C-xb" 'switch-to-buffer)
 (global-set-key [f2] 'helm-imenu)
 (global-set-key [(control f2)] 'helm-mini)
 (global-set-key "\M-." 'find-tag-other-window)
 
-(global-set-key "\M-f" 'forward-word)
-(global-set-key "\M-b" 'backward-word)
+;(global-set-key "\M-f" 'forward-word)
+                                        ;(global-set-key "\M-b" 'backward-word)
+
+(global-set-key "\M-f" 'forward-whitespace)
+(global-set-key "\M-b" (lambda () (interactive) (forward-whitespace -1)))
+
 (global-set-key "\M-o" 'helm-occur)
+(global-set-key (kbd "C-c h o") 'helm-occur)
+(global-set-key (kbd "C-c h g") 'helm-ag)
+
+;(global-set-key "\M-o" 'helm-occur)
 
 (modify-syntax-entry ?_ "w")
 (modify-syntax-entry ?\" "w")
@@ -247,11 +280,11 @@
 
 (defun back-to-space (&optional arg)
   (interactive "P")
-  (skip-syntax-backward "^ "))
+  (skip-syntax-backward "^ ()\""))
 
 (defun forward-to-space (&optional arg)
-  (paste-to-mark  (copy-thing  (interactive "P")
-  (skip-syntax-forward "^ "))
+  (interactive "P")
+  (skip-syntax-forward "^ ()\""))
 
 (defun copy-non-space (&optional arg)
   "Copy words at point into kill-ring"
@@ -261,7 +294,7 @@
   )
 
 (global-set-key (kbd "C-c w") (quote copy-word))
-(global-set-key (kbd "C-c W") (quote copy-non-space))
+(global-set-key (kbd "C-c t") (quote copy-non-space))
 
 (defun copy-line (&optional arg)
   "Save current line into Kill-Ring without mark the line "
@@ -272,4 +305,5 @@
 (global-set-key (kbd "C-c l") (quote copy-line))
 
 (provide 'mykeymap)
+
 ;;; mykeymap.el ends here

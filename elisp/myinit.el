@@ -1,24 +1,68 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: 金曜日 8月 30 08:11:07 2019
+;;			Last modified: Mon Apr 20 19:26:29 2020
 ;;------------------------------------------------------------
 ;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 ;; FTP Directory: sources/emacs ;;
 
 (require 'package)
+(push "/Users/tak/dev/pandoc_serv/_opam/share/emacs/site-lisp" load-path)
 (add-to-list 'package-archives
-             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
-(when (< emacs-major-version 24)
-  ;; For important compatibility libraries like cl-lib
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+             '("melpa" . "http://melpa.org/packages/")
+             '("melpa-stable" . "http://stable.melpa.org/packages/"))
 
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+	     ;'("marmalade" . "http://marmalade-repo.org/packages/"))
 
 (package-initialize) ;; You might already have this line
 
-(scroll-bar-mode -1)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
+(defvar my-favorite-packages
+  '(
+    ;;;; for auto-complete
+    ag
+    auto-complete
+    company-lsp
+    dockerfile-mode
+    wgrep
+    wgrep-ag
+    ;zap-to-char
+    yaml-mode
+    terraform-mode
+    svg
+    monky
+    merlin
+    markdown-mode
+    lsp-ui
+    lsp-ocaml
+    lsp-mode
+    helm
+    helm-ag-r
+    csv
+    git-link
+    flycheck
+    magit
+    ))
+
+(defvar my-install-package-p nil)
+(if my-install-package-p
+    (progn
+      (package-refresh-contents)
+      (dolist (package my-favorite-packages)
+        (unless (package-installed-p package)
+          (package-install package)))))
+
+(if (fboundp 'scroll-bar-mode)
+    (scroll-bar-mode -1))
+(if (fboundp 'menu-bar-mode)
+    (menu-bar-mode -1))
+(if (fboundp 'tool-bar-mode)
+    (tool-bar-mode -1))
+(if (fboundp 'set-fringe-mode)
+    (set-fringe-mode 1))
+
 (setq scroll-step 1)
+
+(require 'epa-file)
+(epa-file-enable)
+(setq epg-gpg-program "/usr/local/bin/gpg2")
 
 ;;; sdic
 (setq load-path (cons (expand-file-name "~/lib/emacs/elisp/sdic-2.1.3/lisp") load-path))
@@ -30,7 +74,31 @@
 (require 'whitespace)
 (whitespace-mode)
 
+;HTMLメールを読めるようにする
+;(require 'mime-w3m)
+                                        ;日本語infoを読めるようにする
+;https://femt.ddo.jp/modules/xpwiki/?emacs%E3%81%A7%E3%83%A1%E3%83%BC%E3%83%AB%E3%81%AA%E7%92%B0%E5%A2%83%E3%81%AB%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B
+;; (auto-compression-mode t)
+;; ;メールドラフトモードをWandarlustドラフトモードに
+;; (autoload 'wl-user-agent-compose "wl-draft" nil t)
+;; (if (boundp 'mail-user-agent)
+;;     (setq mail-user-agent 'wl-user-agent))
+;; (if (fboundp 'define-mail-user-agent)
+;;     (define-mail-user-agent
+;;       'wl-user-agent
+;;       'wl-user-agent-compose
+;;       'wl-draft-send
+;;       'wl-draft-kill
+;;       'mail-send-hook))
+;w3mでグラフィック表示を有効にする
+;(setq w3m-default-display-inline-images t)
+
 (setq dired-listing-switches "-alh")
+;; diredを2つのウィンドウで開いている時に、デフォルトの移動orコピー先をもう一方のdiredで開いているディレクトリにする
+(setq dired-dwim-target t)
+;; ディレクトリを再帰的にコピーする
+(setq dired-recursive-copies 'always)
+(setq dired-recursive-deletes 'always)
 
 (setq shell-command-switch "-c")
 (setq backup-directory-alist
@@ -49,24 +117,40 @@
 ;; skip warning
 (setq exec-path-from-shell-check-startup-files nil)
 
-(with-eval-after-load 'merlin
-  ;; Disable Merlin's own error checking
-  (setq merlin-error-after-save nil)
+(defun set-exec-path-from-shell-PATH ()
+  "Set up Emacs' `exec-path' and PATH environment variable to match that used by the user's shell.
 
-  ;; Enable Flycheck checker
-  (flycheck-ocaml-setup))
+This is particularly useful under Mac OSX, where GUI apps are not started from a shell."
+  (interactive)
+  (let ((path-from-shell (replace-regexp-in-string "[ \t\n]*$" "" (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq exec-path (split-string path-from-shell path-separator))))
 
-(add-hook 'tuareg-mode-hook #'merlin-mode)
+(set-exec-path-from-shell-PATH)
+
+;(global-auto-complete-mode)
+;(setq merlin-ac-setup 'easy)
+;(add-hook 'caml-mode-hook 'merlin-mode)
+
+(require 'lsp)
+(require 'lsp-ui)
+(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+(require 'doom-modeline)
+(doom-modeline-mode 1)
+;(load-theme 'doom-one t)
 
 ;;; Mac-only configuration to use command and options keys
 (when (and (eq system-type 'darwin) (display-graphic-p))
   (setq mac-pass-command-to-system nil)
 
-  (set-face-font 'default "Monaco-13")
-  (set-face-attribute 'mode-line nil :font "Monaco-11")
+  (set-face-font 'default "Monaco-12")
+  (set-face-attribute 'mode-line nil :font "Monaco-10")
+
   (set-background-color "#003300")
   (set-foreground-color "light gray")
 
+  (set-face-font 'default "Monaco-20")
+  
   ;; Mac-only
   ;; Command key as Meta key, Option key untouched
   ;; http://www.emacswiki.org/emacs/MetaKeyProblems#toc15
@@ -93,12 +177,12 @@
   ;; mac-right-option-modifier
   ;; values can be 'control (C), 'alt (A), 'meta (M), 'super (s), or 'hyper (H).
   ;; setting to nil allows the OS to assign values
-)
-; (set-face-font 'default "Monaco-13")
-;  (set-face-attribute 'mode-line nil :font "Monaco-11")
+  )
+(setq my-font-size 12)
+(set-face-font 'default (format "Monaco-%d" my-font-size))
+(set-face-attribute 'mode-line nil :font (format "Monaco-%d" my-font-size))
 
 (auto-compression-mode t)
-(set-fringe-mode 1)
 
 ;; utf8
 (set-language-environment "Japanese")
@@ -119,29 +203,19 @@
 (setq help-char nil)
 
 ;(display-time)
-(setq display-time-day-and-date t)
-(setq display-time-default-load-average nil)
-(when (window-system)
-  (setq display-time-string-forms
-        '((format "%s/%s/%s(%s) %s:%s" year month day dayname 24-hours minutes)))
-  (display-time)
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-  (add-to-list 'default-frame-alist '(ns-appearance . dark))
-  (setq frame-title-format '("" global-mode-string
-                             (:eval (if (buffer-file-name) " %f" " %b")))))
+;; (setq display-time-day-and-date t)
+;; (setq display-time-default-load-average nil)
+;; (when (window-system)
+;;   (setq display-time-string-forms
+;;         '((format "%s/%s/%s(%s) %s:%s" year month day dayname 24-hours minutes)))
+;;   (display-time)
+;;   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+;;   (add-to-list 'default-frame-alist '(ns-appearance . dark))
+;;   (setq frame-title-format '("" global-mode-string
+;;                              (:eval (if (buffer-file-name) " %f" " %b")))))
+
 
 ;(exec-path-from-shell-initialize)
-
-(require 'helm-config)
-(helm-mode 1)
-(require 'helm)
-
-;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
-;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
-;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
-(global-set-key (kbd "C-x h") 'helm-command-prefix)
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab 
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
 
 (line-number-mode 1)
 (column-number-mode 1)
@@ -159,30 +233,7 @@
 (defalias 'insert-string 'insert)
 (defalias 'default-fill-column 'fill-column)
 
-(require 'magit)
-(global-set-key "\C-xg" 'magit-status)
-
 (global-flycheck-mode 1)
-;; (with-eval-after-load 'flycheck
-;;   (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
-
-;; (require 'emms-setup)
-;; (emms-standard)
-;; (emms-default-players)
-;; (setq emms-source-file-default-directory "~/Music/")
-;; ; Play FLAC with flac123.
-;; (define-emms-simple-player flac123 '(file) 
-;;   "\\.flac$" "/usr/local/bin/flac123")
-;; (add-to-list 'emms-player-list emms-player-flac123)
-
-; Add music file or directory to EMMS playlist on ! in dired.
-;; (define-key dired-mode-map "!" 'emms-add-dired)
-;; (define-emms-simple-player afplay '(file)
-;;   (regexp-opt '(".mp3" ".m4a" ".aac"))
-;;   "afplay")
-;; (setq emms-player-list `(,emms-player-afplay))
-
-;; (global-set-key [(shift f1)] 'emms-metaplaylist-mode-go)
 
 ;; customized
 (load "ssh.el")
