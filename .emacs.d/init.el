@@ -6,7 +6,6 @@
 		    (expand-file-name "~/.opam/system/share/emacs/site-lisp/"))
 		    load-path))
 
-
 (load "myinit.el")
 
 (custom-set-variables
