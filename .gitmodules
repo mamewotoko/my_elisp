@@ -1,3 +1,3 @@
-[submodule "ssh-el"]
-	path = ssh-el
+[submodule "elisp/ssh-el"]
+	path = elisp/ssh-el
 	url = https://github.com/mamewotoko/ssh-el.git
