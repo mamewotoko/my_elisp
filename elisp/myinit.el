@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Sun May 10 14:59:31 2020
+;;			Last modified: Sun May 10 06:06:26 2020
 ;; Written by Takashi Masuyama <mamewotoko@gmail.com>
 
 (setq load-path
@@ -16,20 +16,6 @@
              '("melpa-stable" . "http://stable.melpa.org/packages/"))
 
 (package-initialize)
-;; You might already have this line
-(load-theme 'solarized-dark t)
-
-(defalias 'list-buffers 'ibuffer)
-(setq max-lisp-eval-depth 10000)
-(auto-compression-mode t)
-
-; utf8 
-(set-language-environment "Japanese")
-; for highlighting
-(set-default-coding-systems 'utf-8)
-(set-selection-coding-system 'utf-8)
-(set-terminal-coding-system 'utf-8)
-
 (defvar my-favorite-packages
   '(
     ;;;; for auto-complete
@@ -45,9 +31,11 @@
     svg
     monky
     merlin
+    tuareg
     markdown-mode
     lsp-ui
-    lsp-ocaml
+    ; lsp-ocaml
+    csv-mode
     lsp-mode
     helm
     helm-ag-r
@@ -75,6 +63,19 @@
     (set-fringe-mode 1))
 
 (setq scroll-step 1)
+
+;(load-theme 'solarized-dark t)
+
+(defalias 'list-buffers 'ibuffer)
+(setq max-lisp-eval-depth 10000)
+(auto-compression-mode t)
+
+; utf8 
+(set-language-environment "Japanese")
+; for highlighting
+(set-default-coding-systems 'utf-8)
+(set-selection-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
 
 (require 'epa-file)
 (epa-file-enable)
@@ -135,8 +136,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (require 'lsp)
 (require 'lsp-ui)
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-(require 'doom-modeline)
-(doom-modeline-mode 1)
+;(require 'doom-modeline)
+;(doom-modeline-mode 1)
 ;(load-theme 'doom-one t)
 
 ;;; Mac-only configuration to use command and options keys

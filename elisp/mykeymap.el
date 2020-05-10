@@ -5,16 +5,12 @@
 
 ;;; Code:
 
-<<<<<<< HEAD
 (global-set-key (kbd "C-\;") 'completion-at-point)
-=======
-
 (global-set-key [(control ?¥)] 'toggle-input-method)
 (global-set-key "\C-h" 'backward-delete-char)
 (global-set-key [f1] 'help-command)
 
 (global-set-key "\C-cl" 'locate)
->>>>>>> b8e28bfa806ef300e8d428a79c61d97f6a2a8249
 
 ;;;ジャンプ
 (global-set-key "\C-l" 'goto-line)
