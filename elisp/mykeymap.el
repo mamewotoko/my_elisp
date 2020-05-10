@@ -5,7 +5,16 @@
 
 ;;; Code:
 
+<<<<<<< HEAD
 (global-set-key (kbd "C-\;") 'completion-at-point)
+=======
+
+(global-set-key [(control ?¥)] 'toggle-input-method)
+(global-set-key "\C-h" 'backward-delete-char)
+(global-set-key [f1] 'help-command)
+
+(global-set-key "\C-cl" 'locate)
+>>>>>>> b8e28bfa806ef300e8d428a79c61d97f6a2a8249
 
 ;;;ジャンプ
 (global-set-key "\C-l" 'goto-line)
@@ -157,9 +166,9 @@
 (global-set-key [(shift f6)] '(lambda () (interactive) (ssh "google")))
 (global-set-key [(shift f5)] '(lambda () (interactive) (ssh "vm")))
 
-(require 'flycheck)
-(global-set-key (kbd "<M-up>") 'flycheck-previous-error)
-(global-set-key (kbd "<M-down>") 'flycheck-next-error)
+;(require 'flycheck)
+;(global-set-key (kbd "<M-up>") 'flycheck-previous-error)
+;(global-set-key (kbd "<M-down>") 'flycheck-next-error)
 
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key "\C-x\C-f" 'helm-find-files)

@@ -1,14 +1,34 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Sun May 10 13:43:46 2020
-;;------------------------------------------------------------
+;;			Last modified: Sun May 10 14:59:31 2020
 ;; Written by Takashi Masuyama <mamewotoko@gmail.com>
+
+(setq load-path
+      (append (list
+	       (expand-file-name "~/lib/emacs/elisp/opa/")
+	       (expand-file-name "~/dev/ssh-el/")
+	       (expand-file-name "~/lib/emacs/elisp/ocaml/")
+	       (expand-file-name "~/lib/emacs/lisp/anthy"))
+	      load-path))
 
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/")
              '("melpa-stable" . "http://stable.melpa.org/packages/"))
 
-(package-initialize) ;; You might already have this line
+(package-initialize)
+;; You might already have this line
+(load-theme 'solarized-dark t)
+
+(defalias 'list-buffers 'ibuffer)
+(setq max-lisp-eval-depth 10000)
+(auto-compression-mode t)
+
+; utf8 
+(set-language-environment "Japanese")
+; for highlighting
+(set-default-coding-systems 'utf-8)
+(set-selection-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
 
 (defvar my-favorite-packages
   '(
@@ -83,6 +103,16 @@
 (setq bookmark-save-flag 1)
 
 (setq ring-bell-function 'ignore)
+
+(setq auto-mode-alist
+          (cons '("\\.ml[iylp]?$" . caml-mode) auto-mode-alist))
+(autoload 'caml-mode "caml" "Major mode for editing Caml code." t)
+(autoload 'run-caml "inf-caml" "Run an inferior Caml process." t)
+
+;;;(require 'advice)
+(load "myinsert.el")
+(load "mymode.el")
+(load "mykeymap.el")
 
 ;; skip warning
 (setq exec-path-from-shell-check-startup-files nil)
@@ -174,6 +204,17 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 ;(exec-path-from-shell-initialize)
 
+(require 'helm)
+(require 'helm-config)
+(helm-mode 1)
+
+;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
+;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
+;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
+(global-set-key (kbd "C-x h") 'helm-command-prefix)
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab 
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+
 (line-number-mode 1)
 (column-number-mode 1)
 
@@ -185,6 +226,11 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (setq grep-use-null-device nil)
 (ansi-color-for-comint-mode-on)
+
+(progn
+  (set-face-background 'mode-line "gray30")
+  (set-face-background 'mode-line-inactive "black"))
+(setq doom-modeline-height 1)
 
 ;; for emacs26
 (defalias 'insert-string 'insert)
