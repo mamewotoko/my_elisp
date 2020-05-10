@@ -1,7 +1,7 @@
 (setq load-path
       (append (list (expand-file-name "~/lib/emacs/elisp/")
 		    (expand-file-name "~/lib/emacs/elisp/ess/")
-		    (expand-file-name "~/dev/ssh-el/")
+		    (expand-file-name "~/lib/emacs/elisp/ssh-el/")
             (expand-file-name "~/.emacs.d/elpa/csv-mode-1.12/")
 		    (expand-file-name "~/.opam/system/share/emacs/site-lisp/"))
 		    load-path))
