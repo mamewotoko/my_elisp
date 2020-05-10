@@ -1,15 +1,11 @@
 (setq load-path
       (append (list (expand-file-name "~/lib/emacs/elisp/")
 		    (expand-file-name "~/lib/emacs/elisp/ess/")
-		    (expand-file-name "~/lib/emacs/elisp/anything-config/")
 		    (expand-file-name "~/dev/ssh-el/")
             (expand-file-name "~/.emacs.d/elpa/csv-mode-1.12/")
 		    (expand-file-name "~/.opam/system/share/emacs/site-lisp/"))
 		    load-path))
 
-;; package management
-;; (require 'cask "~/.cask/cask.el")
-;; (cask-initialize)
 
 (load "myinit.el")
 
@@ -32,7 +28,6 @@
                                                                                                               ]*\\s *\\)?\\([1-9]\\([-0-9, ';/*%#
         ]\\|\\s<\\|\\s>\\)*[0-9]+\\)")
  '(dabbrev-case-fold-search nil)
- '(directory-abbrev-alist (quote (("\\\\`/Users/tak/dev/podplayer/" . "pod"))))
  '(dired-recursive-deletes (quote always))
  '(display-time-24hr-format t)
  '(display-time-day-and-date t)
@@ -43,7 +38,6 @@
     ((format "%s/%s/%s(%s)
              %s:%s" year month day dayname 24-hours minutes))))
  '(docker-tramp-use-names t)
- '(emms-player-mpg321-command-name "/usr/local/bin/mpg321")
  '(enable-local-variables :safe)
  '(enable-recursive-minibuffers t)
  '(epg-gpg-program "/usr/local/bin/gpg")
@@ -66,41 +60,6 @@
  '(helm-mm-matching-method (quote multi2))
  '(helm-mode-fuzzy-match t)
  '(help-at-pt-timer-delay 0.9)
- '(ibuffer-saved-filter-groups
-   (quote
-    (("init"
-      ("shell"
-       (used-mode . shell-mode))
-      ("podplayer"
-       (filename . "podplayer"))
-      ("malarm"
-       (filename . "malarm")))
-     ("favorite"
-      ("podplayer"
-       (filename . "podplayer"))
-      ("malarm"
-       (filename . "malarm"))))))
- '(ibuffer-saved-filters
-   (quote
-    (("ssh"
-      (used-mode . ssh-mode))
-     ("podspider"
-      ((filename . "dev/podcast_spider")))
-     ("gnus"
-      ((or
-        (mode . message-mode)
-        (mode . mail-mode)
-        (mode . gnus-group-mode)
-        (mode . gnus-summary-mode)
-        (mode . gnus-article-mode))))
-     ("programming"
-      ((or
-        (mode . emacs-lisp-mode)
-        (mode . cperl-mode)
-        (mode . c-mode)
-        (mode . java-mode)
-        (mode . idl-mode)
-        (mode . lisp-mode)))))))
  '(imagemagick-enabled-types
    (quote
     (3FR ART ARW AVS BMP BMP2 BMP3 CAL CALS CMYK CMYKA CR2 CRW CUR CUT DCM DCR DCX DDS DJVU DNG DPX EXR FAX FITS GBR GIF GIF87 GRB HRZ ICB ICO ICON J2C JNG JP2 JPC JPEG JPG JPX K25 KDC MIFF MNG MRW MSL MSVG MTV NEF ORF OTB PBM PCD PCDS PCL PCT PCX PDB PEF PGM PICT PIX PJPEG PNG PNG24 PNG32 PNG8 PNM PPM PSD PTIF PWP RAF RAS RBG RGB RGBA RGBO RLA RLE SCR SCT SFW SGI SR2 SRF SUN SVG SVGZ TGA TIFF TIFF64 TILE TIM TTF UYVY VDA VICAR VID VIFF VST WBMP WPG X3F XBM XC XCF XPM XV XWD YCbCr YCbCrA YUV jpg)))
@@ -110,8 +69,6 @@
  '(lsp-ocaml-lang-server-command (quote ("/usr/local/bin/ocaml-language-server" "--stdio")))
  '(magit-commit-arguments nil)
  '(magit-completing-read-function (quote helm--completing-read-default))
- '(markdown-command
-   "/usr/local/bin/pandoc --metadata title=\"preview\" --toc -T preview -f gfm -t html --self-contained -c /Users/tak/node_modules/github-markdown-css/github-markdown.css --number-sections")
  '(mode-line-format
    (quote
     ("%e" mode-line-mule-info mode-line-client mode-line-modified mode-line-remote mode-line-frame-identification mode-line-buffer-identification " " mode-line-position

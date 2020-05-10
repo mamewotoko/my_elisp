@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Sat Mar 21 09:38:14 2020
+;;; mymode.el --- Last modified: Sun May 10 13:42:39 2020
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -46,8 +46,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Shell mode
 ;;
-(load "mycextend.el")
-(load "mycamlextend.el")
+
 (defun my-goto-error ()
   (interactive)
   (beginning-of-line)
@@ -81,18 +80,6 @@
              (setq dirtrack-list '(":*\\([A-Za-z]*:*~*[\/\\].*?\\)[^-+A-Za-z0-9_.()//\\ ]" 1)) ;for help making this regular expression you may want to use "M-x re-builder", where M is usually alt
 	     ))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; caml mode
-;;
-;(require 'caml)
-;(require 'caml-font)
-;(load "mycamlapi.el")
-
-;(autoload 'caml-mode "caml" "Major mode for editing Caml code." t)
-;(autoload 'run-caml "inf-caml" "Run an inferior Caml process." t)
-;(defvar my-ocaml-manual-url "file:///home/tak/Doc/htmlman/index.html")
-;(require 'search_ocaml_type)
-
 ;; ruby
 (add-hook 'ruby-mode-hook
           '(lambda ()
@@ -124,7 +111,6 @@
 (require 'merlin)
 
 (add-hook 'tuareg-mode-hook #'merlin-mode)
-;(setq merlin-command "/Users/tak/dev/pandoc_serv/_opam/bin/ocamlmerlin")
 (setq merlin-ac-setup 'easy)
 (add-hook 'merlin-mode-hook
           '(lambda ()

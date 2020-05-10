@@ -54,12 +54,6 @@
 (global-set-key [(control tab)] 'next-buffer)
 (global-set-key [(control shift tab)] 'previous-buffer)
 
-;; (setq load-path (cons "/Users/tak/lib/emacs/elisp/dict" load-path))
-;; (autoload 'sdic-describe-word "sdic" "英単語の意味を調べる" t nil)
-;; (global-set-key "\C-cw" 'sdic-describe-word)
-;; (autoload 'sdic-describe-word-at-point "sdic" "カーソルの位置の英単語の意味を調べる" t nil)
-;; (global-set-key "\C-cW" 'sdic-describe-word-at-point)
-
 (define-key key-translation-map [?\C-h] [?\C-?])
 (global-set-key "\C-h" 'backward-delete-char)
 
@@ -201,8 +195,9 @@
      (find-file "~/dev/diary/diary.md")
 ))
 
-(load "aquos.el")
-(global-set-key [(meta f11)] 'aquos-remocon)
+; private
+;; (load "aquos.el")
+;; (global-set-key [(meta f11)] 'aquos-remocon)
 
 (global-set-key [f12] 'helm-bookmarks)
 (global-set-key [(control f12)] 'bookmark-set)

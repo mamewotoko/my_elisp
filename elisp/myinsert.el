@@ -1,13 +1,10 @@
-;;; myinsert.el --- Last modified: Mon Dec 30 09:45:24 2019
-;; Location: http://www002.upp.so-net.ne.jp/mamewo/sources/emacs/myinsert.el #
-;; FTP Directory: sources/emacs #
+;;; myinsert.el --- Last modified: Sun May 10 13:44:05 2020
 ;; Author: MASUYAMA Takashi <mamewotoko@gmail.com>
 
 ;;; Code:
 
 (require 'autoinsert)
 
-(defconst sources-of-work "/home/tak/work/home/emfg/source/")
 (defconst my-c-ftp-directory "sources/c")
 (defconst my-line "------------------------------------------------------------")
 
@@ -44,7 +41,7 @@
 (setq time-stamp-line-limit 5)
 (add-hook 'write-file-hooks 'time-stamp)
 
-(load "myjavamode.el")
+;(load "myjavamode.el")
 
 (defun camllexer-header-function ()
   (let ((f (file-name-nondirectory (buffer-file-name))))

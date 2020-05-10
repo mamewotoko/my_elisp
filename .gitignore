@@ -1,4 +1,8 @@
 *~
 *.elc
 TAGS
+elisp/sdic-*
+elisp/dict/
+elisp/namazu/
+elisp/aquos.el
 

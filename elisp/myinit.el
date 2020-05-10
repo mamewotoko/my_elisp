@@ -1,16 +1,12 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Mon Apr 20 19:26:29 2020
+;;			Last modified: Sun May 10 13:43:46 2020
 ;;------------------------------------------------------------
-;; Written by Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
-;; FTP Directory: sources/emacs ;;
+;; Written by Takashi Masuyama <mamewotoko@gmail.com>
 
 (require 'package)
-(push "/Users/tak/dev/pandoc_serv/_opam/share/emacs/site-lisp" load-path)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/")
              '("melpa-stable" . "http://stable.melpa.org/packages/"))
-
-	     ;'("marmalade" . "http://marmalade-repo.org/packages/"))
 
 (package-initialize) ;; You might already have this line
 
@@ -64,34 +60,8 @@
 (epa-file-enable)
 (setq epg-gpg-program "/usr/local/bin/gpg2")
 
-;;; sdic
-(setq load-path (cons (expand-file-name "~/lib/emacs/elisp/sdic-2.1.3/lisp") load-path))
-(autoload 'sdic-describe-word "sdic" "英単語の意味を調べる" t nil)
-(global-set-key "\C-cw" 'sdic-describe-word)
-(autoload 'sdic-describe-word-at-point "sdic" "カーソルの位置の英単語の意味を調べる" t nil)
-(global-set-key "\C-cW" 'sdic-describe-word-at-point)
-
 (require 'whitespace)
 (whitespace-mode)
-
-;HTMLメールを読めるようにする
-;(require 'mime-w3m)
-                                        ;日本語infoを読めるようにする
-;https://femt.ddo.jp/modules/xpwiki/?emacs%E3%81%A7%E3%83%A1%E3%83%BC%E3%83%AB%E3%81%AA%E7%92%B0%E5%A2%83%E3%81%AB%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B
-;; (auto-compression-mode t)
-;; ;メールドラフトモードをWandarlustドラフトモードに
-;; (autoload 'wl-user-agent-compose "wl-draft" nil t)
-;; (if (boundp 'mail-user-agent)
-;;     (setq mail-user-agent 'wl-user-agent))
-;; (if (fboundp 'define-mail-user-agent)
-;;     (define-mail-user-agent
-;;       'wl-user-agent
-;;       'wl-user-agent-compose
-;;       'wl-draft-send
-;;       'wl-draft-kill
-;;       'mail-send-hook))
-;w3mでグラフィック表示を有効にする
-;(setq w3m-default-display-inline-images t)
 
 (setq dired-listing-switches "-alh")
 ;; diredを2つのウィンドウで開いている時に、デフォルトの移動orコピー先をもう一方のdiredで開いているディレクトリにする
@@ -202,19 +172,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (global-set-key [f1] 'help-command)
 (setq help-char nil)
 
-;(display-time)
-;; (setq display-time-day-and-date t)
-;; (setq display-time-default-load-average nil)
-;; (when (window-system)
-;;   (setq display-time-string-forms
-;;         '((format "%s/%s/%s(%s) %s:%s" year month day dayname 24-hours minutes)))
-;;   (display-time)
-;;   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-;;   (add-to-list 'default-frame-alist '(ns-appearance . dark))
-;;   (setq frame-title-format '("" global-mode-string
-;;                              (:eval (if (buffer-file-name) " %f" " %b")))))
-
-
 ;(exec-path-from-shell-initialize)
 
 (line-number-mode 1)
@@ -222,7 +179,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (setq enable-recursive-minibuffers nil)
 
-(add-to-list 'load-path (expand-file-name "~/lib/emacs/elisp/scala-mode"))
+;(add-to-list 'load-path (expand-file-name "~/lib/emacs/elisp/scala-mode"))
 ;(require 'yaml-mode)
 (setq time-stamp-line-limit 100)
 
@@ -270,3 +227,5 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (require 'wgrep-ag)
 
 (provide 'myinit)
+;;; myinit.el ends here
+
