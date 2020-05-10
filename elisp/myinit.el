@@ -45,7 +45,7 @@
     magit
     ))
 
-(defvar my-install-package-p nil)
+(defvar my-install-package-p t)
 (if my-install-package-p
     (progn
       (package-refresh-contents)
