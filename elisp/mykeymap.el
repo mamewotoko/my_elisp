@@ -8,17 +8,14 @@
 (global-set-key (kbd "C-\;") 'completion-at-point)
 (global-set-key [(control ?¥)] 'toggle-input-method)
 (global-set-key "\C-h" 'backward-delete-char)
-
-(global-set-key "\C-h" 'backward-delete-char)
-(global-set-key [f1] 'help-command)
+; 以下を設定すると hexl-modeが起動しなくなる
+; (setq help-char nil)
+;(global-set-key [f1] 'help-command)
 
 ;; help, man, apropos
 (global-set-key [(control f1)] 'manual-entry)
 (global-set-key [(meta f1)] 'helm-apropos)
 (define-key help-map "a" 'apropos)
-
-; 以下を設定すると hexl-modeが起動しなくなる
-;(setq help-char nil)
 
 ;;;ジャンプ
 (global-set-key "\C-l" 'goto-line)
@@ -261,10 +258,6 @@
           (end (get-point end-of-thing arg)))
       (copy-region-as-kill beg end)))
   )
-
-(add-hook 'python-mode-hook
-          (lambda ()
-            (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
 
 (defun paste-to-mark(&optional arg)
   "Paste things to mark, or to the prompt in shell-mode"

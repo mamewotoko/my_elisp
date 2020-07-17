@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Fri Jul 17 10:38:48 2020
+;;; mymode.el --- Last modified: 金曜日 7月 17 17:21:21 2020
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -227,6 +227,10 @@
   (shell-command (format "etags *.%s" (or extension "el")))
   (let ((tags-revert-without-query t))  ; don't query, revert silently          
     (visit-tags-table default-directory nil)))
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
 
 (provide 'mymode)
 ;;; mymode.el ends here
