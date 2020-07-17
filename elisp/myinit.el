@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Fri Jul 17 10:33:19 2020
+;;			Last modified: Fri Jul 17 10:57:12 2020
 ;; Written by Takashi Masuyama <mamewotoko@gmail.com>
 
 (defvar my-install-package-p nil)
@@ -12,12 +12,18 @@
 	       (expand-file-name "~/lib/emacs/lisp/anthy"))
 	      load-path))
 
+(if (>= emacs-major-version 26)
+    (progn
+      ;; for emacs26
+      (defalias 'insert-string 'insert)
+      (defalias 'default-fill-column 'fill-column)
+      (defalias 'list-buffers 'ibuffer)
+      ))
+
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/")
              '("melpa-stable" . "http://stable.melpa.org/packages/"))
-
-(package-initialize)
 
 (defvar my-favorite-packages
   '(
@@ -48,6 +54,7 @@
     magit
     ))
 
+(package-initialize)
 (if my-install-package-p
     (progn
       (package-refresh-contents)
@@ -65,18 +72,18 @@
     (set-fringe-mode 1))
 
 (setq scroll-step 1)
-
-;(load-theme 'solarized-dark t)
 (setq max-lisp-eval-depth 10000)
 (auto-compression-mode t)
 
+(global-flycheck-mode 1)
 
-(require 'epa-file)
-(epa-file-enable)
-(setq epg-gpg-program "/usr/local/bin/gpg2")
+;; utf8
+(set-language-environment "Japanese")
 
-(require 'whitespace)
-(whitespace-mode)
+(set-default-coding-systems 'utf-8)
+(set-selection-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
 
 (setq dired-listing-switches "-alh")
 ;; diredを2つのウィンドウで開いている時に、デフォルトの移動orコピー先をもう一方のdiredで開いているディレクトリにする
@@ -98,10 +105,12 @@
 
 (setq ring-bell-function 'ignore)
 
-(setq auto-mode-alist
-          (cons '("\\.ml[iylp]?$" . caml-mode) auto-mode-alist))
-(autoload 'caml-mode "caml" "Major mode for editing Caml code." t)
-(autoload 'run-caml "inf-caml" "Run an inferior Caml process." t)
+(require 'epa-file)
+(epa-file-enable)
+(setq epg-gpg-program "/usr/local/bin/gpg2")
+
+(require 'whitespace)
+(whitespace-mode)
 
 ;;;(require 'advice)
 
@@ -123,9 +132,9 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 ;(setq merlin-ac-setup 'easy)
 ;(add-hook 'caml-mode-hook 'merlin-mode)
 
-(require 'lsp)
-(require 'lsp-ui)
-(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+;; (require 'lsp)
+;; (require 'lsp-ui)
+;; (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 ;(require 'doom-modeline)
 ;(doom-modeline-mode 1)
 ;(load-theme 'doom-one t)
@@ -134,13 +143,15 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (when (and (eq system-type 'darwin) (display-graphic-p))
   (setq mac-pass-command-to-system nil)
 
-  (set-face-font 'default "Monaco-12")
-  (set-face-attribute 'mode-line nil :font "Monaco-10")
-
+  (setq my-font-size 12)
+  
+  (set-face-font 'default (format "Monaco-%d" my-font-size))
+  (set-face-attribute 'mode-line nil :font (format "Monaco-%d" my-font-size))
+  
   (set-background-color "#003300")
   (set-foreground-color "light gray")
-
-  (set-face-font 'default "Monaco-20")
+  
+  ;(set-face-font 'default "Monaco-20")
   
   ;; Mac-only
   ;; Command key as Meta key, Option key untouched
@@ -169,68 +180,16 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   ;; values can be 'control (C), 'alt (A), 'meta (M), 'super (s), or 'hyper (H).
   ;; setting to nil allows the OS to assign values
   )
-(setq my-font-size 12)
-(set-face-font 'default (format "Monaco-%d" my-font-size))
-(set-face-attribute 'mode-line nil :font (format "Monaco-%d" my-font-size))
-
-;; utf8
-(set-language-environment "Japanese")
-
-(set-default-coding-systems 'utf-8)
-(set-selection-coding-system 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
-
-(setq minibuffer-max-depth nil)
-
-;; BISECT
-
-(global-set-key "\C-h" 'backward-delete-char)
-(global-set-key [f1] 'help-command)
-
-; 以下を設定すると hexl-modeが起動しなくなる
-;(setq help-char nil)
-
-(exec-path-from-shell-initialize)
-
-(require 'helm)
-(require 'helm-config)
-(helm-mode 1)
-
-;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
-;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
-;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
-(global-set-key (kbd "C-x h") 'helm-command-prefix)
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab 
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-
-
-;(add-to-list 'load-path (expand-file-name "~/lib/emacs/elisp/scala-mode"))
-;(require 'yaml-mode)
-(setq time-stamp-line-limit 100)
-
-(setq grep-use-null-device nil)
-(ansi-color-for-comint-mode-on)
 
 (progn
   (set-face-background 'mode-line "gray30")
   (set-face-background 'mode-line-inactive "black"))
 (setq doom-modeline-height 1)
-
-;; for emacs26
-(defalias 'insert-string 'insert)
-(defalias 'default-fill-column 'fill-column)
-(defalias 'list-buffers 'ibuffer)
-(setq max-lisp-eval-depth 10000)
-
-; utf8 
-(set-language-environment "Japanese")
-; for highlighting
-(set-default-coding-systems 'utf-8)
-(set-selection-coding-system 'utf-8)
-(set-terminal-coding-system 'utf-8)
-
-(global-flycheck-mode 1)
+(setq minibuffer-max-depth nil)
+(exec-path-from-shell-initialize)
+(setq time-stamp-line-limit 100)
+(setq grep-use-null-device nil)
+(ansi-color-for-comint-mode-on)
 
 ;; customized
 (load "ssh.el")
@@ -253,6 +212,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (setq calendar-week-start-day 1)
 (eval-after-load "holidays"
   '(progn
+     ;; week starts from monday 
      (require 'japanese-holidays)
      (setq calendar-holidays ; 他の国の祝日も表示させたい場合は適当に調整
            (append japanese-holidays holiday-local-holidays holiday-other-holidays))

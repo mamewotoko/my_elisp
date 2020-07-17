@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Sat May 23 11:47:43 2020
+;;; mymode.el --- Last modified: Fri Jul 17 10:38:48 2020
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -46,6 +46,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Shell mode
 ;;
+(setq auto-mode-alist
+          (cons '("\\.ml[iylp]?$" . caml-mode) auto-mode-alist))
+(autoload 'caml-mode "caml" "Major mode for editing Caml code." t)
+(autoload 'run-caml "inf-caml" "Run an inferior Caml process." t)
+
 (load "mycamlextend.el")
 (defun my-goto-error ()
   (interactive)

@@ -8,7 +8,17 @@
 (global-set-key (kbd "C-\;") 'completion-at-point)
 (global-set-key [(control ?¥)] 'toggle-input-method)
 (global-set-key "\C-h" 'backward-delete-char)
+
+(global-set-key "\C-h" 'backward-delete-char)
 (global-set-key [f1] 'help-command)
+
+;; help, man, apropos
+(global-set-key [(control f1)] 'manual-entry)
+(global-set-key [(meta f1)] 'helm-apropos)
+(define-key help-map "a" 'apropos)
+
+; 以下を設定すると hexl-modeが起動しなくなる
+;(setq help-char nil)
 
 ;;;ジャンプ
 (global-set-key "\C-l" 'goto-line)
@@ -29,6 +39,7 @@
 (global-set-key (kbd "C-.") 'other-window)
 (global-set-key "\C-t" 'copy-region-as-kill)
 
+;; helm
 (require 'helm-config)
 (helm-mode 1)
 (require 'helm)
@@ -40,6 +51,10 @@
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (setq helm-ff-skip-boring-files t)
+
+(require 'helm)
+(require 'helm-config)
+(helm-mode 1)
 
 (global-set-key "\C-o" 'helm-dabbrev)
 
@@ -73,14 +88,7 @@
   (let ((target-dir (expand-file-name ".")))
     (my-input-command-to-shell (concat (format "pushd '%s'" target-dir)) buffer)))
 
-
 (global-set-key "\C-xg" 'magit-status)
-
-;;lisp
-(global-set-key [f1] 'help-command)
-(global-set-key [(control f1)] 'manual-entry)
-(global-set-key [(meta f1)] 'helm-apropos)
-(define-key help-map "a" 'apropos)
 
 ;;; older emacs: version xxxx
 ;;; use ssh.el
