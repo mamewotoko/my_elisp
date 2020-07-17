@@ -191,11 +191,15 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (setq minibuffer-max-depth nil)
 
+;; BISECT
+
 (global-set-key "\C-h" 'backward-delete-char)
 (global-set-key [f1] 'help-command)
-(setq help-char nil)
 
-;(exec-path-from-shell-initialize)
+; 以下を設定すると hexl-modeが起動しなくなる
+;(setq help-char nil)
+
+(exec-path-from-shell-initialize)
 
 (require 'helm)
 (require 'helm-config)
@@ -240,10 +244,9 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
             (shell-dirtrack-mode t)
             (setq dirtrackp nil)))
 
-;; BISECT
-;(load "myinsert.el")
-;(load "mymode.el")
-; (load "mykeymap.el")
+(load "myinsert.el")
+(load "mymode.el")
+(load "mykeymap.el")
 
 (require 'markdown-mode)
 (add-hook 'markdown-mode-hook
@@ -272,4 +275,3 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (provide 'myinit)
 ;;; myinit.el ends here
-
