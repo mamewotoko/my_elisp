@@ -55,6 +55,7 @@
      ("gitorious" git-link-commit-gitorious)
      ("gitlab" git-link-commit-github)
      ("mamewo" git-link-kallithea))))
+ '(helm-dabbrev-case-fold-search t)
  '(helm-dabbrev-cycle-threshold 1)
  '(helm-mm-matching-method (quote multi2))
  '(helm-mode-fuzzy-match t)

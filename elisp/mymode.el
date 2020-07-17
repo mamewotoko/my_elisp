@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Sun May 10 13:42:39 2020
+;;; mymode.el --- Last modified: Sat May 23 11:47:43 2020
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -46,7 +46,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Shell mode
 ;;
-
+(load "mycamlextend.el")
 (defun my-goto-error ()
   (interactive)
   (beginning-of-line)

@@ -5,16 +5,12 @@
 
 ;;; Code:
 
-<<<<<<< HEAD
 (global-set-key (kbd "C-\;") 'completion-at-point)
-=======
-
 (global-set-key [(control ?¥)] 'toggle-input-method)
 (global-set-key "\C-h" 'backward-delete-char)
 (global-set-key [f1] 'help-command)
 
-(global-set-key "\C-cl" 'locate)
->>>>>>> b8e28bfa806ef300e8d428a79c61d97f6a2a8249
+;(global-set-key "\C-cl" 'locate)
 
 ;;;ジャンプ
 (global-set-key "\C-l" 'goto-line)
@@ -43,7 +39,7 @@
 ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
 ;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
 (global-set-key (kbd "C-x h") 'helm-command-prefix)
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab 
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (setq helm-ff-skip-boring-files t)
 
@@ -56,7 +52,7 @@
       (kill-buffer (current-buffer))))
 
 (global-set-key "\C-xk" 'kill-this-buffer)
-(global-set-key "\C-x\C-k" 'kill-this-buffer)
+;(global-set-key "\C-x\C-k" 'kill-this-buffer)
 (global-set-key "\C-x\C-o" 'find-file-other-window)
 
 (global-set-key [hiragana-katakana] 'toggle-input-method)
@@ -96,7 +92,7 @@
   (if (not buffer-file-name)
       (shell)
     (condition-case nil
-      (tramp-file-name-user 
+      (tramp-file-name-user
        (with-parsed-tramp-file-name buffer-file-name nil
          ;; v is defined in with-parsed-tramp-file-name macro
          (if (not (tramp-file-name-p v))
@@ -213,7 +209,7 @@
 (global-set-key [(shift f12)] 'bookmark-save)
 (global-set-key [(meta f12)] 'bookmark-delete)
 
-(define-key global-map [?¥] [?\\]) 
+(define-key global-map [?¥] [?\\])
 (global-unset-key "\C-z")
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 
@@ -261,9 +257,13 @@
       (copy-region-as-kill beg end)))
   )
 
+(add-hook 'python-mode-hook
+          (lambda ()
+            (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
+
 (defun paste-to-mark(&optional arg)
   "Paste things to mark, or to the prompt in shell-mode"
-  (let ((pasteMe 
+  (let ((pasteMe
      	 (lambda()
      	   (if (string= "shell-mode" major-mode)
                (progn (comint-next-prompt 25535) (yank))

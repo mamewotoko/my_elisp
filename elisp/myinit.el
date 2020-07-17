@@ -1,6 +1,8 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Sun May 10 14:59:31 2020
+;;			Last modified: Fri Jul 17 09:57:34 2020
 ;; Written by Takashi Masuyama <mamewotoko@gmail.com>
+
+(defvar my-install-package-p nil)
 
 (setq load-path
       (append (list
@@ -16,8 +18,7 @@
              '("melpa-stable" . "http://stable.melpa.org/packages/"))
 
 (package-initialize)
-;; You might already have this line
-(load-theme 'solarized-dark t)
+;(load-theme 'solarized-dark t)
 
 (defalias 'list-buffers 'ibuffer)
 (setq max-lisp-eval-depth 10000)
@@ -57,7 +58,6 @@
     magit
     ))
 
-(defvar my-install-package-p nil)
 (if my-install-package-p
     (progn
       (package-refresh-contents)
@@ -110,9 +110,6 @@
 (autoload 'run-caml "inf-caml" "Run an inferior Caml process." t)
 
 ;;;(require 'advice)
-(load "myinsert.el")
-(load "mymode.el")
-(load "mykeymap.el")
 
 ;; skip warning
 (setq exec-path-from-shell-check-startup-files nil)
@@ -192,10 +189,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (set-terminal-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
-(load "myinsert.el")
-(load "mymode.el")
-(load "mykeymap.el")
-
 (setq minibuffer-max-depth nil)
 
 (global-set-key "\C-h" 'backward-delete-char)
@@ -246,6 +239,11 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
           '(lambda ()
             (shell-dirtrack-mode t)
             (setq dirtrackp nil)))
+
+;; BISECT
+;(load "myinsert.el")
+;(load "mymode.el")
+; (load "mykeymap.el")
 
 (require 'markdown-mode)
 (add-hook 'markdown-mode-hook
