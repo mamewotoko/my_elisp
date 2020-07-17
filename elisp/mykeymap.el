@@ -10,8 +10,6 @@
 (global-set-key "\C-h" 'backward-delete-char)
 (global-set-key [f1] 'help-command)
 
-;(global-set-key "\C-cl" 'locate)
-
 ;;;ジャンプ
 (global-set-key "\C-l" 'goto-line)
 (global-set-key "\C-c\C-j" 'my-goto-error)
@@ -43,7 +41,6 @@
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (setq helm-ff-skip-boring-files t)
 
-;(global-set-key "\C-o" 'dabbrev-expand)
 (global-set-key "\C-o" 'helm-dabbrev)
 
 (if (not (featurep 'kill-this-buffer))

@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Fri Jul 17 09:57:34 2020
+;;			Last modified: Fri Jul 17 10:33:19 2020
 ;; Written by Takashi Masuyama <mamewotoko@gmail.com>
 
 (defvar my-install-package-p nil)
@@ -18,18 +18,6 @@
              '("melpa-stable" . "http://stable.melpa.org/packages/"))
 
 (package-initialize)
-;(load-theme 'solarized-dark t)
-
-(defalias 'list-buffers 'ibuffer)
-(setq max-lisp-eval-depth 10000)
-(auto-compression-mode t)
-
-; utf8 
-(set-language-environment "Japanese")
-; for highlighting
-(set-default-coding-systems 'utf-8)
-(set-selection-coding-system 'utf-8)
-(set-terminal-coding-system 'utf-8)
 
 (defvar my-favorite-packages
   '(
@@ -46,9 +34,11 @@
     svg
     monky
     merlin
+    tuareg
     markdown-mode
     lsp-ui
-    lsp-ocaml
+    ; lsp-ocaml
+    csv-mode
     lsp-mode
     helm
     helm-ag-r
@@ -76,6 +66,11 @@
 
 (setq scroll-step 1)
 
+;(load-theme 'solarized-dark t)
+(setq max-lisp-eval-depth 10000)
+(auto-compression-mode t)
+
+
 (require 'epa-file)
 (epa-file-enable)
 (setq epg-gpg-program "/usr/local/bin/gpg2")
@@ -99,7 +94,6 @@
 (desktop-save-mode 1)
 
 (setq desktop-restore-eager 3)
-(setq max-lisp-eval-depth 10000)
 (setq bookmark-save-flag 1)
 
 (setq ring-bell-function 'ignore)
@@ -132,8 +126,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (require 'lsp)
 (require 'lsp-ui)
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-(require 'doom-modeline)
-(doom-modeline-mode 1)
+;(require 'doom-modeline)
+;(doom-modeline-mode 1)
 ;(load-theme 'doom-one t)
 
 ;;; Mac-only configuration to use command and options keys
@@ -179,8 +173,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (set-face-font 'default (format "Monaco-%d" my-font-size))
 (set-face-attribute 'mode-line nil :font (format "Monaco-%d" my-font-size))
 
-(auto-compression-mode t)
-
 ;; utf8
 (set-language-environment "Japanese")
 
@@ -212,10 +204,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab 
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 
-(line-number-mode 1)
-(column-number-mode 1)
-
-(setq enable-recursive-minibuffers nil)
 
 ;(add-to-list 'load-path (expand-file-name "~/lib/emacs/elisp/scala-mode"))
 ;(require 'yaml-mode)
@@ -232,6 +220,15 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 ;; for emacs26
 (defalias 'insert-string 'insert)
 (defalias 'default-fill-column 'fill-column)
+(defalias 'list-buffers 'ibuffer)
+(setq max-lisp-eval-depth 10000)
+
+; utf8 
+(set-language-environment "Japanese")
+; for highlighting
+(set-default-coding-systems 'utf-8)
+(set-selection-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
 
 (global-flycheck-mode 1)
 
