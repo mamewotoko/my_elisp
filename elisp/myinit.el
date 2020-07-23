@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Fri Jul 17 10:57:12 2020
+;;			Last modified: Thu Jul 23 05:41:18 2020
 ;; Written by Takashi Masuyama <mamewotoko@gmail.com>
 
 (defvar my-install-package-p nil)
@@ -7,6 +7,7 @@
 (setq load-path
       (append (list
 	       (expand-file-name "~/lib/emacs/elisp/opa/")
+	       ;; todo; submodule
 	       (expand-file-name "~/dev/ssh-el/")
 	       (expand-file-name "~/lib/emacs/elisp/ocaml/")
 	       (expand-file-name "~/lib/emacs/lisp/anthy"))
@@ -42,7 +43,7 @@
     merlin
     tuareg
     markdown-mode
-    lsp-ui
+    ; lsp-ui
     ; lsp-ocaml
     csv-mode
     lsp-mode
@@ -75,7 +76,7 @@
 (setq max-lisp-eval-depth 10000)
 (auto-compression-mode t)
 
-(global-flycheck-mode 1)
+;(global-flycheck-mode 1)
 
 ;; utf8
 (set-language-environment "Japanese")
@@ -142,6 +143,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 ;;; Mac-only configuration to use command and options keys
 (when (and (eq system-type 'darwin) (display-graphic-p))
   (setq mac-pass-command-to-system nil)
+  (exec-path-from-shell-initialize)  
 
   (setq my-font-size 12)
   
@@ -186,19 +188,19 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (set-face-background 'mode-line-inactive "black"))
 (setq doom-modeline-height 1)
 (setq minibuffer-max-depth nil)
-(exec-path-from-shell-initialize)
+
 (setq time-stamp-line-limit 100)
 (setq grep-use-null-device nil)
 (ansi-color-for-comint-mode-on)
 
 ;; customized
-(load "ssh.el")
+;(load "ssh.el")
 ;(require 'ssh)
-(setq ssh-directory-tracking-mode 'ftp)
-(add-hook 'ssh-mode-hook
-          '(lambda ()
-            (shell-dirtrack-mode t)
-            (setq dirtrackp nil)))
+;(setq ssh-directory-tracking-mode 'ftp)
+;(add-hook 'ssh-mode-hook
+;          '(lambda ()
+;            (shell-dirtrack-mode t)
+;            (setq dirtrackp nil)))
 
 (load "myinsert.el")
 (load "mymode.el")

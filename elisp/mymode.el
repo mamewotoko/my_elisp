@@ -51,7 +51,7 @@
 (autoload 'caml-mode "caml" "Major mode for editing Caml code." t)
 (autoload 'run-caml "inf-caml" "Run an inferior Caml process." t)
 
-(load "mycamlextend.el")
+;(load "mycamlextend.el")
 (defun my-goto-error ()
   (interactive)
   (beginning-of-line)
@@ -112,7 +112,6 @@
 	       "\C-v" (other-window 1))))
 
 (require 'tuareg)
-;(require 'lsp)
 (require 'merlin)
 
 (add-hook 'tuareg-mode-hook #'merlin-mode)
