@@ -49,11 +49,15 @@
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (setq helm-ff-skip-boring-files t)
 
-(require 'helm)
-(require 'helm-config)
-(helm-mode 1)
-
 (global-set-key "\C-o" 'helm-dabbrev)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key "\C-x\C-f" 'helm-find-files)
+;; For find-file etc.
+(require 'helm-files)
+(define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
+;; For helm-find-files etc.
+(define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
+
 
 (if (not (featurep 'kill-this-buffer))
     (defun kill-this-buffer ()
@@ -167,15 +171,6 @@
 ;(require 'flycheck)
 ;(global-set-key (kbd "<M-up>") 'flycheck-previous-error)
 ;(global-set-key (kbd "<M-down>") 'flycheck-next-error)
-
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key "\C-x\C-f" 'helm-find-files)
-;; For find-file etc.
-(require 'helm-files)
-(define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
-;; For helm-find-files etc.
-(define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
-
 ;(define-key ctl-x-map [f8] 'ssh)
 (global-set-key [(super h)] 'ignore)
 
@@ -186,7 +181,6 @@
 (global-set-key [f10] 'namazu)
 (global-set-key [zenkaku-hankaku] 'toggle-input-method)
 
-                                        ;(require 'zop-to-char)
 (global-set-key (kbd "M-z") 'zop-to-char)
 
 (global-set-key [f11]
