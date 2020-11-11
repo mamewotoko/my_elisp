@@ -119,6 +119,7 @@
 (require 'tramp)
 
 ;;; use shell
+; recent emacs 26, (25?) starts shell according to host of current buffer
 (defun shell-or-ssh ()
   (interactive)
   (if (or (string-prefix-p "/scp:" default-directory)
