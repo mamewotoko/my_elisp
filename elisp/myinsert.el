@@ -1,4 +1,4 @@
-;;; myinsert.el --- Last modified: Sun May 10 13:44:05 2020
+;;; myinsert.el --- Last modified: Thu Jun 25 07:39:55 2020
 ;; Author: MASUYAMA Takashi <mamewotoko@gmail.com>
 
 ;;; Code:
@@ -93,19 +93,24 @@
 			  (file-name-nondirectory (buffer-file-name))))
   (goto-char (point-min)))
 
+(defun markdeep-template-function ()
+  (insert-file-contents (concat my-auto-insert-path
+                                "markdeep.md")))
+
 (setq auto-insert-query nil
       auto-insert-directory my-auto-insert-path
       auto-insert-alist
       (append
        '(
-	 ("\\.tex$". tex-template-function)
-	 ("\\.html$" . html-template-function)
-	 ("\\.opa$" . opa-template-function)
-	 ("\\.sh$" . sh-template-function)
-	 ;; ("[Mm]akefile$". makefile-template-function)
-	 ;; ("Makefile\\..+$" . caml-submakefile-template-funcion)
-	 ("\\.prom$" . my-promela-header-insert)
-	 )
+         ("\\.tex$". tex-template-function)
+         ("\\.md.html$" . markdeep-template-function)
+         ("\\.html$" . html-template-function)
+         ("\\.opa$" . opa-template-function)
+         ("\\.sh$" . sh-template-function)
+         ;; ("[Mm]akefile$". makefile-template-function)
+         ;; ("Makefile\\..+$" . caml-submakefile-template-funcion)
+         ("\\.prom$" . my-promela-header-insert)
+         )
        auto-insert-alist))
 
 (setq html-helper-build-new-buffer nil)

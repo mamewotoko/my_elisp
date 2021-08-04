@@ -1,7 +1,10 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Sun May 10 14:59:31 2020
+;;			Last modified: Sat Jul 10 07:13:22 2021
 ;; Written by Takashi Masuyama <mamewotoko@gmail.com>
+; install font used by doom 
+;M-x all-the-icons-install-fonts
 
+(setq byte-compile-warnings '(not cl-functions obsolete))
 (setq load-path
       (append (list
 	       (expand-file-name "~/lib/emacs/elisp/opa/")
@@ -16,14 +19,13 @@
              '("melpa-stable" . "http://stable.melpa.org/packages/"))
 
 (package-initialize)
-;; You might already have this line
-(load-theme 'solarized-dark t)
+;(load-theme 'solarized-dark t)
 
 (defalias 'list-buffers 'ibuffer)
 (setq max-lisp-eval-depth 10000)
 (auto-compression-mode t)
 
-; utf8 
+; utf8
 (set-language-environment "Japanese")
 ; for highlighting
 (set-default-coding-systems 'utf-8)
@@ -35,7 +37,10 @@
     ;;;; for auto-complete
     ag
     auto-complete
-    company-lsp
+;    company-lsp
+;    lsp-ui
+;    lsp-ocaml
+;    lsp-mode
     dockerfile-mode
     wgrep
     wgrep-ag
@@ -46,9 +51,6 @@
     monky
     merlin
     markdown-mode
-    lsp-ui
-    lsp-ocaml
-    lsp-mode
     helm
     helm-ag-r
     csv
@@ -57,7 +59,8 @@
     magit
     ))
 
-(defvar my-install-package-p nil)
+;(defvar my-install-package-p nil)
+(defvar my-install-package-p t)
 (if my-install-package-p
     (progn
       (package-refresh-contents)
@@ -67,10 +70,10 @@
 
 (if (fboundp 'scroll-bar-mode)
     (scroll-bar-mode -1))
-(if (fboundp 'menu-bar-mode)
-    (menu-bar-mode -1))
-(if (fboundp 'tool-bar-mode)
-    (tool-bar-mode -1))
+;; (if (fboundp 'menu-bar-mode)
+;;     (menu-bar-mode -1))
+;; (if (fboundp 'tool-bar-mode)
+;;     (tool-bar-mode -1))
 (if (fboundp 'set-fringe-mode)
     (set-fringe-mode 1))
 
@@ -97,7 +100,6 @@
       `((".*" ,temporary-file-directory t)))
 
 (desktop-save-mode 1)
-
 (setq desktop-restore-eager 3)
 (setq max-lisp-eval-depth 10000)
 (setq bookmark-save-flag 1)
@@ -132,25 +134,26 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 ;(setq merlin-ac-setup 'easy)
 ;(add-hook 'caml-mode-hook 'merlin-mode)
 
-(require 'lsp)
-(require 'lsp-ui)
-(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+;(require 'lsp)
+;(require 'lsp-ui)
+;(add-hook 'lsp-mode-hook 'lsp-ui-mode)
 (require 'doom-modeline)
 (doom-modeline-mode 1)
-;(load-theme 'doom-one t)
+(load-theme 'doom-one t)
+(setq doom-modeline-height 1)
 
 ;;; Mac-only configuration to use command and options keys
 (when (and (eq system-type 'darwin) (display-graphic-p))
   (setq mac-pass-command-to-system nil)
 
-  (set-face-font 'default "Monaco-12")
-  (set-face-attribute 'mode-line nil :font "Monaco-10")
-
-  (set-background-color "#003300")
+  ;(set-face-font 'default "Monaco-16")
+;  (set-face-attribute 'mode-line nil :font "Monaco-10")
   (set-foreground-color "light gray")
+  (set-background-color "#183018")
+  ;(set-background-color 'modeline "#444444")
+  (set-face-background 'mode-line "#444444")
+  (set-face-background 'mode-line-inactive "#000000")
 
-  (set-face-font 'default "Monaco-20")
-  
   ;; Mac-only
   ;; Command key as Meta key, Option key untouched
   ;; http://www.emacswiki.org/emacs/MetaKeyProblems#toc15
@@ -178,9 +181,12 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   ;; values can be 'control (C), 'alt (A), 'meta (M), 'super (s), or 'hyper (H).
   ;; setting to nil allows the OS to assign values
   )
-(setq my-font-size 12)
-(set-face-font 'default (format "Monaco-%d" my-font-size))
-(set-face-attribute 'mode-line nil :font (format "Monaco-%d" my-font-size))
+;
+(defun my-set-font-size (size mode-line-size)
+  (interactive)
+  (set-face-font 'default (format "Monaco-%d" size))
+  (set-face-attribute 'mode-line nil :font (format "Monaco-%d" mode-line-size)))
+(my-set-font-size 16 14)
 
 (auto-compression-mode t)
 
@@ -200,7 +206,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (global-set-key "\C-h" 'backward-delete-char)
 (global-set-key [f1] 'help-command)
-(setq help-char nil)
 
 ;(exec-path-from-shell-initialize)
 
@@ -212,7 +217,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
 ;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
 (global-set-key (kbd "C-x h") 'helm-command-prefix)
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab 
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 
 (line-number-mode 1)
@@ -226,11 +231,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (setq grep-use-null-device nil)
 (ansi-color-for-comint-mode-on)
-
-(progn
-  (set-face-background 'mode-line "gray30")
-  (set-face-background 'mode-line-inactive "black"))
-(setq doom-modeline-height 1)
 
 ;; for emacs26
 (defalias 'insert-string 'insert)
@@ -274,4 +274,3 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (provide 'myinit)
 ;;; myinit.el ends here
-

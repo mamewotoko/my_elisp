@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Sun May 10 13:42:39 2020
+;;; mymode.el --- Last modified: Thu Jul 08 20:22:08 2021
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -46,7 +46,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Shell mode
 ;;
-
+(load "mycamlextend.el")
 (defun my-goto-error ()
   (interactive)
   (beginning-of-line)
@@ -106,11 +106,11 @@
 	     (define-key calendar-mode-map
 	       "\C-v" (other-window 1))))
 
-(require 'tuareg)
+;(require 'tuareg)
 ;(require 'lsp)
 (require 'merlin)
 
-(add-hook 'tuareg-mode-hook #'merlin-mode)
+;(add-hook 'tuareg-mode-hook #'merlin-mode)
 (setq merlin-ac-setup 'easy)
 (add-hook 'merlin-mode-hook
           '(lambda ()
@@ -155,15 +155,15 @@
 ;; lsp-mode supports snippets, but in order for them to work you need to use yasnippet
 ;; If you don't want to use snippets set lsp-enable-snippet to nil in your lsp-mode settings
 ;;   to avoid odd behavior with snippets and indentation
-(use-package yasnippet)
+;(use-package yasnippet)
 
 ;; Add company-lsp backend for metals
-(use-package company-lsp)
+;(use-package company-lsp)
 
 ;; Use the Debug Adapter Protocol for running tests and debugging
-(use-package posframe
-  ;; Posframe is a pop-up tool that must be manually installed for dap-mode
-  )
+;; (use-package posframe
+;;   ;; Posframe is a pop-up tool that must be manually installed for dap-mode
+;;   )
 (use-package dap-mode
   :hook
   (lsp-mode . dap-mode)
@@ -171,13 +171,13 @@
   )
 
 ;; Use the Tree View Protocol for viewing the project structure and triggering compilation
-(use-package lsp-treemacs
-  :config
-  (lsp-metals-treeview-enable t)
-  (setq lsp-metals-treeview-show-when-views-received t)
-  )
+;; (use-package lsp-treemacs
+;;   :config
+;;   (lsp-metals-treeview-enable t)
+;;   (setq lsp-metals-treeview-show-when-views-received t)
+;;   )
 
-(require 'csv-mode)
+;(require 'csv-mode)
 (setq auto-mode-alist
       (append (list
 ;	       (cons "\\.tex$" 'yatex-mode)
@@ -186,11 +186,11 @@
 ;		    (cons "\\.jgo$" 'java-mode)
 	       (cons "\\.cgi$" 'cperl-mode)
 ;	       (cons "\\.R$" 'ess-mode)
-		    (cons "\\.ml[iylp]?$" 'tuareg-mode)
+;		    (cons "\\.ml[iylp]?$" 'tuareg-mode)
 		    (cons "\\.sql$" 'sql-mode)
 		    (cons "\\.opa$" 'opa-classic-mode)
                                         ;		    (cons "\\.scope$" 'java-mode)
-            (cons "\\.csv$" 'csv-mode)
+;            (cons "\\.csv$" 'csv-mode)
 		    (cons "\\.java$" 'java-mode)
                     (cons "\\.md.html$" 'markdown-mode)
                     (cons "\\.md$" 'markdown-mode)
