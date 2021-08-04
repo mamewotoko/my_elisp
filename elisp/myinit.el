@@ -1,23 +1,42 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
+<<<<<<< HEAD
 ;;			Last modified: Sat Jul 10 07:13:22 2021
+=======
+;;			Last modified: Thu Jul 23 05:41:18 2020
+>>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
 ;; Written by Takashi Masuyama <mamewotoko@gmail.com>
 ; install font used by doom 
 ;M-x all-the-icons-install-fonts
 
+<<<<<<< HEAD
 (setq byte-compile-warnings '(not cl-functions obsolete))
+=======
+(defvar my-install-package-p nil)
+
+>>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
 (setq load-path
       (append (list
 	       (expand-file-name "~/lib/emacs/elisp/opa/")
+	       ;; todo; submodule
 	       (expand-file-name "~/dev/ssh-el/")
 	       (expand-file-name "~/lib/emacs/elisp/ocaml/")
 	       (expand-file-name "~/lib/emacs/lisp/anthy"))
 	      load-path))
+
+(if (>= emacs-major-version 26)
+    (progn
+      ;; for emacs26
+      (defalias 'insert-string 'insert)
+      (defalias 'default-fill-column 'fill-column)
+      (defalias 'list-buffers 'ibuffer)
+      ))
 
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/")
              '("melpa-stable" . "http://stable.melpa.org/packages/"))
 
+<<<<<<< HEAD
 (package-initialize)
 ;(load-theme 'solarized-dark t)
 
@@ -32,6 +51,8 @@
 (set-selection-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
 
+=======
+>>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
 (defvar my-favorite-packages
   '(
     ;;;; for auto-complete
@@ -50,7 +71,15 @@
     svg
     monky
     merlin
+    tuareg
     markdown-mode
+<<<<<<< HEAD
+=======
+    ; lsp-ui
+    ; lsp-ocaml
+    csv-mode
+    lsp-mode
+>>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
     helm
     helm-ag-r
     csv
@@ -59,8 +88,12 @@
     magit
     ))
 
+<<<<<<< HEAD
 ;(defvar my-install-package-p nil)
 (defvar my-install-package-p t)
+=======
+(package-initialize)
+>>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
 (if my-install-package-p
     (progn
       (package-refresh-contents)
@@ -78,13 +111,18 @@
     (set-fringe-mode 1))
 
 (setq scroll-step 1)
+(setq max-lisp-eval-depth 10000)
+(auto-compression-mode t)
 
-(require 'epa-file)
-(epa-file-enable)
-(setq epg-gpg-program "/usr/local/bin/gpg2")
+;(global-flycheck-mode 1)
 
-(require 'whitespace)
-(whitespace-mode)
+;; utf8
+(set-language-environment "Japanese")
+
+(set-default-coding-systems 'utf-8)
+(set-selection-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
 
 (setq dired-listing-switches "-alh")
 ;; diredを2つのウィンドウで開いている時に、デフォルトの移動orコピー先をもう一方のdiredで開いているディレクトリにする
@@ -101,20 +139,18 @@
 
 (desktop-save-mode 1)
 (setq desktop-restore-eager 3)
-(setq max-lisp-eval-depth 10000)
 (setq bookmark-save-flag 1)
 
 (setq ring-bell-function 'ignore)
 
-(setq auto-mode-alist
-          (cons '("\\.ml[iylp]?$" . caml-mode) auto-mode-alist))
-(autoload 'caml-mode "caml" "Major mode for editing Caml code." t)
-(autoload 'run-caml "inf-caml" "Run an inferior Caml process." t)
+(require 'epa-file)
+(epa-file-enable)
+(setq epg-gpg-program "/usr/local/bin/gpg2")
+
+(require 'whitespace)
+(whitespace-mode)
 
 ;;;(require 'advice)
-(load "myinsert.el")
-(load "mymode.el")
-(load "mykeymap.el")
 
 ;; skip warning
 (setq exec-path-from-shell-check-startup-files nil)
@@ -134,6 +170,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 ;(setq merlin-ac-setup 'easy)
 ;(add-hook 'caml-mode-hook 'merlin-mode)
 
+<<<<<<< HEAD
 ;(require 'lsp)
 ;(require 'lsp-ui)
 ;(add-hook 'lsp-mode-hook 'lsp-ui-mode)
@@ -141,11 +178,21 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (doom-modeline-mode 1)
 (load-theme 'doom-one t)
 (setq doom-modeline-height 1)
+=======
+;; (require 'lsp)
+;; (require 'lsp-ui)
+;; (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+;(require 'doom-modeline)
+;(doom-modeline-mode 1)
+;(load-theme 'doom-one t)
+>>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
 
 ;;; Mac-only configuration to use command and options keys
 (when (and (eq system-type 'darwin) (display-graphic-p))
   (setq mac-pass-command-to-system nil)
+  (exec-path-from-shell-initialize)  
 
+<<<<<<< HEAD
   ;(set-face-font 'default "Monaco-16")
 ;  (set-face-attribute 'mode-line nil :font "Monaco-10")
   (set-foreground-color "light gray")
@@ -154,6 +201,18 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (set-face-background 'mode-line "#444444")
   (set-face-background 'mode-line-inactive "#000000")
 
+=======
+  (setq my-font-size 12)
+  
+  (set-face-font 'default (format "Monaco-%d" my-font-size))
+  (set-face-attribute 'mode-line nil :font (format "Monaco-%d" my-font-size))
+  
+  (set-background-color "#003300")
+  (set-foreground-color "light gray")
+  
+  ;(set-face-font 'default "Monaco-20")
+  
+>>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
   ;; Mac-only
   ;; Command key as Meta key, Option key untouched
   ;; http://www.emacswiki.org/emacs/MetaKeyProblems#toc15
@@ -181,6 +240,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   ;; values can be 'control (C), 'alt (A), 'meta (M), 'super (s), or 'hyper (H).
   ;; setting to nil allows the OS to assign values
   )
+<<<<<<< HEAD
 ;
 (defun my-set-font-size (size mode-line-size)
   (interactive)
@@ -237,15 +297,31 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (defalias 'default-fill-column 'fill-column)
 
 (global-flycheck-mode 1)
+=======
+
+(progn
+  (set-face-background 'mode-line "gray30")
+  (set-face-background 'mode-line-inactive "black"))
+(setq doom-modeline-height 1)
+(setq minibuffer-max-depth nil)
+
+(setq time-stamp-line-limit 100)
+(setq grep-use-null-device nil)
+(ansi-color-for-comint-mode-on)
+>>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
 
 ;; customized
-(load "ssh.el")
+;(load "ssh.el")
 ;(require 'ssh)
-(setq ssh-directory-tracking-mode 'ftp)
-(add-hook 'ssh-mode-hook
-          '(lambda ()
-            (shell-dirtrack-mode t)
-            (setq dirtrackp nil)))
+;(setq ssh-directory-tracking-mode 'ftp)
+;(add-hook 'ssh-mode-hook
+;          '(lambda ()
+;            (shell-dirtrack-mode t)
+;            (setq dirtrackp nil)))
+
+(load "myinsert.el")
+(load "mymode.el")
+(load "mykeymap.el")
 
 (require 'markdown-mode)
 (add-hook 'markdown-mode-hook
@@ -255,6 +331,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (setq calendar-week-start-day 1)
 (eval-after-load "holidays"
   '(progn
+     ;; week starts from monday 
      (require 'japanese-holidays)
      (setq calendar-holidays ; 他の国の祝日も表示させたい場合は適当に調整
            (append japanese-holidays holiday-local-holidays holiday-other-holidays))

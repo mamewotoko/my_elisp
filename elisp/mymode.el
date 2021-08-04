@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ;;; mymode.el --- Last modified: Thu Jul 08 20:22:08 2021
+=======
+;;; mymode.el --- Last modified: Thu Jul 23 14:37:04 2020
+>>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -46,7 +50,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Shell mode
 ;;
+<<<<<<< HEAD
 (load "mycamlextend.el")
+=======
+(setq auto-mode-alist
+          (cons '("\\.ml[iylp]?$" . caml-mode) auto-mode-alist))
+(autoload 'caml-mode "caml" "Major mode for editing Caml code." t)
+(autoload 'run-caml "inf-caml" "Run an inferior Caml process." t)
+
+;(load "mycamlextend.el")
+>>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
 (defun my-goto-error ()
   (interactive)
   (beginning-of-line)
@@ -106,8 +119,12 @@
 	     (define-key calendar-mode-map
 	       "\C-v" (other-window 1))))
 
+<<<<<<< HEAD
 ;(require 'tuareg)
 ;(require 'lsp)
+=======
+(require 'tuareg)
+>>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
 (require 'merlin)
 
 ;(add-hook 'tuareg-mode-hook #'merlin-mode)
@@ -143,6 +160,7 @@
 (use-package flycheck
   :init (global-flycheck-mode))
 
+<<<<<<< HEAD
 (use-package lsp-mode
   ;; Optional - enable lsp-mode automatically in scala files
   :hook  (scala-mode . lsp)
@@ -178,6 +196,9 @@
 ;;   )
 
 ;(require 'csv-mode)
+=======
+(require 'csv-mode)
+>>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
 (setq auto-mode-alist
       (append (list
 ;	       (cons "\\.tex$" 'yatex-mode)
@@ -222,6 +243,10 @@
   (shell-command (format "etags *.%s" (or extension "el")))
   (let ((tags-revert-without-query t))  ; don't query, revert silently          
     (visit-tags-table default-directory nil)))
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
 
 (provide 'mymode)
 ;;; mymode.el ends here

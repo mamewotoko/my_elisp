@@ -8,9 +8,18 @@
 (global-set-key (kbd "C-\;") 'completion-at-point)
 (global-set-key [(control ?¥)] 'toggle-input-method)
 (global-set-key "\C-h" 'backward-delete-char)
-(global-set-key [f1] 'help-command)
+; 以下を設定すると hexl-modeが起動しなくなる
+; (setq help-char nil)
+;(global-set-key [f1] 'help-command)
 
+<<<<<<< HEAD
 ;(global-set-key "\C-cl" 'locate)
+=======
+;; help, man, apropos
+(global-set-key [(control f1)] 'manual-entry)
+(global-set-key [(meta f1)] 'helm-apropos)
+(define-key help-map "a" 'apropos)
+>>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
 
 ;;;ジャンプ
 (global-set-key (kbd "C-l") 'goto-line)
@@ -28,10 +37,12 @@
 (global-set-key [(super p)] '(lambda () (interactive)
                                (let ((ps-filename (read-input "ps filename: ")))
                                  (ps-print-buffer ps-filename))))
+(defun my-previous-window () (interactive) (other-window -1))
+(global-set-key (kbd "C-.") 'my-previous-window)
 
-(global-set-key (kbd "C-.") 'other-window)
 (global-set-key "\C-t" 'copy-region-as-kill)
 
+;; helm
 (require 'helm-config)
 (helm-mode 1)
 (require 'helm)
@@ -45,8 +56,15 @@
 (global-set-key (kbd "C-x C-/") 'helm-find)
 (setq helm-ff-skip-boring-files t)
 
-;(global-set-key "\C-o" 'dabbrev-expand)
 (global-set-key "\C-o" 'helm-dabbrev)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key "\C-x\C-f" 'helm-find-files)
+;; For find-file etc.
+(require 'helm-files)
+(define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
+;; For helm-find-files etc.
+(define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
+
 
 (if (not (featurep 'kill-this-buffer))
     (defun kill-this-buffer ()
@@ -80,12 +98,6 @@
 
 (global-set-key "\C-xg" 'magit-status)
 
-;;lisp
-(global-set-key [f1] 'help-command)
-(global-set-key [(control f1)] 'manual-entry)
-(global-set-key [(meta f1)] 'helm-apropos)
-(define-key help-map "a" 'apropos)
-
 ;;; older emacs: version xxxx
 ;;; use ssh.el
 (defun shell-or-ssh-old ()
@@ -113,23 +125,29 @@
 (require 'tramp)
 
 ;;; use shell
+; recent emacs 26, (25?) starts shell according to host of current buffer
 (defun shell-or-ssh ()
   (interactive)
-  (if (not buffer-file-name)
-      (shell)
-    (if (or (string-prefix-p "/scp:" buffer-file-name)
-            (string-prefix-p "/ssh:" buffer-file-name))
-        (let* ((connect (if tramp-current-user (format "%s@%s" tramp-current-user tramp-current-host)
-                          tramp-current-host))
-               (bufname (format "*shell %s*" connect)))
-          (shell bufname))
-      (shell)))
+  (if (or (string-prefix-p "/scp:" default-directory)
+          (string-prefix-p "/ssh:" default-directory)
+          (string-prefix-p "/docker:" default-directory))
+      (let* ((tmp (cadr (split-string default-directory ":")))
+             (bufname (format "*shell %s*" tmp)))
+        (shell bufname))
+      (shell))
   (set-buffer-process-coding-system 'utf-8 'utf-8))
 
 (global-set-key [f5] (lambda () (interactive) (progn (shell "*f5-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
 (global-set-key [f6] (lambda () (interactive) (progn (shell "*f6-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
 (global-set-key [f7] (lambda () (interactive) (progn (shell "*f7-shell*") (set-buffer-process-coding-system 'utf-8 'utf-8))))
 (global-set-key [f8] 'shell-or-ssh)
+;
+(global-set-key [(shift f8)]
+                (lambda ()
+                  (interactive)
+                  (if (get-buffer "*shell*")
+                    (switch-to-buffer "*shell*")
+                  (shell))))
 
 (defun my-input-command-to-shell (command &optional buffer)
   (if buffer
@@ -166,15 +184,6 @@
 ;(require 'flycheck)
 ;(global-set-key (kbd "<M-up>") 'flycheck-previous-error)
 ;(global-set-key (kbd "<M-down>") 'flycheck-next-error)
-
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key "\C-x\C-f" 'helm-find-files)
-;; For find-file etc.
-(require 'helm-files)
-(define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
-;; For helm-find-files etc.
-(define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
-
 ;(define-key ctl-x-map [f8] 'ssh)
 (global-set-key [(super h)] 'ignore)
 
@@ -185,7 +194,6 @@
 (global-set-key [f10] 'namazu)
 (global-set-key [zenkaku-hankaku] 'toggle-input-method)
 
-                                        ;(require 'zop-to-char)
 (global-set-key (kbd "M-z") 'zop-to-char)
 
 (global-set-key [f11]
@@ -195,6 +203,7 @@
      (lisp-interaction-mode)
 ))
 (global-set-key [(shift f11)] 'calendar)
+<<<<<<< HEAD
 ;; (global-set-key [(control f11)]
 ;;   '(lambda ()
 ;;      (interactive)
@@ -202,6 +211,43 @@
 ;; ))
 (global-set-key [(meta f11)] '(lambda () (interactive) (my-set-font-size 24)))
 (global-set-key [(shift meta f11)] '(lambda () (interactive) (my-set-font-size 12)))
+=======
+
+(define-minor-mode sticky-buffer-mode "Make the current window always display
+    this buffer."  nil " sticky" nil (set-window-dedicated-p (selected-window)
+                                                             sticky-buffer-mode))
+
+(defun my-presentation-mode (arg)
+  (interactive "P")
+  (if arg
+      (init-font-size 14)
+    (progn
+      (init-font-size 24)
+      (command-log-mode)
+      (sticky-buffer-mode))))
+  
+(global-set-key [(meta f11)] 'my-presentation-mode)
+
+(global-set-key [(control shift f11)]
+  '(lambda ()
+     (interactive)
+     (find-file "~/dev/diary/diary.md")
+))
+>>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
+
+(defun my-put-file-name-on-clipboard ()
+  "Put the current file name on the clipboard"
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+    (when filename
+      (with-temp-buffer
+        (insert filename)
+        (clipboard-kill-region (point-min) (point-max)))
+      (message filename))))
+
+(global-set-key "\C-c\C-p" 'my-put-file-name-on-clipboard)
 
 ; private
 ;; (load "aquos.el")
@@ -234,11 +280,13 @@
                                         ;(global-set-key "\M-b" 'backward-word)
 
 (global-set-key "\M-f" 'forward-whitespace)
-(global-set-key "\M-b" (lambda () (interactive) (forward-whitespace -1)))
+;(global-set-key "\M-b" (lambda () (interactive) (forward-whitespace -1)))
 
 (global-set-key "\M-o" 'helm-occur)
 (global-set-key (kbd "C-c h o") 'helm-occur)
 (global-set-key (kbd "C-c h g") 'helm-ag)
+(global-set-key (kbd "C-x /") 'helm-find)
+(global-set-key (kbd "C-x p") 'helm-browse-project)
 
 ;(global-set-key "\M-o" 'helm-occur)
 
