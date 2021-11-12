@@ -1,4 +1,4 @@
-;;; myinsert.el --- Last modified: Thu Jun 25 07:39:55 2020
+;;; myinsert.el --- Last modified:  ез  11 13 06:46:46 2021
 ;; Author: MASUYAMA Takashi <mamewotoko@gmail.com>
 
 ;;; Code:
@@ -41,8 +41,6 @@
 (setq time-stamp-line-limit 5)
 (add-hook 'write-file-hooks 'time-stamp)
 
-;(load "myjavamode.el")
-
 (defun camllexer-header-function ()
   (let ((f (file-name-nondirectory (buffer-file-name))))
     (insert-header "(*" "*)")
@@ -70,26 +68,14 @@
    (concat auto-insert-directory "tex-template.tex")))
 
 (defun sh-template-function ()
-  (insert "#! /bin/sh\n"))
-
-(defun perl-template-function ()
-  (insert (concat "#! /usr/bin/perl -w\n#" my-line "\n"))
-  (insert-header "#" "")
-  (insert (concat "#\t\t\t" time-stamp-start "\n#" my-line "\n# " my-signature "# FTP Directory: sources/perl #\nuse strict;\n\n")))
-
-(defun cgi-template-function () (perl-template-function))
-
-(defun opa-template-function ()
-  (insert-file-contents (concat my-auto-insert-path
-		                "opa-template.opa"))
-  (goto-char (point-max)))
+  (insert "#! /bin/bash\n"))
 
 (defun html-template-function ()
   (insert-file-contents (concat my-auto-insert-path
                                 "html-template.html"))
   (goto-char (point-min))
   (replace-string "[LOCATION]"
-		  (concat my-web-base "/" 
+		  (concat my-web-base "/"
 			  (file-name-nondirectory (buffer-file-name))))
   (goto-char (point-min)))
 
@@ -114,6 +100,6 @@
        auto-insert-alist))
 
 (setq html-helper-build-new-buffer nil)
-;; 
+;;
 (provide 'myinsert)
 ;;; myinsert.el ends here
