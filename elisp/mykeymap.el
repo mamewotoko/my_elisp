@@ -12,14 +12,10 @@
 ; (setq help-char nil)
 ;(global-set-key [f1] 'help-command)
 
-<<<<<<< HEAD
-;(global-set-key "\C-cl" 'locate)
-=======
 ;; help, man, apropos
 (global-set-key [(control f1)] 'manual-entry)
 (global-set-key [(meta f1)] 'helm-apropos)
 (define-key help-map "a" 'apropos)
->>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
 
 ;;;ジャンプ
 (global-set-key (kbd "C-l") 'goto-line)
@@ -203,15 +199,6 @@
      (lisp-interaction-mode)
 ))
 (global-set-key [(shift f11)] 'calendar)
-<<<<<<< HEAD
-;; (global-set-key [(control f11)]
-;;   '(lambda ()
-;;      (interactive)
-;;      (find-file "~/dev/diary/diary.md")
-;; ))
-(global-set-key [(meta f11)] '(lambda () (interactive) (my-set-font-size 24)))
-(global-set-key [(shift meta f11)] '(lambda () (interactive) (my-set-font-size 12)))
-=======
 
 (define-minor-mode sticky-buffer-mode "Make the current window always display
     this buffer."  nil " sticky" nil (set-window-dedicated-p (selected-window)
@@ -233,7 +220,6 @@
      (interactive)
      (find-file "~/dev/diary/diary.md")
 ))
->>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
 
 (defun my-put-file-name-on-clipboard ()
   "Put the current file name on the clipboard"

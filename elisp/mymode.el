@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-;;; mymode.el --- Last modified: Thu Jul 08 20:22:08 2021
-=======
-;;; mymode.el --- Last modified: Thu Jul 23 14:37:04 2020
->>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
+;;; mymode.el --- Last modified: Sat Oct 09 10:08:17 2021
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -28,6 +24,17 @@
 	     (define-key emacs-lisp-mode-map "\C-j" 'eval-print-last-sexp)
 ))
 
+(defun my-error-jump-to-point (filename line-number &optional charactor)
+  (if (file-exists-p filename)
+      (progn
+	(find-file-other-window filename)
+	(goto-line (string-to-number line-number))
+	(forward-char (if charactor (string-to-number charactor) 0))
+	(message "done (file %s | line %s | char %s)"
+		 filename line-number charactor)
+	t)
+    (progn (message "file %s is not found" filename) t)))
+
 (defun my-opa-jump-to-error-point (error-message)
   (and (string-match "^File \"\\([^\"]+\\)\", line \\([0-9]+\\), characters \\([0-9]+\\)" error-message)
        (let ((filename (match-string 1 error-message))
@@ -50,16 +57,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Shell mode
 ;;
-<<<<<<< HEAD
-(load "mycamlextend.el")
-=======
 (setq auto-mode-alist
-          (cons '("\\.ml[iylp]?$" . caml-mode) auto-mode-alist))
+          (cons '("\\.ml[iylp]?$" . tuareg-mode) auto-mode-alist))
 (autoload 'caml-mode "caml" "Major mode for editing Caml code." t)
 (autoload 'run-caml "inf-caml" "Run an inferior Caml process." t)
 
 ;(load "mycamlextend.el")
->>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
 (defun my-goto-error ()
   (interactive)
   (beginning-of-line)
@@ -67,10 +70,10 @@
     (end-of-line)
     (let* ((end-point (point))
 	  (error-message (buffer-substring start-point end-point)))
-      (or 
+      (or
 ;       (my-promela-jump-to-error-point error-message)
-       (my-caml-jump-to-error-at-point-entry-point error-message)
-;       (my-opa-jump-to-error-point error-message)
+;       (my-caml-jump-to-error-at-point-entry-point error-message)
+       (my-opa-jump-to-error-point error-message)
        (my-hadolint-jump-to-error-point error-message)
        (my-c-jump-to-error-point-sub error-message t)
        (my-perl-jump-to-error-point error-message)
@@ -119,12 +122,11 @@
 	     (define-key calendar-mode-map
 	       "\C-v" (other-window 1))))
 
-<<<<<<< HEAD
-;(require 'tuareg)
-;(require 'lsp)
-=======
-(require 'tuareg)
->>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
+(add-hook 'markdown-mode-hook
+          '(lambda ()
+             (setq indent-tabs-mode nil)
+             (setq tab-width 4)))
+
 (require 'merlin)
 
 ;(add-hook 'tuareg-mode-hook #'merlin-mode)
@@ -160,45 +162,8 @@
 (use-package flycheck
   :init (global-flycheck-mode))
 
-<<<<<<< HEAD
-(use-package lsp-mode
-  ;; Optional - enable lsp-mode automatically in scala files
-  :hook  (scala-mode . lsp)
-         (lsp-mode . lsp-lens-mode)
-  :config (setq lsp-prefer-flymake nil))
-
-;; Enable nice rendering of documentation on hover
-(use-package lsp-ui)
-
-;; lsp-mode supports snippets, but in order for them to work you need to use yasnippet
-;; If you don't want to use snippets set lsp-enable-snippet to nil in your lsp-mode settings
-;;   to avoid odd behavior with snippets and indentation
-;(use-package yasnippet)
-
-;; Add company-lsp backend for metals
-;(use-package company-lsp)
-
-;; Use the Debug Adapter Protocol for running tests and debugging
-;; (use-package posframe
-;;   ;; Posframe is a pop-up tool that must be manually installed for dap-mode
-;;   )
-(use-package dap-mode
-  :hook
-  (lsp-mode . dap-mode)
-  (lsp-mode . dap-ui-mode)
-  )
-
-;; Use the Tree View Protocol for viewing the project structure and triggering compilation
-;; (use-package lsp-treemacs
-;;   :config
-;;   (lsp-metals-treeview-enable t)
-;;   (setq lsp-metals-treeview-show-when-views-received t)
-;;   )
-
-;(require 'csv-mode)
-=======
 (require 'csv-mode)
->>>>>>> 49bd64b9c8e39fa09885737c0cf42ac9defa18eb
+(require 'go-mode)
 (setq auto-mode-alist
       (append (list
 ;	       (cons "\\.tex$" 'yatex-mode)
@@ -217,16 +182,17 @@
                     (cons "\\.md$" 'markdown-mode)
                     (cons "\\.markdown$" 'markdown-mode)
                     (cons "README\\.md$" 'gfm-mode)
+                    (cons "\\.go$" 'go-mode)
 		    )
             auto-mode-alist))
 
 ;;; tags
-;;;  Jonas.Jarnestrom<at>ki.ericsson.se A smarter               
-;;;  find-tag that automagically reruns etags when it cant find a               
-;;;  requested item and then makes a new try to locate it.                      
-;;;  Fri Mar 15 09:52:14 2002    
+;;;  Jonas.Jarnestrom<at>ki.ericsson.se A smarter
+;;;  find-tag that automagically reruns etags when it cant find a
+;;;  requested item and then makes a new try to locate it.
+;;;  Fri Mar 15 09:52:14 2002
 (defadvice find-tag (around refresh-etags activate)
-  "Rerun etags and reload tags if tag not found and redo find-tag.              
+  "Rerun etags and reload tags if tag not found and redo find-tag.
    If buffer is modified, ask about save before running etags."
   (let ((extension (file-name-extension (buffer-file-name))))
     (condition-case err
@@ -241,7 +207,7 @@
   "Run etags on all peer files in current dir and reload them silently."
   (interactive)
   (shell-command (format "etags *.%s" (or extension "el")))
-  (let ((tags-revert-without-query t))  ; don't query, revert silently          
+  (let ((tags-revert-without-query t))  ; don't query, revert silently
     (visit-tags-table default-directory nil)))
 
 (add-hook 'python-mode-hook
