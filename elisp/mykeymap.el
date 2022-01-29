@@ -18,15 +18,15 @@
 (define-key help-map "a" 'apropos)
 
 ;;;ジャンプ
-(global-set-key (kbd "C-l") 'goto-line)
-(global-set-key (kbd "C-:") 'goto-line)
+;(global-set-key (kbd "C-l") 'goto-line)
+(global-set-key (kbd "C-:") 'goto-line) ; or s-l
 (global-set-key (kbd "C-c C-j") 'my-goto-error)
 
 (global-set-key (kbd "C-c g l") 'git-link)
 (global-set-key (kbd "C-c g c") 'git-link-commit)
 
 ;;;置換
-(global-set-key "\C-cr" 'query-replace)
+;(global-set-key "\C-cr" 'query-replace)
 
 (define-key global-map [?¥] [?\\])  ;; ¥の代わりにバックスラッシュを入力する
 
@@ -61,7 +61,6 @@
 ;; For helm-find-files etc.
 (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
-
 (if (not (featurep 'kill-this-buffer))
     (defun kill-this-buffer ()
       (interactive)
@@ -78,6 +77,7 @@
 (define-key key-translation-map [?\C-h] [?\C-?])
 (global-set-key "\C-h" 'backward-delete-char)
 
+; ag with keyword
 (global-set-key "\M-g"
                 '(lambda ()
                      (interactive)
@@ -172,22 +172,15 @@
 (define-key shell-mode-map "\C-p" 'comint-previous-input)
 (define-key shell-mode-map "\C-n" 'comint-next-input)
 
-(global-set-key [(shift f8)] '(lambda () (interactive) (ssh "mamewo")))
-(global-set-key [(shift f7)] '(lambda () (interactive) (ssh "deskvm")))
-(global-set-key [(shift f6)] '(lambda () (interactive) (ssh "google")))
-(global-set-key [(shift f5)] '(lambda () (interactive) (ssh "vm")))
-
 ;(require 'flycheck)
 ;(global-set-key (kbd "<M-up>") 'flycheck-previous-error)
 ;(global-set-key (kbd "<M-down>") 'flycheck-next-error)
-;(define-key ctl-x-map [f8] 'ssh)
 (global-set-key [(super h)] 'ignore)
 
 (global-set-key "\C-xm" 'ignore)
 (global-set-key [f9] 'query-replace-regexp)
 (global-set-key [(shift f9)] 'apropos)
 (global-set-key [(ctrl f9)] 'helm-apropos)
-(global-set-key [f10] 'namazu)
 (global-set-key [zenkaku-hankaku] 'toggle-input-method)
 
 (global-set-key (kbd "M-z") 'zop-to-char)
@@ -212,7 +205,7 @@
       (init-font-size 24)
       (command-log-mode)
       (sticky-buffer-mode))))
-  
+
 (global-set-key [(meta f11)] 'my-presentation-mode)
 
 (global-set-key [(control shift f11)]
@@ -262,20 +255,13 @@
 (global-set-key "\M-." 'xref-find-definitions-other-window)
                 ;find-tag-other-window)
 
-;(global-set-key "\M-f" 'forward-word)
-                                        ;(global-set-key "\M-b" 'backward-word)
-
-(global-set-key "\M-f" 'forward-whitespace)
-;(global-set-key "\M-b" (lambda () (interactive) (forward-whitespace -1)))
-
 (global-set-key "\M-o" 'helm-occur)
 (global-set-key (kbd "C-c h o") 'helm-occur)
 (global-set-key (kbd "C-c h g") 'helm-ag)
 (global-set-key (kbd "C-x /") 'helm-find)
 (global-set-key (kbd "C-x p") 'helm-browse-project)
 
-;(global-set-key "\M-o" 'helm-occur)
-
+;;;;;;;;;;;;
 (modify-syntax-entry ?_ "w")
 (modify-syntax-entry ?\" "w")
 (modify-syntax-entry ?\\ "w")

@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Sat Nov 13 06:42:17 2021
+;;			Last modified: Sat Jan 29 17:05:59 2022
 ;; Written by Takashi Masuyama <mamewotoko@gmail.com>
 ; install font used by doom
 ;M-x all-the-icons-install-fonts
@@ -155,20 +155,16 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 ;(add-hook 'caml-mode-hook 'merlin-mode)
 
 ;;; Mac-only configuration to use command and options keys
+
 (when (and (eq system-type 'darwin) (display-graphic-p))
+  (setq my-font-size 32)
   (setq mac-pass-command-to-system nil)
   ;(exec-path-from-shell-initialize)
-
-  (setq my-font-size 12)
-
   (set-face-font 'default (format "Monaco-%d" my-font-size))
   (set-face-attribute 'mode-line nil :font (format "Monaco-%d" my-font-size))
-
   (set-background-color "#003300")
   (set-foreground-color "light gray")
-
   ;(set-face-font 'default "Monaco-20")
-
   ;; Mac-only
   ;; Command key as Meta key, Option key untouched
   ;; http://www.emacswiki.org/emacs/MetaKeyProblems#toc15
@@ -179,8 +175,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   ;; left option
   ;(setq mac-option-modifier 'alt)
   ;;xb
-  ;; right command
-  (setq mac-right-command-modifier 'super)
   ;; right option
   ;(setq mac-right-option-modifier 'hyper)
   ;;
@@ -196,7 +190,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   ;; values can be 'control (C), 'alt (A), 'meta (M), 'super (s), or 'hyper (H).
   ;; setting to nil allows the OS to assign values
   )
-
+;; right command as super key
+(setq ns-right-command-modifier 'super)
 (defun my-set-font-size (size mode-line-size)
   (interactive)
   (set-face-font 'default (format "Monaco-%d" size))
@@ -218,6 +213,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (load "mykeymap.el")
 
 (setq minibuffer-max-depth nil)
+(setq enable-recursive-minibuffers t)
 
 (global-set-key "\C-h" 'backward-delete-char)
 (global-set-key [f1] 'help-command)
@@ -237,15 +233,14 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (line-number-mode 1)
 (column-number-mode 1)
-(global-linum-mode nil)
+(global-linum-mode 1)
 
-(setq enable-recursive-minibuffers t)
+(set-face-attribute 'linum nil :background "#aaa")
+(set-face-attribute 'linum nil :foreground "#000")
 
 ;(add-to-list 'load-path (expand-file-name "~/lib/emacs/elisp/scala-mode"))
 ;(require 'yaml-mode)
 (setq time-stamp-line-limit 100)
-
-(setq grep-use-null-device nil)
 (ansi-color-for-comint-mode-on)
 
 ;; for emacs26
@@ -263,15 +258,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (setq time-stamp-line-limit 100)
 (setq grep-use-null-device nil)
 (ansi-color-for-comint-mode-on)
-
-;; customized
-;(load "ssh.el")
-;(require 'ssh)
-;(setq ssh-directory-tracking-mode 'ftp)
-;(add-hook 'ssh-mode-hook
-;          '(lambda ()
-;            (shell-dirtrack-mode t)
-;            (setq dirtrackp nil)))
 
 (load "myinsert.el")
 (load "mymode.el")
@@ -301,7 +287,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
      (add-hook 'calendar-today-visible-hook 'calendar-mark-today)))
 
 (require 'wgrep)
+; agした結果のbuffer上で編集
 (require 'wgrep-ag)
-
 (provide 'myinit)
 ;;; myinit.el ends here
