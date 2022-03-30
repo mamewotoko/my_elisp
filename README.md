@@ -13,7 +13,7 @@ Target Version
     of 2019-04-13"
     ```
 
-* Ubuntu 
+* Ubuntu
 
     ```
     (version)
@@ -25,17 +25,15 @@ How to use
 ----------
 1.
 
-    ```
     mkdir -p $HOME/lib/
-    ```
-    
+
 2. clone this source
 
     ```
     git clone https://github.com/mamewotoko/my_elisp.git
     git submodule update --init
     ```
-    
+
 3. add symlink to init.el
 
     ```
@@ -54,5 +52,6 @@ Features
 * [magit](https://github.com/magit/magit)
 
 ----
-Takashi Masuyama < mamewotoko@gmail.com >  
+Takashi Masuyama < mamewotoko@gmail.com >
+
 http://mamewo.ddo.jp/
