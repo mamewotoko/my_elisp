@@ -1,20 +1,20 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Sat Jan 29 17:05:59 2022
+;;			Last modified: Wed Jun 01 16:05:35 2022
 ;; Written by Takashi Masuyama <mamewotoko@gmail.com>
 ; install font used by doom
 ;M-x all-the-icons-install-fonts
 
-(setq byte-compile-warnings '(not cl-functions obsolete))
 (defvar my-install-package-p nil)
+(setq byte-compile-warnings '(not cl-functions obsolete))
 
 (setq load-path
       (append (list
-	       (expand-file-name "~/lib/emacs/elisp/opa/")
-	       ;; todo; submodule
-	       (expand-file-name "~/dev/ssh-el/")
-	       (expand-file-name "~/lib/emacs/elisp/ocaml/")
-	       (expand-file-name "~/lib/emacs/lisp/anthy"))
-	      load-path))
+               (expand-file-name "~/lib/emacs/elisp/opa/")
+               ;; todo; submodule
+               (expand-file-name "~/dev/ssh-el/")
+               (expand-file-name "~/lib/emacs/elisp/ocaml/")
+               (expand-file-name "~/lib/emacs/lisp/anthy"))
+              load-path))
 
 (if (>= emacs-major-version 26)
     (progn
@@ -24,56 +24,64 @@
       (defalias 'list-buffers 'ibuffer)
       ))
 
+(setq load-path
+      (append (list
+               ;(expand-file-name "~/lib/emacs/elisp/opa/")
+               ;; todo; submodule
+               (expand-file-name "~/dev/ssh-el/")
+               (expand-file-name "~/lib/emacs/elisp/ocaml/")
+               (expand-file-name "~/lib/emacs/lisp/anthy")
+               )
+              load-path))
+
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/")
-             '("melpa-stable" . "http://stable.melpa.org/packages/"))
+     '("melpa" . "http://melpa.org/packages/")
+     '("melpa-stable" . "http://stable.melpa.org/packages/"))
 
 (package-initialize)
-;(load-theme 'solarized-dark t)
 
 (defalias 'list-buffers 'ibuffer)
 (setq max-lisp-eval-depth 10000)
 (auto-compression-mode t)
 
-; utf8
-(set-language-environment "Japanese")
 ; for highlighting
 (set-default-coding-systems 'utf-8)
 (set-selection-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
 
 (defvar my-favorite-packages
   '(
-    ;;;; for auto-complete
+    ; for auto-complete
+    ; lsp-mode
+    ; lsp-ocaml
+    ; lsp-ui
+    ;zap-to-char
     ag
     auto-complete
-;    company-lsp
-;    lsp-ui
-;    lsp-ocaml
-					;    lsp-mode
+    csv
+    csv-mode
     csv-moode
     dockerfile-mode
-    wgrep
-    wgrep-ag
-    ;zap-to-char
-    yaml-mode
-    terraform-mode
-    svg
-    monky
-    merlin
-    tuareg
-    markdown-mode
-    ; lsp-ui
-    ; lsp-ocaml
-    csv-mode
-    lsp-mode
+    flycheck
+    git-link
     helm
     helm-ag-r
-    csv
-    git-link
-    flycheck
+    lsp-mode
     magit
+    markdown-mode
+    merlin
+    monky
+    svg
+    terraform-mode
+    tuareg
+    wgrep
+    wgrep-ag
+    yaml-mode
+;    company-lsp
+;    lsp-ocaml
+;    lsp-ui
     ))
 
 (defvar my-install-package-p nil)
@@ -89,8 +97,8 @@
     (scroll-bar-mode -1))
 ;; (if (fboundp 'menu-bar-mode)
 ;;     (menu-bar-mode -1))
-;; (if (fboundp 'tool-bar-mode)
-;;     (tool-bar-mode -1))
+(if (fboundp 'tool-bar-mode)
+    (tool-bar-mode -1))
 (if (fboundp 'set-fringe-mode)
     (set-fringe-mode 1))
 
@@ -98,20 +106,14 @@
 (setq max-lisp-eval-depth 10000)
 (auto-compression-mode t)
 
-					;(global-flycheck-mode 1)
+;(global-flycheck-mode 1)
 (global-auto-revert-mode nil)
+(global-font-lock-mode t)
 (setq use-dialog-box nil)
-
-;; utf8
-(set-language-environment "Japanese")
-
-(set-default-coding-systems 'utf-8)
-(set-selection-coding-system 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
 
 (setq dired-listing-switches "-alh")
 ;; diredを2つのウィンドウで開いている時に、デフォルトの移動orコピー先をもう一方のdiredで開いているディレクトリにする
+(require 'dired)
 (setq dired-dwim-target t)
 ;; ディレクトリを再帰的にコピーする
 (setq dired-recursive-copies 'always)
@@ -119,11 +121,9 @@
 
 (setq shell-command-switch "-c")
 (setq backup-directory-alist
-          `((".*" . ,temporary-file-directory)))
+      `((".*" . ,temporary-file-directory)))
 
 (desktop-save-mode 1)
-(setq desktop-restore-eager 3)
-(setq bookmark-save-flag 1)
 
 (setq ring-bell-function 'ignore)
 
@@ -132,9 +132,25 @@
 (setq epg-gpg-program "/usr/local/bin/gpg2")
 
 (require 'whitespace)
-(whitespace-mode)
+;; https://emacs.stackexchange.com/questions/40622/disable-whitespace-mode-for-single-mode
+(define-global-minor-mode my-global-whitespace-mode whitespace-mode
+  (lambda ()
+    (if (derived-mode-p 'markdown-mode
+                        'python-mode
+                        'elisp-mode
+                        'tuareg-mode
+                        'makefile-mode
+                        'simple-mode)
+      (whitespace-mode))))
 
-;;;(require 'advice)
+(my-global-whitespace-mode 1)
+;; indentにスペースを使う
+(setq-default indent-tabs-mode nil)
+
+;; (setq whitespace-space-regexp "\\(\x3000+\\)")
+;; (setq whitespace-display-mappings
+;;       '((space-mark ?\x3000 [?\□])
+;;         ))
 
 ;; skip warning
 ;(setq exec-path-from-shell-check-startup-files nil)
@@ -154,14 +170,13 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 ;(setq merlin-ac-setup 'easy)
 ;(add-hook 'caml-mode-hook 'merlin-mode)
 
-;;; Mac-only configuration to use command and options keys
+; Mac-only configuration to use command and options keys
 
 (when (and (eq system-type 'darwin) (display-graphic-p))
-  (setq my-font-size 32)
+  (setq my-font-size 18)
   (setq mac-pass-command-to-system nil)
   ;(exec-path-from-shell-initialize)
   (set-face-font 'default (format "Monaco-%d" my-font-size))
-  (set-face-attribute 'mode-line nil :font (format "Monaco-%d" my-font-size))
   (set-background-color "#003300")
   (set-foreground-color "light gray")
   ;(set-face-font 'default "Monaco-20")
@@ -190,29 +205,30 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   ;; values can be 'control (C), 'alt (A), 'meta (M), 'super (s), or 'hyper (H).
   ;; setting to nil allows the OS to assign values
   )
+
 ;; right command as super key
 (setq ns-right-command-modifier 'super)
 (defun my-set-font-size (size mode-line-size)
   (interactive)
   (set-face-font 'default (format "Monaco-%d" size))
   (set-face-attribute 'mode-line nil :font (format "Monaco-%d" mode-line-size)))
-(my-set-font-size 16 14)
+;(my-set-font-size 16 14)
 
 (auto-compression-mode t)
 
 ;; utf8
 (set-language-environment "Japanese")
 
-(set-default-coding-systems 'utf-8)
-(set-selection-coding-system 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
+(if t
+    (progn
+      (load "myinsert.el")
+      (load "mymode.el")
+      (load "mykeymap.el"))
+  (progn
+    (require 'myinsert)
+    (require 'mymode)
+    (require 'mykeymap)))
 
-(load "myinsert.el")
-(load "mymode.el")
-(load "mykeymap.el")
-
-(setq minibuffer-max-depth nil)
 (setq enable-recursive-minibuffers t)
 
 (global-set-key "\C-h" 'backward-delete-char)
@@ -252,21 +268,20 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (progn
   (set-face-background 'mode-line "gray30")
   (set-face-background 'mode-line-inactive "black"))
-(setq doom-modeline-height 1)
+
+(doom-modeline-mode 1)
+(setq doom-modeline-height 0)
+(setq doom-modeline-vcs-max-length 20)
 (setq minibuffer-max-depth nil)
 
 (setq time-stamp-line-limit 100)
 (setq grep-use-null-device nil)
 (ansi-color-for-comint-mode-on)
 
-(load "myinsert.el")
-(load "mymode.el")
-(load "mykeymap.el")
-
 (require 'markdown-mode)
 (add-hook 'markdown-mode-hook
-           '(lambda ()
-              (flyspell-mode)))
+          '(lambda ()
+             (flyspell-mode)))
 
 (setq calendar-week-start-day 1)
 (eval-after-load "holidays"
