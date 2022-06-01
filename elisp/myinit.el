@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Wed Jun 01 16:05:35 2022
+;;			Last modified: Wed Jun 01 16:28:01 2022
 ;; Written by Takashi Masuyama <mamewotoko@gmail.com>
 ; install font used by doom
 ;M-x all-the-icons-install-fonts

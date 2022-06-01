@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Sat Oct 09 10:08:17 2021
+;;; mymode.el --- Last modified: Wed Jun 01 16:34:23 2022
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -20,39 +20,39 @@
 ;; Emacs Lisp mode
 ;;
 (add-hook 'emacs-lisp-mode-hook
-	  '(lambda ()
-	     (define-key emacs-lisp-mode-map "\C-j" 'eval-print-last-sexp)
+            '(lambda ()
+                 (define-key emacs-lisp-mode-map "\C-j" 'eval-print-last-sexp)
 ))
 
 (defun my-error-jump-to-point (filename line-number &optional charactor)
   (if (file-exists-p filename)
       (progn
-	(find-file-other-window filename)
-	(goto-line (string-to-number line-number))
-	(forward-char (if charactor (string-to-number charactor) 0))
-	(message "done (file %s | line %s | char %s)"
-		 filename line-number charactor)
-	t)
+      (find-file-other-window filename)
+      (goto-line (string-to-number line-number))
+      (forward-char (if charactor (string-to-number charactor) 0))
+      (message "done (file %s | line %s | char %s)"
+       filename line-number charactor)
+       t)
     (progn (message "file %s is not found" filename) t)))
 
 (defun my-opa-jump-to-error-point (error-message)
   (and (string-match "^File \"\\([^\"]+\\)\", line \\([0-9]+\\), characters \\([0-9]+\\)" error-message)
        (let ((filename (match-string 1 error-message))
-	     (line-number (match-string 2 error-message))
-	     (char-number (match-string 3 error-message)))
-	 (my-error-jump-to-point filename line-number char-number))))
+            (line-number (match-string 2 error-message))
+                 (char-number (match-string 3 error-message)))
+                  (my-error-jump-to-point filename line-number char-number))))
 
 (defun my-hadolint-jump-to-error-point (error-message)
   (and (string-match "^\\([^\"]+\\):\\([0-9]+\\) \\(.*\\)" error-message)
        (let ((filename (match-string 1 error-message))
-	     (line-number (match-string 2 error-message)))
-	 (my-error-jump-to-point filename line-number 0))))
+            (line-number (match-string 2 error-message)))
+             (my-error-jump-to-point filename line-number 0))))
 
 (defun my-xvcg-jump-to-error (error-message)
   (and (string-match "^Syntax error (\\([^:]+\\): l:\\([0-9]+\\)" error-message)
        (let ((filename (match-string 1 error-message))
-	     (linenumber (match-string 2 error-message)))
-	 (my-error-jump-to-point filename linenumber))))
+            (linenumber (match-string 2 error-message)))
+             (my-error-jump-to-point filename linenumber))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Shell mode
@@ -69,7 +69,7 @@
   (let ((start-point (point)))
     (end-of-line)
     (let* ((end-point (point))
-	  (error-message (buffer-substring start-point end-point)))
+      (error-message (buffer-substring start-point end-point)))
       (or
 ;       (my-promela-jump-to-error-point error-message)
 ;       (my-caml-jump-to-error-at-point-entry-point error-message)
@@ -81,20 +81,20 @@
 					; (my-xvcg-jump-to-error error-message)
 					; (my-platex-jump-to-error error-message)
        (my-gdb-jump-to-point-sub error-message)
-	  (progn (message "no error found") (goto-char start-point) nil)))))
+         (progn (message "no error found") (goto-char start-point) nil)))))
 
 (require 'shell)
 (add-hook 'shell-mode-hook
-	  '(lambda ()
+            '(lambda ()
          (define-key shell-mode-map [(control return)] 'dirs)
          (define-key shell-mode-map (kbd "C-l") '(lambda ()
                                                    (interactive)
                                                    (zap-up-to-char -1 ?/)))
-	     (define-key shell-mode-map
-	       "\C-c\C-j" 'my-goto-error)
-	     (shell-dirtrack-mode 1)
+                                                        (define-key shell-mode-map
+                                                               "\C-c\C-j" 'my-goto-error)
+                                                                    (shell-dirtrack-mode 1)
              (setq dirtrack-list '(":*\\([A-Za-z]*:*~*[\/\\].*?\\)[^-+A-Za-z0-9_.()//\\ ]" 1)) ;for help making this regular expression you may want to use "M-x re-builder", where M is usually alt
-	     ))
+                  ))
 
 ;; ruby
 (add-hook 'ruby-mode-hook
@@ -114,13 +114,13 @@
 ;; JDE mode
 
 (add-hook 'java-mode-hook
-	  '(lambda ()
-	     (setq tab-width 4)))
+            '(lambda ()
+                 (setq tab-width 4)))
 
 (add-hook 'calendar-mode-hook
-	  '(lambda ()
-	     (define-key calendar-mode-map
-	       "\C-v" (other-window 1))))
+            '(lambda ()
+                 (define-key calendar-mode-map
+                        "\C-v" (other-window 1))))
 
 (add-hook 'markdown-mode-hook
           '(lambda ()
@@ -166,25 +166,18 @@
 (require 'go-mode)
 (setq auto-mode-alist
       (append (list
-;	       (cons "\\.tex$" 'yatex-mode)
-;		    (cons "\\.h$" 'c-mode)
-;		    (cons "\\.jj$" 'java-mode)
-;		    (cons "\\.jgo$" 'java-mode)
-	       (cons "\\.cgi$" 'cperl-mode)
-;	       (cons "\\.R$" 'ess-mode)
-;		    (cons "\\.ml[iylp]?$" 'tuareg-mode)
-		    (cons "\\.sql$" 'sql-mode)
-		    (cons "\\.opa$" 'opa-classic-mode)
-                                        ;		    (cons "\\.scope$" 'java-mode)
-;            (cons "\\.csv$" 'csv-mode)
-		    (cons "\\.java$" 'java-mode)
-                    (cons "\\.md.html$" 'markdown-mode)
-                    (cons "\\.md$" 'markdown-mode)
-                    (cons "\\.markdown$" 'markdown-mode)
-                    (cons "README\\.md$" 'gfm-mode)
-                    (cons "\\.go$" 'go-mode)
-		    )
-            auto-mode-alist))
+               (cons "\\.tex$" 'yatex-mode)
+               (cons "\\.el$" 'elisp-mode)
+               (cons "\\.cgi$" 'cperl-mode)
+               (cons "\\.sql$" 'sql-mode)
+               (cons "\\.opa$" 'opa-classic-mode)
+               (cons "\\.java$" 'java-mode)
+               (cons "\\.md.html$" 'markdown-mode)
+               (cons "\\.md$" 'markdown-mode)
+               (cons "\\.markdown$" 'markdown-mode)
+               (cons "README\\.md$" 'gfm-mode)
+               (cons "\\.go$" 'go-mode)
+               auto-mode-alist)))
 
 ;;; tags
 ;;;  Jonas.Jarnestrom<at>ki.ericsson.se A smarter
