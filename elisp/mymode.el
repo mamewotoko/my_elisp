@@ -1,4 +1,4 @@
-;;; mymode.el --- Last modified: Wed Jun 01 16:34:23 2022
+;;; mymode.el --- Last modified: Wed Jun 01 16:39:22 2022
 ;; Author: Takashi Masuyama <mamewo@dk9.so-net.ne.jp>
 
 ;; 2003/ 2/ 5 gdb のエラージャンプを追加。エラージャンプを大幅改造
@@ -78,22 +78,23 @@
        (my-c-jump-to-error-point-sub error-message t)
        (my-perl-jump-to-error-point error-message)
        (and (boundp 'shell-dirstack) (my-java-jump-at-exception error-message shell-dirstack))
-					; (my-xvcg-jump-to-error error-message)
-					; (my-platex-jump-to-error error-message)
        (my-gdb-jump-to-point-sub error-message)
          (progn (message "no error found") (goto-char start-point) nil)))))
 
 (require 'shell)
 (add-hook 'shell-mode-hook
             '(lambda ()
-         (define-key shell-mode-map [(control return)] 'dirs)
-         (define-key shell-mode-map (kbd "C-l") '(lambda ()
-                                                   (interactive)
-                                                   (zap-up-to-char -1 ?/)))
-                                                        (define-key shell-mode-map
-                                                               "\C-c\C-j" 'my-goto-error)
-                                                                    (shell-dirtrack-mode 1)
-             (setq dirtrack-list '(":*\\([A-Za-z]*:*~*[\/\\].*?\\)[^-+A-Za-z0-9_.()//\\ ]" 1)) ;for help making this regular expression you may want to use "M-x re-builder", where M is usually alt
+               (define-key shell-mode-map [(control return)] 'dirs)
+               (define-key shell-mode-map (kbd "C-l")
+                 '(lambda ()
+                    (interactive)
+                    (zap-up-to-char -1 ?/)))
+               (define-key shell-mode-map
+                 "\C-c\C-j" 'my-goto-error)
+               (shell-dirtrack-mode 1)
+  ;for help making this regular expression you may want to use
+  ; "M-x re-builder", where M is usually alt
+               (setq dirtrack-list '(":*\\([A-Za-z]*:*~*[\/\\].*?\\)[^-+A-Za-z0-9_.()//\\ ]" 1))
                   ))
 
 ;; ruby
@@ -101,14 +102,6 @@
           '(lambda ()
              (setq flycheck-checker 'ruby-rubocop)
              (flycheck-mode 1)))
-
-;; ssh config
-;(autoload 'ssh-config-mode "ssh-config-mode" t)
-;(add-to-list 'auto-mode-alist '("/\\.ssh/config\\'"     . ssh-config-mode))
-;(add-to-list 'auto-mode-alist '("/sshd?_config\\'"      . ssh-config-mode))
-;; (add-to-list 'auto-mode-alist '("/known_hosts\\'"       . ssh-known-hosts-mode))
-;; (add-to-list 'auto-mode-alist '("/authorized_keys2?\\'" . ssh-authorized-keys-mode))
-;(add-hook 'ssh-config-mode-hook 'turn-on-font-lock)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; JDE mode
@@ -142,7 +135,6 @@
   (package-install 'use-package))
 
 (require 'use-package)
-
 
 ;; Enable sbt mode for executing sbt commands
 (use-package sbt-mode

@@ -1,5 +1,5 @@
 ;; myinit.el		Created      : Thu Nov 27 17:30:57 2003
-;;			Last modified: Wed Jun 01 16:28:01 2022
+;;			Last modified: Wed Jun 01 16:46:25 2022
 ;; Written by Takashi Masuyama <mamewotoko@gmail.com>
 ; install font used by doom
 ;M-x all-the-icons-install-fonts
@@ -147,10 +147,11 @@
 ;; indentにスペースを使う
 (setq-default indent-tabs-mode nil)
 
-;; (setq whitespace-space-regexp "\\(\x3000+\\)")
-;; (setq whitespace-display-mappings
-;;       '((space-mark ?\x3000 [?\□])
-;;         ))
+; https://konbu13.hatenablog.com/entry/2014/04/01/203857
+(setq whitespace-space-regexp "\\(\x3000+\\)")
+(setq whitespace-display-mappings
+      '((space-mark ?\x3000 [?\□])
+        ))
 
 ;; skip warning
 ;(setq exec-path-from-shell-check-startup-files nil)
